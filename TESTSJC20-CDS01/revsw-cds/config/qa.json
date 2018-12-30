@@ -1,0 +1,22 @@
+{
+  "log_config": {
+    "transports": {
+      "Console": {
+        "silent": true
+      },
+      "File": {
+        "filename": "./log/revsw-cds.log",
+        "level": "debug"
+      },
+      "Rsyslog": {
+        "Level": "info",
+        "app-name": "revsw-cds"
+      }
+    }
+  },
+  "key_path": "./config/ssl_certs/server.key",
+  "cert_path": "./config/ssl_certs/server.crt",
+
+  "domain_config_validation_timeout_seconds": 3,
+  "domain_config_validation_max_attempts": 2
+}

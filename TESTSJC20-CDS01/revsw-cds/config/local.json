@@ -1,0 +1,9 @@
+{
+  "run_purge_jobs": true,
+  "run_image_engine_purge_jobs": true,
+  "run_domain_config_jobs": true,
+  "run_app_jobs": true,
+  "run_ssl_jobs": true,
+  "run_waf_rule_jobs": true,
+  "run_waf_rule_generation_jobs": true
+}

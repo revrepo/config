@@ -1,0 +1,80 @@
+{
+  "key_path": "./config/ssl_certs/server.key",
+  "cert_path": "./config/ssl_certs/server.crt",
+  "log_config": {
+    "transports": {
+      "Console": {
+        "silent": true
+      },
+      "File": {
+        "filename": "./log/revsw-cds.log",
+        "level": "info"
+      },
+      "Rsyslog": {
+        "Level" : "info",
+        "app-name" : "revsw-cds"
+      }
+    }
+  },
+  "portal_mongo": {
+    "connect_string": "mongodb://IAD02-CMDB01.REVSW.NET:27017/revportal?replicaSet=CMDB-rs0"
+  },
+  "purge_mongo": {
+    "connect_string": "mongodb://IAD02-CMDB01.REVSW.NET:27017/purgejobs?replicaSet=CMDB-rs0"
+  },
+  "token_with_api_scope": "kh3i45y98yfksdfkasgfjhgssrq35sf",
+  "token_with_monitor_scope": "2354hsdfhastuqytyaytasydfgajwhg4",
+  "token_with_cdn_mngmnt_scope": "q35skhfkdhfksdjhtq3tsdjhgkjsdhg",
+  "run_domain_config_jobs": true,
+
+  "domain_config_defaults": {
+    "bp_group_id": "5472e0bf5e4ac42646bdffec",    // "Default" BP group
+    "ssl_conf_profile": "571e9f7591dcb9f97a0c4841",
+    "bp_apache_custom_config": "",
+    "bp_apache_fe_custom_config": "",
+    "co_apache_custom_config": "",
+    "config_command_options": "",
+    "rum_beacon_url": "https://rum01.revsw.net/service"
+  },
+  
+  "domain_config_automatically_add_cname_as_alias": true,
+
+  "app_config_defaults": {
+    "sdk_configuration_api_service": "5654ea60757951aa1f6c991b",
+    "sdk_stats_reporting_api_service": "5654eada757951aa1f6c991c",
+    "bp_group_id": "5472e0bf5e4ac42646bdffec",
+    "configs": [{
+      "sdk_release_version": 1,
+      "logging_level": "debug",
+      "configuration_refresh_interval_sec": 3600,
+      "configuration_stale_timeout_sec": 36000,
+      "operation_mode": "transfer_and_report",
+      "allowed_transport_protocols": ["rmp", "standard"],
+      "initial_transport_protocol": "standard",
+      "stats_reporting_interval_sec": 60,
+      "stats_reporting_level": "debug",
+      "stats_reporting_max_requests_per_report": 500,
+      "domains_provisioned_list": [],
+      "domains_white_list": [],
+      "domains_black_list": [],
+      "a_b_testing_origin_offload_ratio": 0
+    }]
+  },
+
+  "default_ssl_cert_bp_group_id": "5472e0bf5e4ac42646bdffec",
+
+  "default_waf_rule_bp_group_id": "5472e0bf5e4ac42646bdffec",
+
+  "run_waf_rule_jobs": true,
+
+  "nsone_settings": {
+    "api_url": "https://api.nsone.net",
+    "api_key": "LYvs2DdEm3rI8IdX0wuj",
+    "rev_record": "rev-200.revdn.net",
+    "rev_cname_domain": "revdn.net"
+  },
+
+  "elasticsearch_url": "iad02-es08.revsw.net:9200",
+  "notify_admin_by_email_on_newly_generated_waf_rule": "ops@revsw.com"
+
+}

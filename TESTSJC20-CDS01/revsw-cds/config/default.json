@@ -1,0 +1,185 @@
+{
+  "service": {
+    "host": "0.0.0.0",
+    "https_port": 9000
+  },
+  "key_path": "./config/dev_ssl_certs/server.key",
+  "cert_path": "./config/dev_ssl_certs/server.crt",
+  "client_cert": "./config/client.crt",
+  "portal_mongo": {
+    "connect_string": "mongodb://TESTSJC20-CMDB01.REVSW.NET:27017/revportal?replicaSet=CMDB-rs0"
+  },
+  "purge_mongo": {
+    "connect_string": "mongodb://TESTSJC20-CMDB01.REVSW.NET:27017/purgejobs?replicaSet=CMDB-rs0"
+  },
+  "version_file": "./config/version.txt",
+
+  "mongoose_debug_logging": false,
+  "good_log_dir": "./log/",
+  "log_config": {
+    "transports": {
+      "Console": {
+        "level": "debug",
+        "colorize": true,
+        "prettyPrint": true,
+        "humanReadableUnhandledException": true,
+        "showLevel": true
+      },
+      "File": {
+        "filename": "./log/revsw-cds.log",
+        "level": "debug",
+        "prettyPrint": true
+      },
+      "Rsyslog": {
+        "silent": true
+      }
+    }
+  },
+  "wspoolmgr_config": {
+    "send_json": {
+      "max_attempts": 5,
+      "timeouts_seconds": [300, 600, 900]
+    },
+    "connection": {
+      "max_attempts": 5,
+      "timeouts_seconds": [10, 40, 60]
+    }
+  },
+
+  "token_with_api_scope": "sdtq34tqsdfasfdsdKJHIJHKJH656HGFhfyhgf",
+  "token_with_monitor_scope": "bcverLJKHiyt8uihiu87665",
+  "token_with_cdn_mngmnt_scope": "xdfihiuy87687JHGjg5fmhjjhgfHFhgfYr67YFG",
+
+  "run_purge_jobs": true,
+  "run_purge_jobs_interval_seconds": 1,
+  "purge_job_send_timeout_seconds": 5,
+  "purge_job_runner_takes_over_after_that_number_of_missed_intervals": 10,
+  "purge_job_environments": ["staging_only", "global_only", "global_and_staging"],
+  "purge_job_default_environment": "global_and_staging",
+  "purge_jobs_read_batch_size": 20,
+  "purge_pcm_listener_port": 8002,
+
+  "run_image_engine_purge_jobs": true,
+  "default_image_engine_purge_api_key": "NOT_CHECKED_FOR_NOW_BY_IMAGE_ENGINE_API",
+  "run_image_engine_purge_jobs_interval_seconds": 1,
+  "image_engine_purge_job_send_timeout_seconds": 10,
+  "image_engine_purge_job_runner_takes_over_after_that_number_of_missed_intervals":10,
+  "image_engine_purge_api_url": "https://api.imgeng.in/v2", 
+  "image_engine_purge_jobs_read_batch_size": 20,
+  "image_engine_default_origin_server": "reva.imgeng.in",
+  "image_engine_default_origin_server_domain_suffix": "imgeng.in",
+
+  "app_job_send_timeout_seconds": 300,
+  "run_app_jobs": true,
+  "run_app_jobs_interval_seconds": 10,
+  "app_job_runner_takes_over_after_that_number_of_missed_intervals": 10,
+  "app_pcm_listener_port": 8000,
+  "sdk_keys_domain_name": "revsdk.net",
+  "run_domain_config_jobs": true,
+
+  "run_domain_config_jobs_interval_seconds": 5,
+  "domain_config_job_send_timeout_seconds": 300,
+  "domain_config_validation_timeout_seconds": 30,
+  "domain_config_validation_max_attempts": 4,
+
+  "domain_config_job_runner_takes_over_after_that_number_of_missed_intervals": 10,
+  //  "domain_config_jobs_read_batch_size": 1,
+  "domain_config_pcm_listener_port": 8000,
+
+  "domain_config_defaults": {
+    "bp_group_id": "55a56f85476c10c329a90740", // "Default" BP group
+    "ssl_conf_profile": "571e9f7591dcb9f97a0c4841",
+    "enable_ssl": true,
+    "ssl_cert_id": "",
+    "bp_apache_custom_config": "",
+    "bp_apache_fe_custom_config": "",
+    "co_apache_custom_config": "",
+    "config_command_options": "",
+    "rum_beacon_url": "https://testsjc20-rum01.revsw.net/service",
+    "enable_enhanced_analytics": false 
+  },
+  "domain_config_proxy_config_delete_defaults": {
+    "version": "1.0.1",
+    "domain_name": "",
+    "operation": "delete"
+  },
+  "domain_config_proxy_config_update_defaults": {},
+  "domain_config_co_host_for_staging_env": "localhost.revsw.net",
+  "domain_config_automatically_add_cname_as_alias": false,
+
+  "domain_config_lua_update_email": "Ops@revsw.com",
+
+  "app_config_defaults": {
+    "sdk_configuration_api_service": "5654ea60757951aa1f6c991b",
+    "sdk_stats_reporting_api_service": "5654eada757951aa1f6c991c",
+    "bp_group_id": "55a56f85476c10c329a90740",
+    "configs": [{
+      "sdk_release_version": 1,
+      "logging_level": "debug",
+      "configuration_refresh_interval_sec": 3600,
+      "configuration_stale_timeout_sec": 36000,
+      "operation_mode": "transfer_and_report",
+      "allowed_transport_protocols": ["rmp", "quic", "standard"],
+      "initial_transport_protocol": "standard",
+      "stats_reporting_interval_sec": 60,
+      "stats_reporting_level": "debug",
+      "stats_reporting_max_requests_per_report": 500,
+      "domains_provisioned_list": [],
+      "domains_white_list": [],
+      "domains_black_list": [],
+      "a_b_testing_origin_offload_ratio": 0
+    }]
+  },
+  "internal_domains_black_list": ["just-a-test-domain-to-check-the-feature.revsw.com"],
+
+  "ssl_job_send_timeout_seconds": 120,
+  "run_ssl_jobs_interval_seconds": 5,
+  "default_ssl_cert_bp_group_id": "55a56f85476c10c329a90740",
+  "run_ssl_jobs": true,
+  "ssl_job_runner_takes_over_after_that_number_of_missed_intervals": 10,
+  "ssl_pcm_listener_port": 8000,
+  "ssl_validation_timeout_seconds": 10,
+  "ssl_validation_max_attempts": 4,
+  "notify_admin_by_email_about_error_push_ssl_cert": "ops@revsw.com",
+  
+  "waf_rule_job_send_timeout_seconds": 120,
+  "run_waf_rule_jobs_interval_seconds": 5,
+  "default_waf_rule_bp_group_id": "55a56f85476c10c329a90740",
+  "run_waf_rule_jobs": false,
+  "waf_rule_job_runner_takes_over_after_that_number_of_missed_intervals": 10,
+  "waf_rule_pcm_listener_port": 8000,
+  "waf_rule_validation_timeout_seconds": 10,
+  "waf_rule_validation_max_attempts": 4,
+    
+  "run_waf_rule_generation_jobs": true, 
+  "run_waf_rule_generation_jobs_interval_seconds": 5,
+  "waf_rule_generation_job_runner_takes_over_after_that_number_of_missed_intervals": 10,
+  "waf_rule_generation_directory": "/tmp",
+
+  "elasticsearch_url": "testsjc20-es01.revsw.net:9200",
+  "waf_rule_generation_command": "/opt/revsw-nxtool/autowl.py",
+  "notify_admin_by_email_on_newly_generated_waf_rule": "ops@revsw.com", 
+
+  "nsone_settings": {
+    "api_url": "https://api.nsone.net",
+    "api_key": "WCA2e7hfa5xF4EFWYnpM",
+    "rev_record": "rev-200.revdn.net",
+    "rev_cname_domain": "revqa.net"
+  },
+  "support_email": "support@revapm.com",
+  "support_name": "RevAPM Support Team",
+  "sendgrid_api_key": "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",
+  "notify_developers_by_email_about_uncaught_exceptions": "eng@revsw.com",
+  "notify_developers_by_email_about_bad_implementation": "eng@revsw.com",
+
+
+  "patterns": {
+    "domain": "(?=^.{4,253}$)(^((?!-)(?!\\_)[a-zA-Z0-9-\\_]{0,62}[a-zA-Z0-9]\\.)+[a-zA-Z]{2,63}$)",
+    "wildcard_domain": "(^\\*\\.([a-zA-Z0-9-\\_]{0,62}[a-zA-Z0-9]\\.)+[a-zA-Z]{2,63}$)",
+    "wildcard_domain_deny": [
+    ],
+    "ip_address": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$",
+    "waf_rule_name": "^[A-Za-z0-9//_.:', -]+$",
+    "github_personal_access_token": "^[a-z0-9]{40}$"
+  }
+}
