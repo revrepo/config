@@ -1,0 +1,15 @@
+{
+  "chargify": {
+    "domain": "https://nuubit-test.chargify.com",
+    "api_key": "0WMnGbZ6E5aFtNMjeI2oGjWWpjfjTIu7Y1OCTWjs",
+    "shared_key": "KGXNkhdMAEjgosppDso5vm9xWfx5449b0vkfgII2Yug"
+  },
+
+  "globalsign": {
+    "OrderId": "CECO180820427415",
+    "GsignUser": "PAR113265_revsw",
+    "GsignPass": "zqJFBSlaK234"
+  },
+
+  "enable_shared_ssl_regeneration_scheduler": true
+}
