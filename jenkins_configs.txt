@@ -1,0 +1,246 @@
+
+API_Build 
+
+
+
+# Activate NVM
+. ~/.bashrc
+
+nvm use 6.11.2
+
+echo "INFO: Running jshint..."
+
+jshint -c .jshintrc handlers/*.js lib/*.js models/*.js routes/*.js bin/*.js route-validation/*.js utils/*.js services/*.js config/*.js
+jshint -c config/.jshintrc config/*.json
+
+npm cache clean
+npm install --production
+
+echo "INFO: Running Unit Tests..."
+if [ ! -d log ]; then
+   mkdir log
+fi
+gulp test:unitTests
+
+
+export VERSION=1.0.$BUILD_NUMBER
+echo $VERSION > config/version.txt
+bash scripts/package_build_script.sh
+
+PACKAGE=revsw-api_$VERSION.deb
+
+PACKAGEDIR=packages
+
+if [ ! -f "$PACKAGEDIR/$PACKAGE" ]; then
+	echo "ERROR: Cannot find expect package file $PACKAGEDIR/$PACKAGE - aborting..."
+    exit 1
+fi
+
+
+
+
+
+
+
+
+
+API_Clean_QA_Env
+
+
+
+/usr/local/bin/npm install
+
+if [ ! -d test/rest_api ]; then
+	echo "CRITICAL: 'test/rest_api' directory is not present - aborting..."
+    exit 1
+fi
+
+cd test/rest_api
+
+export NODE_ENV='qa'
+
+# Intall require packages
+/usr/local/bin/npm install
+
+echo "INFO: CLEANING test environment data."
+
+grunt mochaTest:clean
+
+echo "INFO: SETTING UP test environment data."
+
+grunt mochaTest:setup
+
+
+
+
+
+API_Deploy_To_Production
+
+
+# exit 1
+
+VERSIONFILE=config/version.txt
+
+if [ ! -f $VERSIONFILE ]; then
+	echo "CRITICAL: Expected API version file $VERSIONFILE does not present - aborting..."
+    exit 1
+fi
+
+VERSION=`cat $VERSIONFILE`
+
+FILE=revsw-api_${VERSION}.deb
+PACKAGE=packages/$FILE
+
+if [ ! -f $PACKAGE ]; then
+	echo "CRITICAL: Expected API package file $PACKAGE does not present - aborting..."
+    exit 1
+fi
+
+SSH_OPTIONS="-o StrictHostKeyChecking=no"
+
+for SERVER in IAD02-API01.REVSW.NET IAD02-API02.REVSW.NET; do
+        echo "INFO: Copying package $PACKAGE file to server $SERVER..."
+        scp $SSH_OPTIONS $PACKAGE robot@$SERVER:~/
+        echo "INFO: Installing the new package..."
+        ssh $SSH_OPTIONS robot@$SERVER sudo dpkg -i $FILE
+        echo "INFO: Restarting the service..."
+        ssh $SSH_OPTIONS robot@$SERVER sudo "pkill -9 node; sleep 5"
+        ssh $SSH_OPTIONS robot@$SERVER sudo /etc/init.d/revsw-api start
+        echo "INFO: Sleeping for a few seconds and checking the health status of the upgraded server..."
+        sleep 10
+        curl https://$SERVER/healthcheck -s -k |grep 'Everything is OK'
+        curl https://$SERVER/healthcheck -s -k |grep "\"$VERSION\""
+        echo "INFO: Done with server $SERVER"
+done
+
+
+
+
+
+
+
+
+API_QA_Regression_Run
+
+
+# Activate NVM
+. ~/.bashrc
+
+nvm use 6.11.2
+
+if [ ! -d log ]; then
+   mkdir log
+fi
+
+if [ ! -d test/rest_api ]; then
+	echo "CRITICAL: 'test/rest_api' directory is not present - aborting..."
+    exit 1
+fi
+
+# Intall require packages
+npm install
+
+
+cd test/rest_api
+if [ ! -d log ]; then
+   mkdir log
+fi
+
+
+# export NODE_CONFIG_DIR='test/rest_api/config/'
+export NODE_ENV='qa'
+
+# Intall require packages
+npm install
+
+echo "INFO: Running regression tests..."
+
+grunt mochaTest:regression
+# mocha suites/negative/dnsZones/dnsZonesAdd.js 
+
+
+
+
+API_QA_Smoke_Run
+
+
+# Activate NVM
+. ~/.bashrc
+
+nvm use 6.11.2
+
+#SSH_OPTIONS="-o StrictHostKeyChecking=no"
+#SERVER="TESTSJC20-BP03.REVSW.NET"
+#echo "INFO: Removing all configured domains on server $SERVER..."
+#ssh $SSH_OPTIONS robot@$SERVER sudo bash /opt/scripts/delete_proxy_configuration.sh delete_all_configs
+
+echo "INFO: Removing all existing audit records from the test database"
+mongo --host testsjc20-cmdb01.revsw.net revportal --eval 'db.audit_events.remove()' 
+
+
+#echo "INFO: Running old QA tests..."
+#export API_QA_URL="https://testsjc20-api01.revsw.net"
+#export API_QA_URL_HTTP="http://testsjc20-api01.revsw.net"
+#npm install
+#mocha --reporter spec --timeout=120000 test
+
+
+if [ ! -d test/rest_api ]; then
+	echo "CRITICAL: 'test/rest_api' directory is not present - aborting..."
+    exit 1
+fi
+
+cd test/rest_api
+
+# export NODE_CONFIG_DIR='test/rest_api/config/'
+export NODE_ENV='qa'
+
+# Intall require packages
+npm install
+
+echo "INFO: Running smoke tests..."
+
+grunt mochaTest:smoke
+
+
+
+
+
+API_QA_Swagger_UI_Run
+
+
+echo "INFO: Installing revsw-api-test dependencies."
+cd $WORKSPACE/revsw-api/test/swagger_ui
+npm install
+
+echo "INFO: Running jshint checks on the test code..."
+find suites/ page_objects/  common/ -name "*.js"|xargs jshint 
+
+echo "INFO: Setting NODE_ENV variable."
+export NODE_ENV=qa
+
+echo "INFO: Running automated UI tests..."
+#node_modules/protractor/bin/protractor config/smoke.js --specs=suites/smoke/domains/*
+# node_modules/.bin/protractor config/smoke.js --specs=suites/smoke/sslNames/*
+gulp smokeTest
+
+
+
+
+
+API_Stats_Generator
+
+
+# Activate NVM
+. ~/.bashrc
+
+nvm use 6.11.2
+
+export NODE_ENV=qa
+export NODE_CONFIG_DIR='test/rest_api/config'
+npm install
+nodejs utils/tdm.js --regenerate
+
+
+
+
