@@ -1,0 +1,31 @@
+<h1>SDK Quick Start Guide</h1>
+<p> </p>
+<p><strong><strong> </strong></strong></p>
+<p><span style="font-weight: 400;">The goal of this document is for the user to get the Rev SDK functional quickly.</span></p>
+<p><img src="https://revapm.zendesk.com/hc/en-us/article_attachments/202442706/image05.png" alt="" /></p>
+<p><span style="font-weight: 400;">Step 1 - Sign in to the Rev portal (</span><a href="https://portal.revapm.net/"><span style="font-weight: 400;">https://portal.revapm.net/</span></a><span style="font-weight: 400;">) using your existing RevAPM portal credentials.</span></p>
+<p><strong><strong><br /><img src="https://revapm.zendesk.com/hc/en-us/article_attachments/202604763/image04.png" alt="" /><br /><br /></strong></strong></p>
+<p><span style="font-weight: 400;">Step 2 - Select the Apps tab from the top of the portal page.  Choose the operating system from the left of the column (currently only iOS SDK is provided/supported). </span></p>
+<p><strong><strong><img src="https://revapm.zendesk.com/hc/en-us/article_attachments/202604773/image07.png" alt="" /><br /><br /></strong></strong></p>
+<p><span style="font-weight: 400;">Step 3 - Select Add new app button</span></p>
+<p><strong><strong><img src="https://revapm.zendesk.com/hc/en-us/article_attachments/202604753/image00.png" alt="" /><br /><br /></strong></strong></p>
+<p><span style="font-weight: 400;">Step 4 - Enter the App name, in this example below, the App is called “MyExampleApp”.</span></p>
+<p><strong><strong><img src="https://revapm.zendesk.com/hc/en-us/article_attachments/202442736/image01.png" alt="" /><br /><br /></strong></strong></p>
+<p><span style="font-weight: 400;">Step 5 - Once the App is registered on the Rev Platform, use the “Back to List” button.</span></p>
+<p><strong><strong><img src="https://revapm.zendesk.com/hc/en-us/article_attachments/202442776/image03.png" alt="" /></strong></strong></p>
+<p><span style="font-weight: 400;">Step 6 - The newly added App should appear in the iOS Apps List.   </span></p>
+<p><img src="https://revapm.zendesk.com/hc/en-us/article_attachments/202442786/image06.png" alt="" /></p>
+<p>Step 7 - Access the SDK key by clicking on the eye icon.  This will reveal the SDK key that will be used in the mobile App to initialize the Rev SDK code.</p>
+<p><img src="https://revapm.zendesk.com/hc/en-us/article_attachments/202604823/image02.png" alt="" /></p>
+<p><span style="font-weight: 400;">The full SDK key for this example is:  </span><em><span style="font-weight: 400;">563c50ed-0e66-4a67-871d-1114b848bbb</span></em></p>
+<p> </p>
+<p><span style="font-weight: 400;">Step 8 - Load the SDK package into Xcode</span></p>
+<p><span style="font-weight: 400;">Step 9 -  For Objective C to initialize the SDK, the following two lines will need to be added to the mobile application code. </span></p>
+<p><strong><strong> </strong></strong></p>
+<p><span style="font-weight: 400;">    #import &lt;RevSDK/RevSDK.h&gt;</span></p>
+<p>   [RevSDK startWithSDKKey:@"<em>563c50ed-0e66-4a67-871d-1114b848bbb</em>"];</p>
+<p><strong><strong> </strong></strong></p>
+<p><span style="font-weight: 400;">Step 10 - Compile and deploy the mobile application.</span></p>
+<p><span style="font-weight: 400;">Step 11 (Optional) - Perform a fine-tuning of the SDK configuration for the app. Please see “Rev SDK Configuration Guide” for details.</span></p>
+<p><span style="font-weight: 400;">Step 12 - Use the “Mobile Analytics” section in the Rev customer portal to analyze the app data transfers and user base parameters.</span></p>
+<p> </p>

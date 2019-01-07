@@ -1,0 +1,34 @@
+<h1>Caching Rule Structure</h1>
+<p><span style="font-weight: 400;">Below is the template used for the caching rule structure. The default rule (**) is visible if you want to edit the caching rule configuration. Visit <a href="/hc/en-us/articles/205821996-RevAPM-Caching-Rules">RevAPM Caching Rules</a> for more information. </span></p>
+<pre>{
+    "version": 2,
+    "url": {
+        "is_wildcard": true,
+        "value": "url_string"
+    },
+    "edge_caching": {
+        "override_origin": true,
+        "override_no_cc": false,
+        "new_ttl": 300,
+        "query_string_keep_or_remove_list": ["list", "of", "querystring", "parameters", "to", "keep", "or", "ignore"],
+        "query_string_list_is_keep": false
+    },
+    "browser_caching": {
+        "override_edge": true,
+        "new_ttl": 400,
+        "force_revalidate": true
+    },
+    "cookies": {
+        "override": true,
+        "remove_ignored_from_request": false,
+        "remove_ignored_from_response": false,
+        "ignore_all": false,
+        "list_is_keep": true,
+        "keep_or_ignore_list": [
+            "str1",
+            "str2"
+        ]
+    }
+}
+</pre>
+<p> </p>

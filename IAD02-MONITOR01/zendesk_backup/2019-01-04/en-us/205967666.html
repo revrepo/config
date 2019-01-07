@@ -1,0 +1,18 @@
+<h1>Customer API Authentication</h1>
+<p>For API authentication, we support key authentication. API keys can be added using the nuu:bit portal. Under Admin and API Keys, a new key can be generated. The API request is secure since all communication with the nuu:bit API service happens over SSL/HTTPS.</p>
+<p>Different permissions can be set on the API key.  The permissions are Read, Modify, Delete, Purge, Reports and Admin.  </p>
+<p><img src="https://support.nuubit.net/hc/en-us/article_attachments/209648383/Screen_Shot_2016-10-26_at_4.26.42_PM.png" alt="" width="165" height="157">        <img src="https://support.nuubit.net/hc/en-us/article_attachments/209648363/Screen_Shot_2016-10-26_at_4.26.52_PM.png" alt="" width="422" height="308"></p>
+<p> </p>
+<p>Please find the following example for using the nuu:bit API on the command line using CURL.</p>
+<p>Syntax</p>
+<pre><code class="undefined">https://api.nuubit.net/&lt;API Path&gt;</code></pre>
+<p>Example</p>
+<pre><code class="undefined">$ curl https://api.nuubit.net/v1/accounts  -H "Accept: application/json" \<br>   -H "Authorization:X-API-KEY 32fbd222-3333-1234-abcd-044556677788"
+</code></pre>
+<p> </p>
+<h2 id="limits"><span class="wysiwyg-font-size-large">Limits</span></h2>
+<p>If you're sending too many requests, too quickly, you will receive a <code>503</code> error code (server unavailable). There is a limit of 5000 requests per hour.</p>
+<p> </p>
+<script>// <![CDATA[
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-92590791-2', 'auto'); ga('send', 'pageview');
+// ]]></script>

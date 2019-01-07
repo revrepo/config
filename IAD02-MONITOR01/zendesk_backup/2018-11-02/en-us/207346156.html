@@ -1,0 +1,63 @@
+<h1>SDK F.A.Q.</h1>
+<p><strong>Where can I download the nuu:bit SDK?</strong></p>
+<p class="p1"><span class="s1">The SDK can be found here: <a href="https://github.com/nuubit/SDK/">https://github.com/nuubit/SDK/</a></span></p>
+<p> </p>
+<p><strong>How can I signup for nuu:bit?</strong></p>
+<p class="p1">Self Service Signup: <a href="https://portal.nuubit.net/#/signup/plans">https://portal.nuubit.net/#/signup/plans</a></p>
+<p> </p>
+<p><strong>What is the purpose of the nuu:bit SDK?</strong></p>
+<p><strong><span style="font-weight: 400;">The SDK is a simple way to connect a mobile application to nuu:bit's global content acceleration and analytics platform.</span></strong></p>
+<p>The nuu:bit SDK provides 3 main areas of functionality designed to provide the optimal mobile app experience. These areas are:</p>
+<ol>
+<li>Mobile analytics designed to provide key backend and network performance  data back to application developers</li>
+<li>Network-level optimization backed by nuu:bit global acceleration network designed to speed up the delivery of content through changing mobile network conditions</li>
+<li>App-level control of the nuu:bit caching network using Device-Insight(™) to provide an optimized CDN-caching system regardless of location or network conditions.</li>
+</ol>
+<p> </p>
+<p><strong>Is the SDK suitable for any mobile application?</strong></p>
+<p><span style="font-weight: 400;">The SDK might be not effective if your mobile application:</span></p>
+<ol>
+<li>Does not use any data back-end/API for send/receive information required for the application to operate</li>
+<li>Has a very low-performing data back-end (with response time higher than 300-500 ms for dynamic requests). Such apps can still benefit from nuu:bit edge caching for static objects (like images) and traffic analytics.</li>
+</ol>
+<p> </p>
+<p><strong>How to I use the nuu:bit SDK with my mobile App?</strong></p>
+<p><span style="font-weight: 400;">The nuu:bit SDK is provided as a library to be included into the development environment. You only need to initialize the library in your Objective-C or Swift application, and it will transparently accelerate and report the app's data requests without any additional modifications in your app code.</span></p>
+<p><span style="font-weight: 400;">Please see <a href="https://support.nuubit.net/hc/en-us/articles/207278946-iOS-SDK-Quick-Start-Guide">iOS SDK Quick Start Guide</a> for additional information.</span></p>
+<p> </p>
+<p><strong>For which platforms and OS versions is the SDK available?</strong></p>
+<p><span style="font-weight: 400;">Currently the SDK is available for the iOS Operating System (minimal version 8) on the Xcode development platform (starting from 7.x).</span></p>
+<p> </p>
+<p><strong>What are the expected results of using the SDK?</strong><strong><strong><br></strong></strong></p>
+<p>The SDK’s individual pieces of functionality can be enabled and disabled independently of each other. The nuu:bit CDN caching layer and network-level optimization typically provides gains between 30% and 500% depending on network conditions and content cache ability.</p>
+<p> </p>
+<p><strong>Why the SDK include file mentions only one method? How do I use the SDK?<br></strong></p>
+<p>The provided method is used to initialize the SDK in your application, and the rest of activity (traffic acceleration and reporting) is happening behind the scene without any additional changes in your application.</p>
+<p> </p>
+<p><strong>Does use of the SDK affect other functionality of the App in any way?</strong></p>
+<p><span style="font-weight: 400;">No, the SDK does not harm the functionality of the mobile App.  In the off chance there is a problem, the SDK can be disabled by a configuration parameter in the nuu:bit </span><a href="https://portal.nuubit.net/"><span style="font-weight: 400;">portal</span></a><span style="font-weight: 400;">.</span></p>
+<p> </p>
+<p><strong>How do I ensure that I’m using the latest version of the SDK?</strong></p>
+<p>An alert indicating that a new version is available will be generated to the provided by you contact email alias in the nuu:bit support portal.</p>
+<p> </p>
+<p><strong>How does nuu:bit achieve acceleration?</strong></p>
+<p><span style="font-weight: 400;">The SDK leverages custom patent pending protocols to achieve acceleration. The protocols are UDP-based NMP (nuu:bit Mobile Protocol) or TCP-based DOTS (Dynamically Optimized Transport System). The SDK determines, which protocol provides better performance for that particular App, device and wireless network at that moment in time. Once the appropriate protocol is selected, that protocol then senses network, device and App conditions, and adapts its own behavior in real time to provide the fastest possible transfer of data overall.</span></p>
+<p> </p>
+<p><strong>Why would I not want to always have my Initial transport protocol set to NMP?</strong></p>
+<p><span style="font-weight: 400;">Using NMP first could cause the App to start slower in some network conditions, such as using Wi-Fi in an enterprise environment. NMP is a UDP based protocol and in many enterprise environments UDP could be blocked.   The blockage of UDP packets could slow down the initial connection setup.  NMP will provide faster performance for the App on initialization outside of the UDP blockage corner case.</span></p>
+<p><span style="font-weight: 400;"> </span></p>
+<p><strong>How does the nuu:bit SDK handle third-party content and requests?</strong></p>
+<p>The nuu:bit platform will cache 3rd content based on the contents caching headers.  No object will be cached if for example the object has a “Cache-Control:max-age=0, private” or “Cache-Control:no-cache, no-store” HTTP response header. In these cases that the content is dynamic and is in fact from a third party, it is recommended to use the black list to exclude the interception of that content.  If the content is dynamic and in control of the App developer, it is recommended to leverage nuu:bit’s DSA service and provision the domain in the nuu:bit platform.  </p>
+<p> </p>
+<p><strong>What is the purpose of the white and black lists and how are they used and configured?</strong></p>
+<p>By default, the nuu:bit SDK will intercept all traffic and accelerate the traffic to the nuu:bit edge. In cases you do not want traffic to be intercepted, the black list basic access control mechanism will send all content to the nuu:bit edge except the domains listed in the black list JSON array.</p>
+<p>The white list will intercept only those domains listed in the white list JSON array. </p>
+<p> </p>
+<p><strong>What is the purpose of the provisioned domains in the nuu:bit Portal?</strong></p>
+<p><span style="font-weight: 400;">When the developer provisions a domain in the nuu:bit portal, the domain now can leverage the full functionality of the nuu:bit platform.   The nuu:bit platform offers a fully functional CDN as well as DSA services.   Please see the the </span><a href="https://support.nuubit.net/hc/en-us/articles/206454663-RevAPM-Quick-Start-Guide"><span style="font-weight: 400;">Quick Start Guide</span></a><span style="font-weight: 400;">. This will also include the full functionality of the </span><a href="https://support.nuubit.net/hc/en-us/sections/201281296-Edge-Caching"><span style="font-weight: 400;">Caching rules</span></a><span style="font-weight: 400;"> and </span><a href="https://support.nuubit.net/hc/en-us/categories/200833373-RevAPM-API"><span style="font-weight: 400;">APIs</span></a><span style="font-weight: 400;">.</span></p>
+<p> </p>
+<p><strong>What protocols do you support with the SDK?</strong></p>
+<p><strong><span style="font-weight: 400;">Currently nuu:bit supports any HTTP or HTTPS based protocol requests from the NSURL call in the App. AFNetworking,  NSCache, RestKit as well as anything built on NSURL will all be intercepted. The SDK allows for configuration for what domains and/or sites are intercepted. By default, all requests are intercepted and sent to the nuu:bit edge using DOTS or NMP.</span></strong></p>
+<script>// <![CDATA[
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-92590791-2', 'auto'); ga('send', 'pageview');
+// ]]></script>

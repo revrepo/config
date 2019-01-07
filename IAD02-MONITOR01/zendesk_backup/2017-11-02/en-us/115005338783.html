@@ -1,0 +1,22 @@
+<h1>GitHub Integration For Domain Configuration Management</h1>
+<p>nuu:bit provides an easy way to manage the configuration of a provisioned domain by placing the domain's JSON configuration object (in nuu:bit's <a href="https://en.wikipedia.org/wiki/Domain-specific_language" target="_blank" rel="noopener">DSL</a> format) in a file hosted by popular service <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>.</p>
+<p>You are welcome to use the following process to activate the integration.</p>
+<p>Step 1. Add a new domain in nuu:bit's customer portal (you can also use the process on already existing domain configuration).</p>
+<p> </p>
+<p>Step 2. Using "Advanced" domain configuration mode get the current snapshot of the domain's configuration in JSON file.</p>
+<p> </p>
+<p>Step 3. Place the JSON object in a file hosted in a private GitHub repository. </p>
+<p> </p>
+<p>Step 4. In GitHub's UI when you view the file get a link to the file's "raw" version. The link may look like the following:</p>
+<pre><code>https://raw.githubusercontent.com/user/repository/branch/filename.json</code></pre>
+<p> </p>
+<p>Step 5. On GitHub's personal access tokens page (<a href="https://github.com/settings/tokens" target="_blank" rel="noopener">https://github.com/settings/tokens</a>) register a new token to be used to access the domain configuration JSON file (you can also use an existing token). The token may look like the following:</p>
+<p><code>7b7945b5ce05f0b765323eb7caa535b3a0d383dd</code></p>
+<p> </p>
+<p>Step 6. In nuu:bit's customer portal UI, in domain's edit window click on "GitHub Integration" switch, and in the appeared "GitHub Integration Settings" form provide the two previously discussed parameters:</p>
+<p>1) GitHub URL pointing to the domain configuration file's "raw" version</p>
+<p>2) GitHub personal access token</p>
+<p>Click on "Verify" button and wait till the system will try to use the provided parameters to pull the configuration file from GitHub and verify it.</p>
+<p> </p>
+<p>Step 7. Click on "Update" or "Publish" button to stage or activate the new configuration.</p>
+<p> </p>

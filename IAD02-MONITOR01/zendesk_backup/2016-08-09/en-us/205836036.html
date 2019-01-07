@@ -1,0 +1,487 @@
+<h1>RevAPM Object Caching Configuration User Guide</h1>
+<p class="c26 c46"><a class="c7" href="#h.xzy7fmwzo8vs">Introduction</a></p>
+<p class="c26 c34"><span class="c13"><a class="c7" href="#h.kxrg9mjb5rje">Rev Object Caching Concepts</a></span></p>
+<p class="c26 c34"><span class="c13"><a class="c7" href="#h.hnq5sf9hw4nr">Rev Caching Rules</a></span></p>
+<p class="c26 c30"><span class="c13"><a class="c7" href="#h.s0lbxt4dq0mj">Introduction</a></span></p>
+<p class="c26 c30"><span class="c13"><a class="c7" href="#h.gvbn02ge29na">Wildcard Patterns</a></span></p>
+<p class="c26 c30"><span class="c13"><a class="c7" href="#h.g2lzele7iuxa">Rule Execution Order</a></span></p>
+<p class="c26 c30"><span class="c13"><a class="c7" href="#h.2ad789i63yu0">Rule Structure</a></span></p>
+<p class="c26 c30"><span class="c13"><a class="c7" href="#h.hsv1mfjwwwc9">Rule Parameters</a></span></p>
+<p class="c26 c34"><span class="c13"><a class="c7" href="#h.fs21kk5ea4s4">Rule Examples</a></span></p>
+<p class="c26 c19"> </p>
+<h2 class="c1 c25"><a name="h.xzy7fmwzo8vs"></a><span class="c16">Introduction</span></h2>
+<p class="c1"><span class="c8">This document is designed to provide basic information to users who need to configure caching rules for Rev edge proxies. The Rev Caching Configuration UI (a portion of the Rev Portal system) is used to configure appropriate caching rules for a particular domain. In the Portal, using the </span><span class="c8">Configuration tab (then click on the “CDN” tab, and then</span><span class="c5"> click on "Define Caching Rules (Advanced Mode)" button)</span><span class="c8">,</span><span class="c8"> a user will see a GUI that lists a default caching configuration in JSON for a domain that has no prior caching configuration, or the present caching configuration, if previously created. After understanding the following descriptions of Rev’s approach to specifying object caching rules, a user may access the Rev Portal to modify the default (or previous) configurations as presented by the Portal interface. After editing has been completed, the user may exit the editor, and “publish” the configuration that was input or modified.</span></p>
+<h2 class="c1 c25"><a name="h.kxrg9mjb5rje"></a><span class="c16">Rev Object Caching Concepts</span></h2>
+<p class="c1"><span class="c8">By default, the Rev edge proxy caches objects that simultaneously match </span><span class="c8 c44">all</span><span class="c8"> the conditions below:</span></p>
+<ol class="c15 lst-kix_s5onos25ek8t-0 start" start="1">
+<li class="c21"><span class="c8">The origin marks them as cacheable by returning either an Expires header or a Cache-Control header with an s-max-age or max-age parameter larger than 0. If both are present, the Cache-Control header takes precedence. If both s-max-age and max-age are present, the former takes precedence. By default the object is cached for the duration specified by the origin:</span></li>
+</ol>
+<ul class="c15 lst-kix_s5onos25ek8t-1 start">
+<li class="c27 c26"><span class="c8">If Expires is present, but Cache-Control isn’t, the cache lifetime (referred to as time to live (TTL) in this document) is the difference between the time specified by the header and the current time on the edge proxy.</span></li>
+<li class="c26 c27"><span class="c8">If Cache-Control is present and its [s-]max-age is larger than zero, then TTL is the value, in seconds, specified by the [s-]max-age parameter.</span></li>
+</ul>
+<ol class="c15 lst-kix_s5onos25ek8t-0" start="2">
+<li class="c21"><span class="c8">The object is requested through a </span><span class="c8">GET or HEAD HTTP method.</span><span class="c8"> All other methods, such as POST, PUT and DELETE are not cached.</span></li>
+<li class="c21"><span class="c8">The browser doesn’t send any cookies with the request and the origin doesn’t set any cookies in the response. This behavior can be changed, as we will see later.</span></li>
+<li class="c21"><span class="c8">The object is public - that is, it doesn’t require authentication as signalled by the presence of an Authorization header in the request.</span></li>
+</ol>
+<p class="c1"><span class="c8">These restrictions make many, if not all objects uncacheable, mostly because the browser sends the domain cookies as part of every request for a resource in that domain, regardless of type. For example, it sends them both for HTML pages and images.</span></p>
+<p class="c1"><span class="c8">The work around for this issue requires actual knowledge about the website structure. The cache needs to be told:</span></p>
+<ol class="c15 lst-kix_w1wkkhnflcl5-0 start" start="1">
+<li class="c21"><span class="c8">Which objects are cacheable and for how long, even if the origin doesn’t mark them as such.</span></li>
+<li class="c21"><span class="c8">Which objects are dynamically generated and, among these, which ones require cookies in order to generate the resource.</span></li>
+</ol>
+<p class="c1"><span class="c8">The Rev Configuration UI allows the overriding of caching parameters for any set of URLs belonging to a domain. Currently, the interface allows a user to define a list of caching rules in JSON format, as described in the section </span><span class="c13 c8"><a class="c7" href="#h.hnq5sf9hw4nr">Rev Caching Rules</a></span><span class="c8">. In the future, a simpler, user-friendly user interface will be implemented.</span></p>
+<p class="c1"><span class="c8">Let us now look at how the cache actually works:</span></p>
+<ol class="c15 lst-kix_gr1nd422u4qn-0 start" start="1">
+<li class="c21"><span class="c8">First, a request for a resource is received from the browser.</span></li>
+<li class="c21"><span class="c8">Check that all the conditions for cacheability of this resource, defined above, are met for the request:</span></li>
+</ol>
+<p class="wysiwyg-indent3">a. If at least one of them isn’t met:</p>
+<p class="wysiwyg-indent6 wysiwyg-text-align-left">i.   Download the object from the origin </p>
+<p class="wysiwyg-indent6 wysiwyg-text-align-left"><span class="c8">ii.  Override the browser TTL if necessary (see </span><span class="c13 c8"><a class="c7" href="#h.hnq5sf9hw4nr">Rev Caching Rules</a></span><span class="c8">)</span></p>
+<p class="wysiwyg-indent6 wysiwyg-text-align-left">iii. Return it to the browser without caching it</p>
+<p class="wysiwyg-indent6 wysiwyg-text-align-left">iv. DONE</p>
+<ol class="c15 lst-kix_gr1nd422u4qn-0" start="3">
+<li class="c21"><span class="c8">If the object is deemed cacheable:</span></li>
+</ol>
+<p>       a. Compute a hash value, composed of:</p>
+<p class="wysiwyg-indent6">i. The domain name</p>
+<p class="wysiwyg-indent6"><span class="c8">ii. The full URL, </span><span class="c8">containing the query string, if present</span><span class="c8">. (The query string      behavior can be controlled, as described below.)</span></p>
+<p class="wysiwyg-indent6"><span class="c8">iii. The </span><span class="c8">user agent capabilities</span><span class="c8">. These capabilities are taken from the “User-Agent” request HTTP header (although the full “User-Agent” header is not utilized.)</span></p>
+<p class="wysiwyg-indent6"><span class="c8">iv. The set of request cookies that are relevant for the object, as defined through caching rules (see </span><span class="c13 c8"><a class="c7" href="#h.hnq5sf9hw4nr">Rev Caching Rules</a></span><span class="c8">)</span></p>
+<p class="wysiwyg-indent3"><span class="c8">b. Check if the cache already contains an </span><span class="c8">unexpired </span><span class="c8">object associated with this hash value. (The “stale” object TTL default is 10 seconds.)</span></p>
+<p class="wysiwyg-indent5">i. If it does:</p>
+<ol>
+<ol>
+<li><span class="c8">Override the browser TTL if necessary (see </span><span class="c13 c8"><a class="c7" href="#h.hnq5sf9hw4nr">Rev Caching Rules</a></span><span class="c8">)</span></li>
+<li>Return the cached object</li>
+<li>DONE</li>
+</ol>
+</ol>
+<p class="wysiwyg-indent3"><br />c. If the object is not in the cache or it is expired, download the object from the origin.</p>
+<p class="wysiwyg-indent3">d. Check that all the conditions for cacheability of this resource, defined above, are met for the response:</p>
+<p class="wysiwyg-indent5">i. If at least one of them isn’t met:</p>
+<ol>
+<ol>
+<li><span class="c8">Override the browser TTL if necessary (see </span><span class="c13 c8"><a class="c7" href="#h.hnq5sf9hw4nr">Rev Caching Rules</a></span><span class="c8">)</span></li>
+<li>Return the object to the browser without caching it</li>
+<li>DONE</li>
+</ol>
+</ol>
+<p class="wysiwyg-indent3">e. The object is cacheable</p>
+<p class="wysiwyg-indent5">i. Compute the TTL of the object<br />ii. Insert it into the cache and associate it with the previously computed hash value</p>
+<p class="wysiwyg-indent3"><span class="c8">f. Override the browser TTL if necessary (see </span><span class="c13 c8"><a class="c7" href="#h.hnq5sf9hw4nr">Rev Caching Rules</a></span><span class="c8">)</span><br />g. Return the object to the browser<br />h. DONE</p>
+<p class="c1"><span class="c8">Please note that, given the manner in which the hash value is computed, there can be more than one instance of the same object in the cache at any time:</span></p>
+<ul class="c15 lst-kix_cpzq0gfsr4d8-0 start">
+<li class="c21"><span class="c8">One instance for each user agent with different capabilities (mobile/desktop, supported HTML features, webp support etc.)</span></li>
+<li class="c21"><span class="c8">One instance for each combination of query parameters and their values, if present</span></li>
+<li class="c21"><span class="c8">One instance for each combination of cookies and their values, if cookies are allowed (see </span><span class="c13 c8"><a class="c7" href="#h.hnq5sf9hw4nr">Rev Caching Rules</a></span><span class="c8">)</span></li>
+</ul>
+<h2 class="c26 c36"><a name="h.wcmydq5xywr"></a></h2>
+<h2 class="c36 c26"><a name="h.ea2omaj3lqb4"></a></h2>
+<h2 class="c26 c39"><a name="h.hnq5sf9hw4nr"></a><span class="c8 c16">Rev Caching Rules</span></h2>
+<h3 class="c1 c25"><a name="h.s0lbxt4dq0mj"></a><span class="c17">Introduction</span></h3>
+<p class="c1"><span class="c8">A caching rule is a set of parameters that changes the caching behavior</span><span class="c8"> </span><span class="c8">of one or more URLs that match a pattern, specified as either a wildcard expression or a Perl-compatible regular expression. Please refer to </span><span class="c8"><a class="c7" href="http://www.google.com/url?q=http%3A%2F%2Fperldoc.perl.org%2Fperlre.html&amp;sa=D&amp;sntz=1&amp;usg=AFQjCNEqsjKUrncrJFh-Y-lSyx-3maaufg">this document </a></span><span class="c8">for the syntax of </span><span class="c8">regular expressions.</span></p>
+<h3 class="c1 c25"><a name="h.gvbn02ge29na"></a><span class="c17">Wildcard Patterns</span></h3>
+<p class="c1"><span class="c8">The supported wildcard patterns are a subset of the Unix shell glob patterns, described </span><span class="c8"><a class="c7" href="http://www.google.com/url?q=http%3A%2F%2Flinux.die.net%2Fman%2F7%2Fglob&amp;sa=D&amp;sntz=1&amp;usg=AFQjCNH_9A8WRi7XKYodY5P49sNjulOGHg">here</a></span><span class="c8">. The following are supported:</span></p>
+<ul class="c15 lst-kix_me64ihej7r3m-0 start">
+<li class="c21"><span class="c8">*           -  match any number of any characters</span></li>
+<li class="c21"><span class="c8">[...]       -  match any character out of a set of characters</span></li>
+<li class="c21"><span class="c8">?          -  match the preceding character or range zero or one times</span></li>
+<li class="c21"><span class="c8">{a,b,...} - match any of the patterns a or b or …</span></li>
+<li class="c21"><span class="c8">\ch        - escape the special character ch</span></li>
+</ul>
+<p class="c26 c49"><span class="c8">An example of the use of a wildcard pattern is as follows: “/documents/**/records[0-9][0-9][0-9].{doc,docx,txt}”. More examples can be found in the </span><span class="c13 c8"><a class="c7" href="#h.fs21kk5ea4s4">Examples Section</a></span></p>
+<p class="c1"><span class="c8">In addition, we support the </span><span class="c8">globstar wildcard pattern</span><span class="c8">, **, described </span><a href="http://perldoc.perl.org/perlre.html" target="_blank"><span class="c8 c13">here</span></a><span class="c8"> .</span></p>
+<h3 class="c1 c25"><a name="h.g2lzele7iuxa"></a><span class="c17">Rule Execution Order</span></h3>
+<p class="c1"><span class="c8">It is important to understand the order in which rules are executed: </span><span class="c6">The caching rules are interpreted in the order they are provided. Newer rules that match an object that are also matched by a previous rule will override the previous rule for that object. This means one must ensure that the rules are ordered from “more general” to “more specific”.</span><span class="c8"> For example:</span></p>
+<ol class="c15 lst-kix_tzgnaan8dh0w-0 start" start="1">
+<li class="c21"><span class="c8">The first rule will match all JPEG images on the site</span></li>
+<li class="c21"><span class="c8">The second rule will match all JPEG images in the /album directory</span></li>
+<li class="c21"><span class="c8">The third rule will match all JPEG images in the /album/special directory</span></li>
+</ol>
+<h3 class="c1 c25"><a name="h.2ad789i63yu0"></a><span class="c17">Rule Structure</span></h3>
+<p class="c1"><span class="c8">A rule has the following template in JSON:</span></p>
+<p class="c26 c32"><span class="c5"> </span></p>
+<p class="c26 c46"><a href="#" name="670ec2f0db6c79ba61d6e8838089724831c4b782"></a><a href="#" name="0"></a></p>
+<table class="c31" cellspacing="0" cellpadding="0">
+<tbody>
+<tr class="c20">
+<td class="c11" colspan="1" rowspan="1">
+<p class="c26 c22 c28"><span class="c0">{</span></p>
+<p class="c4"><span class="c0">    "version": 2,</span></p>
+<p class="c4"><span class="c0">    "url": {</span></p>
+<p class="c4"><span class="c0">        "is_wildcard": true,</span></p>
+<p class="c4"><span class="c0">        "value": "url_string"</span></p>
+<p class="c4"><span class="c0">    },</span></p>
+<p class="c4"><span class="c0">    "edge_caching": {</span></p>
+<p class="c4"><span class="c0">        "override_origin": true,</span></p>
+<p class="c4"><span class="c0">        "override_no_cc": false,</span></p>
+<p class="c4"><span class="c0">        "new_ttl": 300,</span></p>
+<p class="c4"><span class="c0">        "query_string_keep_or_remove_list": ["list", "of", "querystring", "parameters", "to", "keep", "or", "ignore"],</span></p>
+<p class="c4"><span class="c0">        "query_string_list_is_keep": false</span></p>
+<p class="c4"><span class="c0">    },</span></p>
+<p class="c4"><span class="c0">    "browser_caching": {</span></p>
+<p class="c4"><span class="c0">        "override_edge": true,</span></p>
+<p class="c4"><span class="c0">        "new_ttl": 400,</span></p>
+<p class="c4"><span class="c0">        "force_revalidate": true</span></p>
+<p class="c4"><span class="c0">    },</span></p>
+<p class="c4"><span class="c0">    "cookies": {</span></p>
+<p class="c4"><span class="c0">        "override": true,</span></p>
+<p class="c4"><span class="c0">        "remove_ignored_from_request": false,</span></p>
+<p class="c4"><span class="c0">        "remove_ignored_from_response": false,</span></p>
+<p class="c4"><span class="c0">        "ignore_all": false,</span></p>
+<p class="c4"><span class="c0">        "list_is_keep": true,</span></p>
+<p class="c4"><span class="c0">        "keep_or_ignore_list": [</span></p>
+<p class="c4"><span class="c0">            "str1",</span></p>
+<p class="c4"><span class="c0">            "str2"</span></p>
+<p class="c4"><span class="c0">        ]</span></p>
+<p class="c4"><span class="c0">    }</span></p>
+<p class="c4"><span class="c0">}</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="c1"><span class="c8">The default rule (**) is exposed in the Portal JSON editor.</span></p>
+<h3 class="c1 c25"><a name="h.hsv1mfjwwwc9"></a><span class="c17">Rule Parameters</span></h3>
+<p class="c1"><span class="c8">Let us define the meaning of each parameter:</span></p>
+<ul class="c15 lst-kix_2ujrgdzcak2a-0 start">
+<li class="c21"><span class="c8">"version" is the version of the rule structure. It must always be set to 2.</span></li>
+<li class="c21"><span class="c8">"url" defines the URL or set of URLs that the rule applies to.</span></li>
+</ul>
+<ul class="c15 lst-kix_2ujrgdzcak2a-1 start">
+<li class="c10"><span class="c8">“</span><span class="c8">is_wildcard</span><span class="c8">”, if true, means that value is a wildcard. If false, it means that value is a regular expression.</span></li>
+<li class="c10"><span class="c8">value is either a wildcard expression or a regular expression </span><span class="c8">defining </span><span class="c8">a rule.</span></li>
+</ul>
+<ul class="c15 lst-kix_2ujrgdzcak2a-0">
+<li class="c21"><span class="c8">"edge_caching" defines the behavior of the edge cache in relation to the origin.</span></li>
+</ul>
+<ul class="c15 lst-kix_2ujrgdzcak2a-1 start">
+<li class="c10"><span class="c8">if “</span><span class="c8">override_origin</span><span class="c8">” is false, the </span><span class="c8">rest of the parameters under "edge_caching" are ignored</span><span class="c8"> and the cache obeys the TTL set by the origin (the exception is if “override_no_cc” option is used, it is not ignored). If it is true, the origin-set TTL of the object is overridden.</span></li>
+<li class="c10"><span class="c8">“override_no_cc”, if true, allows the cache to store objects for which the origin doesn’t explicitly set a TTL, i.e. there’s no max-age or Expires information.</span></li>
+<li class="c10"><span class="c8">“new_ttl” sets the “shelf life”, in seconds, of the object in the edge cache. </span><span class="c8">A value of 0 means “don’t cache”.</span><span class="c8"> At present, the following suffixes are not supported: “m”, “h”, “d”, and “w”.</span></li>
+<li class="c10"><span class="c5">if "query_string_keep_or_remove_list" is empty, the feature is disabled and the URL is passed unchanged.</span></li>
+<li class="c10"><span class="c5">In order to remove the need for any query string, one can enter a unique but non-existent string. In this case, because the string will not be found, no query string parameters are obeyed.  </span></li>
+<li class="c10"><span class="c5">if "query_string_list_is_keep" is true and "query_string_keep_or_remove_list" is not empty, then the query string parameters in the list will be kept and all others will be removed. For example, if the URL is "/index.html?foo=bar&amp;hello=world&amp;rev=software" and the list is ["hello", "rev"], then </span><span class="c5">the URL will be rewritten </span><span class="c5">to "/index.html?hello=world&amp;rev=software". </span><span class="c5">This works for both caching and origin calls, and there will be no browser redirects to the new URL.</span></li>
+<li class="c10"><span class="c5">if "query_string_list_is_keep" is false and "query_string_keep_or_remove_list" is not empty, then the query string parameters in the list will be removed and all others will be kept. For example, if the URL is "/index.html?foo=bar&amp;hello=world&amp;rev=software" and the list is ["hello", "foo"], then the URL will be rewritten to "/index.html?rev=software".</span></li>
+</ul>
+<ul class="c15 lst-kix_2ujrgdzcak2a-0">
+<li class="c21"><span class="c8">"browser_caching" defines</span><span class="c8"> the behavior of the browser-side cache in relation to the edge cache</span><span class="c8">. T</span><span class="c5">his browser caching behavior is controlled by setting cache-control header in the Rev response sent to the browser.</span></li>
+</ul>
+<ul class="c15 lst-kix_2ujrgdzcak2a-1 start">
+<li class="c10"><span class="c8">if “override_edge” is false, the rest of the parameters under “browser_caching” section are ignored and the browser uses either the values set by “edge_caching” (if “override_origin” is true) or by the origin itself (if “override_origin” is false). If “override_edge” is true, the rest of the parameters under “browser_caching” section define the caching behavior of the browser.</span></li>
+<li class="c10"><span class="c8">“new_ttl” sets the maximum time, in seconds, that the browser can store the object in its cache. A value of 0 means “don’t cache”.</span></li>
+<li class="c10"><span class="c8">“force_revalidate”, if true, instructs the browser to check that the object is still fresh in the edge cache every time it is requested, even if a copy already exists in the browser cache.</span></li>
+</ul>
+<ul class="c15 lst-kix_2ujrgdzcak2a-0">
+<li class="c21"><span class="c8">"cookies" defines the behavior of the edge cache with respect to HTTP cookies. It’s therefore possible to ignore some or all of the cookies sent by the browser as part of the request, as well as strip some or all cookies from the response.</span></li>
+</ul>
+<ul class="c15 lst-kix_2ujrgdzcak2a-1 start">
+<li class="c10"><span class="c8">if “override” is false, the rest of the parameters under cookies are ignored and the edge cache will only cache objects if there aren’t any cookies either in the request or response. If it is true, the cookies that are deemed relevant for the retrieval of the resource will become a part of the hash value of the cached object, which means there will be one instance of the object in the cache for every possible combination of cookies and cookie values.</span></li>
+<li class="c10"><span class="c8">“remove_ignored_from_request” and “remove_ignored_from_response” instruct the edge cache to remove some, or all, cookies from the request and response. See below for details.</span></li>
+<li class="c10"><span class="c8">if “ignore_all” is true, “list_is_keep” and “keep_or_ignore_list” are ignored and the edge cache will not add any cookies to the hash value.<br />If “remove_ignored_from_request” is true, all cookies are removed from the request before it is sent to the origin.<br />If “remove_ignored_from_response” is true, all cookies are removed from the response before it is returned to the browser.</span></li>
+<li class="c10"><span class="c8">“list_is_keep” and “keep_or_ignore_list” define the list of cookies that are relevant for this object:</span></li>
+</ul>
+<ul class="c15 lst-kix_2ujrgdzcak2a-2 start">
+<li class="c9"><span class="c8">if “list_is_keep” is true, “keep_or_ignore_list” will define the “keep list”, which is the subset of cookies in the browser request that are used as part of the hash value of the cached object. All other cookies are ignored by the hash.<br />If “remove_ignored_from_request” is true, these are also the only cookies that are sent to the origin as part of the request.<br />If “remove_ignored_from_response” is true, these are also the only cookies that are returned to the browser as part of the response.</span></li>
+<li class="c9"><span class="c8">if “list_is_keep” is false, “keep_or_ignore_list” will define the “ignore list”, which is the subset of cookies in the browser request that are </span><span class="c8 c44">NOT</span><span class="c8"> used as part of the hash value of the cached object. All other cookies are used by the hash.<br />If “remove_ignored_from_request” is true, these are also the only cookies that are removed from the request before it is sent to the origin.<br />If “remove_ignored_from_response” is true, these are also the only cookies that are removed from the response before it is returned to the browser.</span></li>
+</ul>
+<p class="c1"><span class="c8">It’s now time to look at some examples.</span></p>
+<h2 class="c26 c39"><a name="h.fs21kk5ea4s4"></a><span class="c16 c8">Rule Examples</span></h2>
+<p class="c1"><span class="c8">Let’s start by defining the URLs that we want our rules to apply to. The easiest way is to use wildcards. Regular expressions are a subject in itself and they will not be covered here. </span><span class="c8">This means that all examples will have the “is_wildcard” flag set to true.</span></p>
+<p class="c1 c19"> </p>
+<p class="c1"><span class="c6">Examples</span></p>
+<p class="c1"><span class="c8">Purge all PNG files under /images, non-recursive (so e.g. files under /images/today/ will not be purged).</span></p>
+<p class="c26 c46"><a href="#" name="206309fcce514e535ab469c149b6615fe96344fb"></a><a href="#" name="1"></a></p>
+<table class="c31" cellspacing="0" cellpadding="0">
+<tbody>
+<tr class="c20">
+<td class="c41" colspan="1" rowspan="1">
+<p class="c35"><span class="c0">{<br />"version": 1,<br />"purges": [<br /> {<br />   "url": {<br />     "is_wildcard": true,<br />     "expression": "/images/*.png"<br />   }<br /> }<br />]<br />}</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="c1 c22 c19"> </p>
+<p class="c1 c22"><span class="c8">Purge all PNG files under /images, non-recursive (so e.g. files under /images/today/ will not be purged)</span></p>
+<p class="c26 c46"><a href="#" name="206309fcce514e535ab469c149b6615fe96344fb"></a><a href="#" name="2"></a></p>
+<table class="c31" cellspacing="0" cellpadding="0">
+<tbody>
+<tr class="c20">
+<td class="c48" colspan="1" rowspan="1">
+<p class="c35"><span class="c0">{<br />"version": 1,<br />"purges": [<br /> {<br />   "url": {<br />     "is_wildcard": true,<br />     "expression": "/images/*.png"<br />   }<br /> }<br />]<br />}</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="c1 c22 c19"> </p>
+<p class="c1 c22"><span class="c8">Purge all PNG files under /images, non-recursive (so e.g. files under /images/today/ will not be purged)</span></p>
+<p class="c26 c46"><a href="#" name="206309fcce514e535ab469c149b6615fe96344fb"></a><a href="#" name="3"></a></p>
+<table class="c31" cellspacing="0" cellpadding="0">
+<tbody>
+<tr class="c20">
+<td class="c42" colspan="1" rowspan="1">
+<p class="c35"><span class="c5">{<br />"version": 1,<br />"purges": [<br /> {<br />   "url": {<br />     "is_wildcard": true,<br />     "expression": "/images/*.png"<br />   }<br /> }<br />]<br />}</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="c1 c22 c19"> </p>
+<p class="c1 c22"><span class="c8">Purge everything, recursively, for current domain</span></p>
+<p class="c26 c46"><a href="#" name="ce42a9cf235952abf80fe65b21669852ef52261c"></a><a href="#" name="4"></a></p>
+<table class="c31" cellspacing="0" cellpadding="0">
+<tbody>
+<tr class="c20">
+<td class="c40" colspan="1" rowspan="1">
+<p class="c35"><span class="c5">{<br />"version": 1,<br />"purges": [<br /> {<br />   "url": {<br />     "is_wildcard": true,<br />     "expression": "/**/*"<br />   }<br /> }<br />]<br />}</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="c1 c22 c19"> </p>
+<p class="c1 c22"><span class="c8">Empty the whole cache, for all domains</span></p>
+<p class="c26 c46"><a href="#" name="ae6cd797967e3b9bcd7f4a22984deaa819540b39"></a><a href="#" name="5"></a></p>
+<table class="c31" cellspacing="0" cellpadding="0">
+<tbody>
+<tr class="c20">
+<td class="c12" colspan="1" rowspan="1">
+<p class="c35"><span class="c5">{<br />"version": 1,<br />"purges": [<br /> {<br />   "url": {<br />     "is_wildcard": true,<br />     "expression": "**/*"<br />   }<br /> }<br />]<br />}</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="c1 c19"> </p>
+<p class="c1"><span class="c8">One important consideration is that the URL that is matched against the expression does not contain the domain name. In other words, it is relative. So, for example, the absolute URL “</span><span class="c8"><a class="c7" href="http://www.google.com/url?q=http%3A%2F%2Fwww.mydomain.com%2Fimages%2Fflower.jpg&amp;sa=D&amp;sntz=1&amp;usg=AFQjCNFMtu07ySKj1Nc5aLedrOhn-MZgaw">http://www.mydomain.com/images/flower.jpg</a></span><span class="c8">” will become “/images/flower.jpg”.</span></p>
+<p class="c1"><span class="c8">The most generic wildcard expression, which matches all objects on the site, is “**”. The globstar pattern (**) matches any character, any number of times, recursively, so it will match “/index.html” as well as “/images/album/today/001.jpg” or any other URL.</span></p>
+<p class="c1"><span class="c8">Let’s now match all JPEG images in /images, but not in its subdirectories. The expression for this is “/images/*.jpg”.</span></p>
+<p class="c1"><span class="c8">If we also want to match the JPEG images in the subdirectories, the expression becomes “/images/**.jpg”.</span></p>
+<p class="c1"><span class="c8">JPEG images can have either the .jpg or the .jpeg extension. We also want to match PNG files. To match all three, the expression becomes “/images/**.{jpg,jpeg,png}”.</span></p>
+<p class="c1"><span class="c8">It might be that our images have a specific filename format. Let’s assume it is “img” followed by three digits, then the extension (like “img123.png”). The expression becomes “/images/**/img[0-9][0-9][0-9].{jpg,jpeg,png}”.</span></p>
+<p class="c1"><span class="c8">Knowing how to define the URL(s), we can now create custom caching rules.</span></p>
+<p class="c1"><span class="c8">Let’s assume we know we can cache all images for one year (31560000 seconds). Our first rule will look like this:</span></p>
+<p class="c26 c32"><span class="c5"> </span></p>
+<p class="c26 c46"><a href="#" name="4f26f14dbd0ba97fdf63585770f8ab592f53b4db"></a><a href="#" name="6"></a></p>
+<table class="c31" cellspacing="0" cellpadding="0">
+<tbody>
+<tr class="c20">
+<td class="c33" colspan="1" rowspan="1">
+<p class="c4"><span class="c0">{</span></p>
+<p class="c4"><span class="c0">    "version": 1,</span></p>
+<p class="c4"><span class="c0">    "url": {</span></p>
+<p class="c4"><span class="c0">        "is_wildcard": true,</span></p>
+<p class="c4"><span class="c0">        "value": "/images/**"</span></p>
+<p class="c4"><span class="c0">    },</span></p>
+<p class="c4"><span class="c0">    "edge_caching": {</span></p>
+<p class="c4"><span class="c0">        "override_origin": true,</span></p>
+<p class="c4"><span class="c0">        "override_no_cc": true,</span></p>
+<p class="c4"><span class="c0">        "new_ttl": 31560000</span></p>
+<p class="c4"><span class="c0">    },</span></p>
+<p class="c4"><span class="c0">    "browser_caching": {</span></p>
+<p class="c4"><span class="c0">        "override_edge": false,</span></p>
+<p class="c4"><span class="c0">        "new_ttl": 0,</span></p>
+<p class="c4"><span class="c0">        "force_revalidate": false</span></p>
+<p class="c4"><span class="c0">    },</span></p>
+<p class="c4"><span class="c0">    "cookies": {</span></p>
+<p class="c4"><span class="c0">        "override": false,</span></p>
+<p class="c4"><span class="c0">        "remove_ignored_from_request": false,</span></p>
+<p class="c4"><span class="c0">        "remove_ignored_from_response": false,</span></p>
+<p class="c4"><span class="c0">        "ignore_all": false,</span></p>
+<p class="c4"><span class="c0">        "list_is_keep": false,</span></p>
+<p class="c4"><span class="c0">        "keep_or_ignore_list": [</span></p>
+<p class="c4"><span class="c0">        ],</span></p>
+<p class="c4"><span class="c0">        "remove_ignored_from_request": false,</span></p>
+<p class="c4"><span class="c0">        "remove_ignored_from_response": false</span></p>
+<p class="c4"><span class="c0">    }</span></p>
+<p class="c4"><span class="c0">}</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="c2"><span class="c5"> </span></p>
+<p class="c2"><span class="c8">Notice that, apart from override_origin, all other override… flags are false. This means we will only modify the edge cache TTL for images and set it to one year, regardless of what the origin says, and we will pass the origin cache control settings to the browser.</span></p>
+<p class="c2"><span class="c8">However, our site also has a directory containing fresh images that are added each day in “/images/today/”. We want to cache only those images for one day (86400 seconds). We have to add another rule to the one defined above:</span></p>
+<p class="c26 c43"><span class="c5"> </span></p>
+<p class="c26 c46"><a href="#" name="ceb6db4886b4c9b34bf9f2fc4d490e6fc4b71f80"></a><a href="#" name="7"></a></p>
+<table class="c31" cellspacing="0" cellpadding="0">
+<tbody>
+<tr class="c20">
+<td class="c33" colspan="1" rowspan="1">
+<p class="c4"><span class="c0">{</span></p>
+<p class="c4"><span class="c0">    "version": 1,</span></p>
+<p class="c4"><span class="c0">    "url": {</span></p>
+<p class="c4"><span class="c0">        "is_wildcard": true,</span></p>
+<p class="c4"><span class="c0">        "value": "/images/**"</span></p>
+<p class="c4"><span class="c0">    },</span></p>
+<p class="c4"><span class="c0">    "edge_caching": {</span></p>
+<p class="c4"><span class="c0">        "override_origin": true,</span></p>
+<p class="c4"><span class="c0">        "override_no_cc": true,</span></p>
+<p class="c4"><span class="c0">        "new_ttl": 31560000</span></p>
+<p class="c4"><span class="c0">    },</span></p>
+<p class="c4"><span class="c0">    "browser_caching": {</span></p>
+<p class="c4"><span class="c0">        "override_edge": false,</span></p>
+<p class="c4"><span class="c0">        "new_ttl": 0,</span></p>
+<p class="c4"><span class="c0">        "force_revalidate": false</span></p>
+<p class="c4"><span class="c0">    },</span></p>
+<p class="c4"><span class="c0">    "cookies": {</span></p>
+<p class="c4"><span class="c0">        "override": false,</span></p>
+<p class="c4"><span class="c0">        "remove_ignored_from_request": false,</span></p>
+<p class="c4"><span class="c0">        "remove_ignored_from_response": false,</span></p>
+<p class="c4"><span class="c0">        "ignore_all": false,</span></p>
+<p class="c4"><span class="c0">        "list_is_keep": false,</span></p>
+<p class="c4"><span class="c0">        "keep_or_ignore_list": [</span></p>
+<p class="c4"><span class="c0">        ],</span></p>
+<p class="c4"><span class="c0">        "remove_ignored_from_request": false,</span></p>
+<p class="c4"><span class="c0">        "remove_ignored_from_response": false</span></p>
+<p class="c4"><span class="c0">    }</span></p>
+<p class="c4"><span class="c0">},</span></p>
+<p class="c4"><span class="c0">{</span></p>
+<p class="c4"><span class="c0">    "version": 1,</span></p>
+<p class="c4"><span class="c0">    "url": {</span></p>
+<p class="c4"><span class="c0">        "is_wildcard": true,</span></p>
+<p class="c4"><span class="c0">        "value": "/images/today/**"</span></p>
+<p class="c4"><span class="c0">    },</span></p>
+<p class="c4"><span class="c0">    "edge_caching": {</span></p>
+<p class="c4"><span class="c0">        "override_origin": true,</span></p>
+<p class="c4"><span class="c0">        "override_no_cc": true,</span></p>
+<p class="c4"><span class="c0">        "new_ttl": 86400</span></p>
+<p class="c4"><span class="c0">    },</span></p>
+<p class="c4"><span class="c0">    "browser_caching": {</span></p>
+<p class="c4"><span class="c0">        "override_edge": false,</span></p>
+<p class="c4"><span class="c0">        "new_ttl": 0,</span></p>
+<p class="c4"><span class="c0">        "force_revalidate": false</span></p>
+<p class="c4"><span class="c0">    },</span></p>
+<p class="c4"><span class="c0">    "cookies": {</span></p>
+<p class="c4"><span class="c0">        "override": false,</span></p>
+<p class="c4"><span class="c0">        "remove_ignored_from_request": false,</span></p>
+<p class="c4"><span class="c0">        "remove_ignored_from_response": false,</span></p>
+<p class="c4"><span class="c0">        "ignore_all": false,</span></p>
+<p class="c4"><span class="c0">        "list_is_keep": false,</span></p>
+<p class="c4"><span class="c0">        "keep_or_ignore_list": [</span></p>
+<p class="c4"><span class="c0">        ],</span></p>
+<p class="c4"><span class="c0">        "remove_ignored_from_request": false,</span></p>
+<p class="c4"><span class="c0">        "remove_ignored_from_response": false</span></p>
+<p class="c4"><span class="c0">    }</span></p>
+<p class="c4"><span class="c0">}</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="c1"><span class="c5"> </span></p>
+<p class="c1"><span class="c8">With these two rules in place, we will cache all images for one year, except the ones in “/images/today”, which we cache for one day.</span></p>
+<p class="c1"><span class="c8">Let’s now assume there’s a directory containing big background images, which doesn’t change very often. Moreover, these large images are used by the browser very often, so we would like it to cache them for a long time. The trouble is we don’t know when they change, but it’s not more often than once a day.</span></p>
+<p class="c1"><span class="c8">The solution is to let the edge cache keep these images for one day, but allow the browser to keep them for one year, with the condition that it must check they haven’t changed every time they are loaded. It’s much faster to check if a resource has changed than downloading it completely, especially since the browser only has to validate against the copy stored in the edge cache, which is up to date because the images don’t change more than once per day.</span></p>
+<p class="c1"><span class="c8">The corresponding rule is the following. The sections that are of no interest (with override… flags set to false) are omitted for clarity:</span></p>
+<p class="c26 c32"><span class="c5"> </span></p>
+<p class="c26 c46"><a href="#" name="619f067e1a4bc4742bb8f82847501237b8054858"></a><a href="#" name="8"></a></p>
+<table class="c31" cellspacing="0" cellpadding="0">
+<tbody>
+<tr class="c20">
+<td class="c37" colspan="1" rowspan="1">
+<p class="c4"><span class="c0">"url": {        </span></p>
+<p class="c4"><span class="c0">        "is_wildcard": true,</span></p>
+<p class="c4"><span class="c0">        "value": "/images/backgrounds/**"</span></p>
+<p class="c4"><span class="c0">    },</span></p>
+<p class="c4"><span class="c0">…</span></p>
+<p class="c4"><span class="c0">    "edge_caching": {</span></p>
+<p class="c4"><span class="c0">        "override_origin": true,</span></p>
+<p class="c4"><span class="c0">        "override_no_cc": true,</span></p>
+<p class="c4"><span class="c0">        "new_ttl": 86400</span></p>
+<p class="c4"><span class="c0">    },</span></p>
+<p class="c4"><span class="c0">    "browser_caching": {</span></p>
+<p class="c4"><span class="c0">        "override_edge": true,</span></p>
+<p class="c4"><span class="c0">        "new_ttl": 31560000,</span></p>
+<p class="c4"><span class="c0">        "force_revalidate": true</span></p>
+<p class="c4"><span class="c0">    },</span></p>
+<p class="c4"><span class="c0">...</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="c1"><span class="c5"> </span></p>
+<p class="c1"><span class="c8">Finally, let’s assume we have a special URL, “/images/geobackground.php”, that returns a background image based on the geographical location of the user. The location is stored in a browser cookie called “geoloc”. We’d like to store the background in the edge cache for each possible value of the “geoloc” cookie, which means we have to add the contents of the cookie to the hash value of “/images/geobackground.php” in the edge cache. Again, the relevant parts of the rule follow:</span></p>
+<p class="c26 c32"><span class="c5"> </span></p>
+<p class="c26 c46"><a href="#" name="6300bbcf7901d2c490c8429b8f267e4dd5a9ea64"></a><a href="#" name="9"></a></p>
+<table class="c31" cellspacing="0" cellpadding="0">
+<tbody>
+<tr class="c20">
+<td class="c33" colspan="1" rowspan="1">
+<p class="c4"><span class="c0">    "url": {</span></p>
+<p class="c4"><span class="c0">        "is_wildcard": true,</span></p>
+<p class="c4"><span class="c0">        "value": "/images/geobackground.php"</span></p>
+<p class="c4"><span class="c0">    },</span></p>
+<p class="c4"><span class="c0">…</span></p>
+<p class="c4"><span class="c0">    "cookies": {</span></p>
+<p class="c4"><span class="c0">        "override": true,</span></p>
+<p class="c4"><span class="c0">        "remove_ignored_from_request": false,</span></p>
+<p class="c4"><span class="c0">        "remove_ignored_from_response": false,</span></p>
+<p class="c4"><span class="c0">        "ignore_all": false,</span></p>
+<p class="c4"><span class="c0">        "list_is_keep": true,</span></p>
+<p class="c4"><span class="c0">        "keep_or_ignore_list": [</span></p>
+<p class="c4"><span class="c0">        "geoloc"</span></p>
+<p class="c4"><span class="c0">        ],</span></p>
+<p class="c4"><span class="c5">       </span><span class="c0"> "remove_ignored_from_request": false,</span></p>
+<p class="c4"><span class="c5">        "remove_ignored_from_response": false</span></p>
+<p class="c4"><span class="c0">    }</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="c1"><span class="c5"> </span></p>
+<p class="c1"><span class="c5">If all these rules are present, in the order they have been presented, the cache behavior will be:</span></p>
+<ul class="c15 lst-kix_uho8wmstur12-0 start">
+<li class="c21"><span class="c8">Store one instance of the “/images/geobackground.php” image for every value of the “geoloc” cookie, for one year (because of the first rule, applying to all images) and also for one year in the browser cache.</span></li>
+<li class="c21"><span class="c8">Store all background images in “/images/backgrounds/” for one day in the edge cache, but for one year in the browser cache, forcing a revalidation at every access.</span></li>
+<li class="c21"><span class="c8">Store all of today’s images in “/images/today/” for one day in the edge cache and also for one day in the browser cache.</span></li>
+<li class="c21"><span class="c8">Store all other images for one year in both caches.</span></li>
+</ul>
+<p class="c1"><span class="c8">As you can see,a more specific rule overrides the setting of any more general rule preceding it:</span></p>
+<p class="c26 c32"><span class="c5"> </span></p>
+<p class="c26 c46"><a href="#" name="deda66c216507e1bbfd24b44e9da4c0cb252f845"></a><a href="#" name="10"></a></p>
+<table class="c31" cellspacing="0" cellpadding="0">
+<tbody>
+<tr class="c20">
+<td class="c45" colspan="1" rowspan="1">
+<p class="c4"><span class="c0">{</span></p>
+<p class="c4"><span class="c0">    "version": 1,</span></p>
+<p class="c4"><span class="c0">    "url": {</span></p>
+<p class="c4"><span class="c0">      "value": "\\.(jpg|jpeg|png|gif|webp|js|css|woff)(\\?.*)?$",</span></p>
+<p class="c4"><span class="c0">      "is_wildcard": false</span></p>
+<p class="c4"><span class="c0">    },</span></p>
+<p class="c4"><span class="c0">    "edge_caching": {</span></p>
+<p class="c4"><span class="c0">      "new_ttl": 604800,</span></p>
+<p class="c4"><span class="c0">      "override_origin": true,</span></p>
+<p class="c4"><span class="c0">      "override_no_cc": true</span></p>
+<p class="c4"><span class="c0">    },</span></p>
+<p class="c4"><span class="c0">    "browser_caching": {</span></p>
+<p class="c4"><span class="c0">      "new_ttl": 0,</span></p>
+<p class="c4"><span class="c0">      "override_edge": false,</span></p>
+<p class="c4"><span class="c0">      "force_revalidate": false</span></p>
+<p class="c4"><span class="c0">    },</span></p>
+<p class="c4"><span class="c0">    "cookies": {</span></p>
+<p class="c4"><span class="c0">      "remove_ignored_from_request": true,</span></p>
+<p class="c4"><span class="c0">      "ignore_all": true,</span></p>
+<p class="c4"><span class="c0">      "remove_ignored_from_response": true,</span></p>
+<p class="c4"><span class="c0">      "override": true,</span></p>
+<p class="c4"><span class="c0">      "list_is_keep": false,</span></p>
+<p class="c4"><span class="c0">      "keep_or_ignore_list": []</span></p>
+<p class="c4"><span class="c0">    }</span></p>
+<p class="c4"><span class="c0">  }</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="c26 c19"> </p>
+<p class="c19 c26"> </p>
+<p class="c26"><span class="c38">Summary</span></p>
+<p class="c26 c19"> </p>
+<p class="c26">Rev APM offers flexible caching rules.  Please feel free to contact Rev APM’s support if you have any questions about this document.</p>
+<script>// <![CDATA[
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-68856309-5', 'auto');
+  ga('send', 'pageview');
+// ]]></script>

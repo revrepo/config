@@ -1,0 +1,14 @@
+<h1>How to Modify a Domain</h1>
+<p>Use the following PUT to modify the domain. Again, using the object_id from the response header from when the domain was created.</p>
+<pre><code class="undefined">https://api.revapm.net/v1/domains/55888c861ef09d211562a439
+</code></pre>
+<p>cURL example:</p>
+<pre><code class="undefined">curl  -u 'user@example.com:password' -X PUT -H 'Content-Type: application/json'  " -T Domain.json https://api.revapm.net/v1/domains/55888c861ef09d211562a439
+</code></pre>
+<p>Domain .json example, changing the origin server to origin-new.example.com</p>
+<pre><code class="language-json">{
+ "<span class="attribute"><span class="attribute">origin_server</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"origin-new.example.com"</span></span></span></span>,
+ "<span class="attribute"><span class="attribute">companyId</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"5588869fbde7a0d00338ce8f"</span></span></span></span>,
+ "<span class="attribute"><span class="attribute">origin_host_header</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"www.example.com"</span></span></span></span>,
+ "<span class="attribute"><span class="attribute">tolerance</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"4000"</span></span></span><span class="value">
+}</span></span></code></pre>

@@ -1,0 +1,17 @@
+<h1>First Mile Locations</h1>
+<div class="article-body markdown">
+<p>The first-mile location is the RevAPM PoP that has the lowest latency to the content origin. To create a domain, it is necessary to select the correct first-mile location. This is typically the same city as the origin data center. If the city of the origin data center is not listed, select the next nearest city.</p>
+<p>To show all of the first mile locations, RevAPM provides the following API call:</p>
+<pre><code class="undefined">https://api.revapm.net/v1/locations/firstmile
+</code></pre>
+<p>cURL example:</p>
+<pre><code class="undefined">curl -H "Accept: application/json" \<br />      -H "Authorization:X-API-KEY 6905f1bd-cbab-4d82-ad9d-f818d1fbdad2" \<br />      https://api.revapm.net/v1/locations/firstmile</code></pre>
+<p>Response body:</p>
+<pre><code class="language-json">[<br /> {<br /> "id" : "5473692d5e4ac42646be0027",<br /> "locationName" : "Amsterdam, NL"<br /> },<br /> {<br /> "locationName" : "Dallas, TX",<br /> "id" : "547368e75e4ac42646be0022"<br /> },<br /> {<br /> "locationName" : "Hong Kong",<br /> "id" : "547369395e4ac42646be0028"<br /> },<br /> {<br /> "id" : "547368f95e4ac42646be0023",<br /> "locationName" : "Washington, DC"<br /> },<br /> {<br /> "locationName" : "Los Angeles, CA",<br /> "id" : "547368cd5e4ac42646be0020"<br /> },<br /> {<br /> "locationName" : "New York, NY",<br /> "id" : "547369215e4ac42646be0026"<br /> },<br /> {<br /> "id" : "547369145e4ac42646be0025",<br /> "locationName" : "London, UK"<br /> },<br /> {<br /> "locationName" : "Chicago, IL",<br /> "id" : "547368db5e4ac42646be0021"<br /> },<br /> {<br /> "locationName" : "Phoenix, AZ",<br /> "id" : "547369045e4ac42646be0024"<br /> },<br /> {<br /> "id" : "548113c9ef16efc26c106f3c",<br /> "locationName" : "Seattle, WA"<br /> },<br /> {<br /> "locationName" : "San Jose, CA",<br /> "id" : "547368be5e4ac42646be001f"<br /> },<br /> {<br /> "id" : "559c638ba2afd9ca7d2e303c",<br /> "locationName" : "Tel-Aviv, Israel"<br /> },<br /> {<br /> "locationName" : "Paris, France",<br /> "id" : "547348be5e4ac42646be001f"<br /> },<br /> {<br /> "id" : "517348be5e4ac42646be001f",<br /> "locationName" : "Frankfurt, Germany"<br /> },<br /> {<br /> "id" : "557348be5e4ac42646be001f",<br /> "locationName" : "Chennai, India"<br /> },<br /> {<br /> "id" : "557348be554ac42646be001f",<br /> "locationName" : "Atlanta, GA"<br /> },<br /> {<br /> "locationName" : "Moscow, Russia",<br /> "id" : "517348be5e4ac42646be021f"<br /> },<br /> {<br /> "locationName" : "Portland, OR",<br /> "id" : "547368be5e4ac426464e001f"<br /> }<br />]<br /><br />
+</code></pre>
+<h3 id="create-a-domain"> </h3>
+</div>
+<footer class="article-footer"></footer>
+<script>// <![CDATA[
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-68856309-5', 'auto'); ga('send', 'pageview');
+// ]]></script>

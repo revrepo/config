@@ -1,0 +1,33 @@
+<h1>How to Modify a User</h1>
+<p>To change a user, use a PUT to the same endpoint. In the following example, we will be removing access to the "api.example.com" domain and changing the portal theme to "dark".</p>
+<pre><code class="undefined">https://api.nuubit.net/v1/users/55bff4b8c01a42a2348170f7
+</code></pre>
+<p>cURL example:</p>
+<pre><code class="undefined">￼curl -H "Accept: application/json" \<br />      -H "Authorization:X-API-KEY d6e08bfa-92bc-4f3b-aea0-5c3ae2ced841" \<br />      -X PUT -T Change.json \<br />      https://api.nuubit.net/v1/users/55bff4b8c01a42a2348170f7
+</code></pre>
+<p>The Change.json file would look like the following example. Note, the email field is removed. The email field cannot be modified.  </p>
+<pre><code class="language-json">{
+  "<span class="attribute"><span class="attribute">firstname</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"Stan"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">lastname</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"Lee"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">password</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"Spider-Man"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">companyId</span></span>": <span class="value"><span class="value">[
+    <span class="string"><span class="string">"5588869fbde7a0d00338ce8f"</span></span>
+  ]</span></span>,
+  "<span class="attribute"><span class="attribute">theme</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"dark"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">role</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"admin"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">domain</span></span>": <span class="value"><span class="value">[
+    <span class="string"><span class="string">"www.example.com"</span></span>
+  ]</span></span>,
+  "<span class="attribute"><span class="attribute">access_control_list</span></span>": <span class="value"><span class="value">{
+    "<span class="attribute"><span class="attribute">readOnly</span></span>": <span class="value"><span class="literal"><span class="value"><span class="literal">false</span></span></span></span>,
+    "<span class="attribute"><span class="attribute">test</span></span>": <span class="value"><span class="literal"><span class="value"><span class="literal">true</span></span></span></span>,
+    "<span class="attribute"><span class="attribute">configure</span></span>": <span class="value"><span class="literal"><span class="value"><span class="literal">true</span></span></span></span>,
+    "<span class="attribute"><span class="attribute">reports</span></span>": <span class="value"><span class="literal"><span class="value"><span class="literal">true</span></span></span></span>,
+    "<span class="attribute"><span class="attribute">dashBoard</span></span>": <span class="value"><span class="literal"><span class="value"><span class="literal">true</span></span></span><span class="value">
+  }</span></span>
+}</span></span>
+</code></pre>
+<p> </p>
+<script>// <![CDATA[
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-92590791-2', 'auto'); ga('send', 'pageview');
+// ]]></script>

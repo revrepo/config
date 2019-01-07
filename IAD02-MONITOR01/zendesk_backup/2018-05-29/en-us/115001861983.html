@@ -1,0 +1,113 @@
+<h1>Android SDK Quick Start Guide</h1>
+<p class="p1"><span class="s1">The SDK can be found here: <a href="https://github.com/nuubit/SDK/">https://github.com/nuubit/SDK/</a></span></p>
+<p class="p1">Self Service Signup: <a href="https://portal.nuubit.net/#/signup/plans">https://portal.nuubit.net/#/signup/plans</a></p>
+<p> </p>
+<p><span style="font-weight: 400;">The goal of this document is for a developer to get the nuu:bit Android SDK implemented quickly in their Android application. The f</span>igure below is a high-level level diagram of the workflow:</p>
+<p> </p>
+<p><img src="https://support.nuubit.net/hc/article_attachments/115005680866/SDK-QS-HL.png" alt="SDK-QS-HL.png"> </p>
+<p class="wysiwyg-text-align-left"> </p>
+<p class="wysiwyg-text-align-left">Before starting we highly recommend to review the <a href="https://support.nuubit.net/hc/en-us/articles/207346156-SDK-FAQ">SDK F.A.Q. article</a>.</p>
+<p class="wysiwyg-text-align-left"> </p>
+<p class="wysiwyg-text-align-left"><span style="font-weight: 400;"><strong>Step 1</strong> - Sign into the nuu:bit portal (<a href="https://portal.nuubit.net/">https://portal.nuubit.net/</a></span><span style="font-weight: 400;">) using your existing nuu:bit portal credentials.</span></p>
+<p class="wysiwyg-text-align-left"><strong><strong><img src="https://support.nuubit.net/hc/article_attachments/115005680926/Portal-Login.png" alt="Portal-Login.png" width="498" height="530"><br><br></strong></strong></p>
+<p> </p>
+<p><span style="font-weight: 400;"><strong>Step 2</strong> - Select the "Mobile Apps" tab from the top of the portal page.  Choose the operating system from the left of the column (currently only Android SDK is provided/supported).</span></p>
+<p><strong><strong><img src="https://support.nuubit.net/hc/article_attachments/115005689066/screen1.png" alt="screen1.png"><br><br></strong></strong></p>
+<p> </p>
+<p><span style="font-weight: 400;"><strong>Step 3</strong> - Select Add new app button:</span></p>
+<p><strong><strong><img src="https://support.nuubit.net/hc/en-us/article_attachments/209826466/Screen_Shot_2016-10-28_at_10.59.30_AM.png" alt=""></strong></strong></p>
+<p> </p>
+<p><strong>Step 4</strong> - Enter the App name - in this example below, the App is called “My Example Android App”:<strong><strong><br></strong></strong></p>
+<p><img src="https://support.nuubit.net/hc/article_attachments/115005671803/screen2.png" alt="screen2.png"></p>
+<p> </p>
+<p><strong>Step 5</strong> - Once the App is registered on the nuu:bit Platform, use the “Create App” button.<strong><strong><br></strong></strong></p>
+<p><img src="https://support.nuubit.net/hc/en-us/article_attachments/209829146/Screen_Shot_2016-10-28_at_11.08.29_AM.png" alt=""></p>
+<p><span style="font-weight: 400;"><strong>Step 6</strong> - The newly added App should appear in the iOS Apps List.   </span></p>
+<p> </p>
+<p><img src="https://support.nuubit.net/hc/article_attachments/115005689366/screen3.png" alt="screen3.png"> </p>
+<p><strong>Step 7</strong> - Access the SDK key by clicking on the eye icon.  This will reveal the SDK key that will be used in the mobile App to initialize the nuu:bit SDK code.</p>
+<p><img src="https://support.nuubit.net/hc/article_attachments/115005689426/screen4.png" alt="screen4.png"></p>
+<p><code class="undefined">6bf5ce2f-1da7-48af-b3ff-646f58f423bc </code></p>
+<p> <strong> </strong></p>
+<p><strong>Step 8</strong><span style="font-weight: 400;"> - Manifest (</span><span class="s1">AndroidManifest.xml) will need the correct </span><span style="font-weight: 400;">permission </span></p>
+<p><strong> </strong></p>
+<p><span style="font-weight: 400;">&lt;</span><strong>uses-permission </strong><strong>android</strong><strong>:name=</strong><strong>"android.permission.INTERNET" </strong><span style="font-weight: 400;">/&gt;</span></p>
+<p><strong> </strong></p>
+<p><strong>Step 9 </strong><span style="font-weight: 400;">- Add repository: you need to paste this in your </span><strong>root build.gradle</strong><span style="font-weight: 400;"> file (</span><strong>not</strong><span style="font-weight: 400;"> your </span><strong>module build.gradle</strong><span style="font-weight: 400;"> file):</span></p>
+<p>The following example has two maven repositories.  Add the line for the mavin.revapm.com</p>
+<pre><code class="java">allprojects {
+    repositories {
+        jcenter()
+        <strong>maven { url 'https://maven.nuubit.net/' }</strong>
+    }
+}</code></pre>
+<p><strong>Step 10 </strong><span style="font-weight: 400;">- Add library in the </span><strong>module build.gradle</strong><span style="font-weight: 400;">:</span></p>
+<pre><code class="java">dependencies {
+            // ... other dependencies here
+            compile 'com.google.android.gms:play-services:10.2.1'
+            compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+            compile project(path: ':NuubitSDK')
+}</code></pre>
+<p> </p>
+<p><strong>Step 11 </strong><span style="font-weight: 400;">- If you are using ProGuard you might need to add the following option </span><span style="font-weight: 400;">in file </span><strong>proguard-rules.pro</strong><span style="font-weight: 400;">:</span></p>
+<p><strong> </strong><code class="java"> -dontwarn .** com.nuubit.sdk.* </code></p>
+<p><strong>Step 12</strong><span style="font-weight: 400;"> - Insert meta-data section with your key to project’s</span><strong> AndroidManifest.xml</strong><span style="font-weight: 400;">:</span></p>
+<p> </p>
+<p><code class="java">&lt;meta-data android:name="com.nuubit.key" android:value="6bf5ce2f-1da7-48af-b3ff-646f58f423bc" /&gt;</code></p>
+<p> <strong> </strong></p>
+<p><strong>Step 13 - </strong>All applications MUST HAVE a class that is an extension of NuubitApplication class that is an extension of <a style="background-color: #ffffff;" href="https://developer.android.com/reference/android/app/Application.html">Application class</a>.  In this example, we created a new file called SimpleAppIntegration.java which defines the class. </p>
+<pre><code class="java">package com.simpleappintegration;
+    import com.nuubit.sdk.NuubitApplication;
+    public class SimpleAppIntegration extends NuubitApplication {
+}</code></pre>
+<p><strong> </strong></p>
+<p><span style="font-weight: 400;">Set this class in <strong>AndroidManifest.xml</strong> and possibly replace the existing replacing package</span></p>
+<pre><code class="xml">&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.simpleappintegration"&gt;
+      <br>      &lt;application
+             android:name=".SimpleAppIntegration"
+             // other parameters
+      &lt;/application&gt;<br>&lt;/manifest&gt;</code></pre>
+<p> </p>
+<p><strong>Step 14</strong><span style="font-weight: 400;"> - Initialize </span><span style="font-weight: 400;">OkHttpClient </span><span style="font-weight: 400;">by nuu:bit module</span></p>
+<p>import com.nuubit.sdk.NuubitConstants; import com.nuubit.sdk.NuubitSDK; private void callSyncGet () { // Example protected Message doInBackground(Void... voids) { //OkHttpClient okHttpClient = new OkHttpClient(); // replace OkHttpClient standard Initialize with nuu:bit class OkHttpClient okHttpClient = NuubitSDK.OkHttpCreate(NuubitConstants.DEFAULT_TIMEOUT_SEC, false, false); }</p>
+<p class="p1"><span class="s1">Other examples could be the following:</span></p>
+<pre><code class="java">
+
+   OkHttpClient client = NuubitSDK.createOkHttpClient(); // Example 1
+
+   OkHttpClient client = NuubitSDK.createOkHttpClient(int default_timeout); // Example 2
+
+   OkHttpClient client = NuubitSDK.createOkHttpClient(int default_timeout, boolean followRedirect, boolean followSSLRedirec); // Example 3
+
+</code></pre>
+<p><strong>Step 15</strong><span style="font-weight: 400;"> - Change the code to use the new OkHttpClient object for data transfer calls (see examples below)</span></p>
+<p>For use OKHttpClient directly <a href="http://square.github.io/okhttp/">http://square.github.io/okhttp/</a></p>
+<p><strong>GET method</strong></p>
+<pre><code class="java">OkHttpClient client = NuubitSDK.createOkHttpClient(15, false, false)
+
+String run(String url) throws IOException {
+ Request request = new Request.Builder()
+     .url(url)
+     .build();
+
+ Response response = client.newCall(request).execute();
+ return response.body().string();
+}</code></pre>
+<p><strong>POST method</strong></p>
+<pre><code class="java">OkHttpClient client = NuubitSDK.createOkHttpClient(10, false, false);
+
+String post(String url, String json) throws IOException {
+ RequestBody body = RequestBody.create(JSON, json);
+ Request request = new Request.Builder()
+     .url(url)
+     .post(body)
+     .build();
+ Response response = client.newCall(request).execute();
+ return response.b</code></pre>
+<p><strong>Step 16</strong><span style="font-weight: 400;"> - Compile and deploy the mobile application</span></p>
+<p>
+<script>// <![CDATA[
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-92590791-2', 'auto'); ga('send', 'pageview');
+// ]]></script>
+</p>

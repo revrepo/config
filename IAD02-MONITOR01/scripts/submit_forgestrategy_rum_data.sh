@@ -1,0 +1,13 @@
+#!/bin/bash
+
+for i in `seq 1 3`; do
+
+#/usr/bin/timeout 4 curl --user-agent "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.124 Safari/537.36"  -s "http://rum01.revsw.net/service?request=nw_info&user_ip=50.240.197.149&rt.start=navigation&rt.tstart=1411678427864&rt.bstart=1411678428277&rt.end=1411678428494&t_resp=115&t_page=515&t_done=630&r=&t_other=boomerang%7C1%2Cboomr_fb%7C413%2Ct_domloaded%7C518&nt=1&nt_red_cnt=0&nt_nav_type=0&nt_nav_st=1411678427864&nt_red_st=0&nt_red_end=0&nt_fet_st=1411678427864&nt_dns_st=1411678427867&nt_dns_end=1411678427867&nt_con_st=1411678427867&nt_con_end=1411678427881&nt_req_st=1411678427881&nt_res_st=1411678427979&nt_res_end=1411678427986&nt_domloading=1411678428007&nt_domint=1411678428296&nt_domcontloaded_st=1411678428296&nt_domcontloaded_end=1411678428382&nt_domcomp=1411678428489&nt_load_st=1411678428489&nt_load_end=1411678428493&nt_unload_st=1411678427986&nt_unload_end=1411678427987&nt_spdy=0&nt_first_paint=1411678428.194001&v=0.9.1396020860&u=http%3A%2F%2Fwww.forgestrategy.com%2F" > /dev/null
+
+/usr/bin/timeout 4 curl --user-agent "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.124 Safari/537.36"  -s "http://rum01.revsw.net/service?request=nw_info&user_ip=50.240.197.149&rt.start=navigation&rt.tstart=1412204519279&rt.bstart=1412204519515&rt.end=1412204519681&t_resp=37&t_page=365&t_done=402&r=&t_other=boomerang%7C1%2Cboomr_fb%7C236%2Ct_domloaded%7C323&nt=1&nt_red_cnt=0&nt_nav_type=0&nt_nav_st=1412204519279&nt_red_st=0&nt_red_end=0&nt_fet_st=1412204519279&nt_dns_st=1412204519280&nt_dns_end=1412204519280&nt_con_st=1412204519280&nt_con_end=1412204519297&nt_req_st=1412204519297&nt_res_st=1412204519316&nt_res_end=1412204519336&nt_domloading=1412204519327&nt_domint=1412204519532&nt_domcontloaded_st=1412204519532&nt_domcontloaded_end=1412204519602&nt_domcomp=1412204519677&nt_load_st=1412204519677&nt_load_end=1412204519680&nt_unload_st=1412204519321&nt_unload_end=1412204519323&nt_spdy=0&nt_first_paint=1412204519.654351&v=0.9.1396020860&u=http%3A%2F%2Fwww.forgestrategy.com%2Fpartners.html" > /dev/null
+
+#/usr/bin/timeout 4 curl -A "Mozilla/5.0 (iPad; CPU OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53" -s "http://rum01.revsw.net/service?nt=0&request=nw_info&user_ip=50.240.197.149&rt.start=cookie&rt.tstart=1411679812771&rt.bstart=1411679812915&rt.end=1411679813216&t_resp=98&t_page=347&t_done=445&r=http%3A%2F%2Frevtest.davidjamesagency.com%2Fservices.html&t_other=boomerang%7C1%2Cboomr_fb%7C144%2Ct_domloaded%7C225&v=0.9.1396020860&u=http%3A%2F%2Fwww.forgestrategy.com%2Fpartners.html" > /dev/null
+
+sleep 1
+
+done

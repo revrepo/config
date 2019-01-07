@@ -1,0 +1,199 @@
+<h1>Log Shipping Record Attributes</h1>
+<p>When shipping nuu:bit domain logs to a customer-defined location (like S3 bucket or SFTP server) the following attributes (fields) are included in every shipped record:</p>
+<table style="width: 537px; float: left;" border="2">
+<caption> </caption>
+<tbody>
+<tr>
+<td class="wysiwyg-text-align-center" style="width: 196px;"><strong>Field name</strong></td>
+<td class="wysiwyg-text-align-center" style="width: 472px;"><strong>Description</strong></td>
+<td class="wysiwyg-text-align-center" style="width: 260px;"><strong>Example of field value</strong></td>
+</tr>
+<tr>
+<td style="width: 196px;"> _id</td>
+<td style="width: 472px;">Unique ID of the record</td>
+<td style="width: 260px;">"598a7f803edd55c777fdf81d"</td>
+</tr>
+<tr>
+<td style="width: 196px;">host</td>
+<td style="width: 472px;">nuu:bit's edge server which served the request</td>
+<td style="width: 260px;">"VIE02-BP06.REVSW.NET"</td>
+</tr>
+<tr>
+<td style="width: 196px;">@timestamp</td>
+<td style="width: 472px;">Request completion time (in UTC time zone)</td>
+<td style="width: 260px;">"2017-08-09T03:20:18.000Z"</td>
+</tr>
+<tr>
+<td style="width: 196px;">unixtime</td>
+<td style="width: 472px;">Request completion time in timestamp format</td>
+<td style="width: 260px;">1502248818.853</td>
+</tr>
+<tr>
+<td style="width: 196px;">domain</td>
+<td style="width: 472px;">The domain name of served HTTP request</td>
+<td style="width: 260px;">"www.example.com"</td>
+</tr>
+<tr>
+<td style="width: 196px;">ipport</td>
+<td style="width: 472px;">nuu:bit edge TCP/IP port used to serve the request</td>
+<td style="width: 260px;">"80" for HTTP requests, "443" for HTTPS requests</td>
+</tr>
+<tr>
+<td style="width: 196px;">response</td>
+<td style="width: 472px;">HTTP response status code</td>
+<td style="width: 260px;">"200"</td>
+</tr>
+<tr>
+<td style="width: 196px;">request</td>
+<td style="width: 472px;">The path part of the request URL (without the protocol prefix and domain name)</td>
+<td style="width: 260px;">"/image.jpg"</td>
+</tr>
+<tr>
+<td style="width: 196px;">s_bytes</td>
+<td style="width: 472px;">Total number of bytes (header+body) sent from the nuu:bit edge proxy to end user</td>
+<td style="width: 260px;">12363</td>
+</tr>
+<tr>
+<td style="width: 196px;">s_body_bytes</td>
+<td style="width: 472px;">The size of response's body in bytes</td>
+<td style="width: 260px;">12014</td>
+</tr>
+<tr>
+<td style="width: 196px;">r_bytes</td>
+<td style="width: 472px;">Total number of bytes (header+body) received from end user to the the nuu:bit edge proxy</td>
+<td style="width: 260px;">321</td>
+</tr>
+<tr>
+<td style="width: 196px;">method</td>
+<td style="width: 472px;">HTTP request method</td>
+<td style="width: 260px;">"GET"</td>
+</tr>
+<tr>
+<td style="width: 196px;">conn_status</td>
+<td style="width: 472px;">The request completion status (as detected by the edge proxy)</td>
+<td style="width: 260px;">"OK" for requests (objects) which the proxy managed to successfully sent to end user, empty string ("") for failed transmissions</td>
+</tr>
+<tr>
+<td style="width: 196px;">KA</td>
+<td style="width: 472px;">The number of requests handled on the same HTTP keep-alive'd connection</td>
+<td style="width: 260px;">"1" if this is the first request served on a connection; "4" if this is the 4th served requests</td>
+</tr>
+<tr>
+<td style="width: 196px;">FBT_mu</td>
+<td style="width: 472px;">First Byte Time (FBT) in microseconds as measured by the edge proxy. For cache hits the timer represent the time it took to fetch the object from memory or disk cache, for cache misses the timer reports how long it took to pull the object from the origin or nuu:bit secondary cache.</td>
+<td style="width: 260px;">Normally "0" for cache hits; a number like "123423" (in microseconds) translates to 123.423 ms.</td>
+</tr>
+<tr>
+<td style="width: 196px;">referer</td>
+<td style="width: 472px;">The value of "Referer" HTTP request header </td>
+<td style="width: 260px;">"https://www.example.com"</td>
+</tr>
+<tr>
+<td style="width: 196px;">cache</td>
+<td style="width: 472px;">Edge cache hit/miss status</td>
+<td style="width: 260px;">"HIT" for cache hits, "MISS" for cache misses</td>
+</tr>
+<tr>
+<td style="width: 196px;">agent</td>
+<td style="width: 472px;">The value of "User-Agent" HTTP request header</td>
+<td style="width: 260px;">"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_4) AppleWebKit/534.56.5 (KHTML, like Gecko) Safari/unknown"</td>
+</tr>
+<tr>
+<td style="width: 196px;">cont_type</td>
+<td style="width: 472px;">The value of "Content-Type" HTTP response header</td>
+<td style="width: 260px;">"image/jpeg"</td>
+</tr>
+<tr>
+<td style="width: 196px;">quic</td>
+<td style="width: 472px;">The field reports whether QUIC protocol was used to serve the request</td>
+<td style="width: 260px;">"QUIC" if the request was served using QUIC protocol, "-" if otherwise</td>
+</tr>
+<tr>
+<td style="width: 196px;">http2</td>
+<td style="width: 472px;">The field reports which HTTP2 protocol was used to serve the request</td>
+<td style="width: 260px;">Empty string ("") if the request was not served using HTTP2, "h2" for HTTP2 protocol, "h2c" for HTTP2 cleartext protocol</td>
+</tr>
+<tr>
+<td style="width: 196px;">clientip</td>
+<td style="width: 472px;">End user's IP address </td>
+<td style="width: 260px;">"195.23.52.23"</td>
+</tr>
+<tr>
+<td style="width: 196px;">duration</td>
+<td style="width: 472px;">Time in seconds it took for end user to download the requested object</td>
+<td style="width: 260px;">"0.212"</td>
+</tr>
+<tr>
+<td style="width: 196px;">upstream_time</td>
+<td style="width: 472px;">Time in seconds it took for the edge proxy to pull the requested object from the origin server or secondary level cache</td>
+<td style="width: 260px;">"0.002"</td>
+</tr>
+<tr>
+<td style="width: 196px;">ie_format_o</td>
+<td style="width: 472px;">Original image format before it was processed by Image Optimization engine</td>
+<td style="width: 260px;">"png"</td>
+</tr>
+<tr>
+<td style="width: 196px;">ie_format</td>
+<td style="width: 472px;">Resulting image format after it was processed by Image Optimization engine</td>
+<td style="width: 260px;">"webp"</td>
+</tr>
+<tr>
+<td style="width: 196px;">ie_bytes_o</td>
+<td style="width: 472px;">Original image size in bytes before it was processed by Image Optimization engine</td>
+<td style="width: 260px;">"1243"</td>
+</tr>
+<tr>
+<td style="width: 196px;">ie_res_o</td>
+<td style="width: 472px;">Original image resolution in pixel before it was processed by Image Optimization engine</td>
+<td style="width: 260px;">"512x320"</td>
+</tr>
+<tr>
+<td style="width: 196px;">ie_res</td>
+<td style="width: 472px;">Resulting image resolution in pixel after it was processed by Image Optimization engine</td>
+<td style="width: 260px;">"512x320"</td>
+</tr>
+</tbody>
+</table>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p> </p>

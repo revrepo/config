@@ -1,0 +1,27 @@
+<h1>GitHub Integration For Domain Configuration Management</h1>
+<p>nuu:bit provides an easy way to manage the configuration of a provisioned domain by placing the domain's <em>JSON</em> configuration object (in nuu:bit's <a href="https://en.wikipedia.org/wiki/Domain-specific_language" target="_blank" rel="noopener">DSL</a> format) in a file hosted by popular service <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>.</p>
+<p>You are welcome to use the following process to activate the integration.</p>
+<p>  <strong>1.</strong> Add a new domain in nuu:bit's customer portal (you can also use the process on already existing domain configuration).</p>
+<p> </p>
+<p>  <strong>2.</strong> Using "<strong>Advanced</strong>" domain configuration mode get the current snapshot of the domain's configuration in <em>JSON</em> file.</p>
+<p> </p>
+<p>  <strong>3.</strong> Place the <em>JSON</em> object in a file hosted in a private GitHub repository. </p>
+<p> </p>
+<p>  <strong>4.</strong> In GitHub's UI when you view the file get a link to the file's "<em>raw</em>" version. The link may look like the following:</p>
+<pre><code>https://raw.githubusercontent.com/user/repository/branch/filename.json</code></pre>
+<p> </p>
+<p>  <strong>5.</strong> On GitHub's personal access tokens page (<a href="https://github.com/settings/tokens" target="_blank" rel="noopener">https://github.com/settings/tokens</a>) register a new token to be used to access the domain configuration <em>JSON</em> file (you can also use an existing token). The token may look like the following:</p>
+<p><code>7b7945b5ce05f0b765323eb7caa535b3a0d383dd</code></p>
+<p> </p>
+<p>  <strong>6.</strong> In nuu:bit's customer portal UI, in domain's edit window click on <strong>GitHub Integration</strong> switch, and in the appeared <strong>GitHub Integration Settings</strong> form provide the two previously discussed parameters:</p>
+<ul>
+<li> GitHub URL pointing to the domain configuration file's "raw" version</li>
+<li> GitHub personal access token</li>
+</ul>
+<p><img src="https://support.nuubit.net/hc/article_attachments/115017747326/GitHubIntegration.png" alt="GitHubIntegration.png"></p>
+<p>Click on <strong>Verify</strong> button and wait till the system will try to use the provided parameters to pull the configuration file from GitHub and verify it.</p>
+<p><img src="https://support.nuubit.net/hc/article_attachments/115017747366/GitHubIntegrationSettings.png" alt="GitHubIntegrationSettings.png"> </p>
+<p>  <strong>7.</strong> Click on <strong>Update</strong> or <strong>Publish</strong> button to stage or activate the new configuration.</p>
+<p> </p>
+<p>Please note that after activating the GitGHub Integration feature you still will be able to see the currently active domain configuration via the admin UI but you will not able to change there any domain configuration parameters (changes should be done in the GitHub-hosted JSON configuration file).</p>
+<p> </p>

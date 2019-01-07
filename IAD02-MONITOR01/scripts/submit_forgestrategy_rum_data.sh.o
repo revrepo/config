@@ -1,0 +1,11 @@
+#!/bin/bash
+
+for i in `seq 1 23`; do
+
+curl -s "http://rum01.revsw.net/service?request=nw_info&user_ip=50.240.197.149&rt.start=navigation&rt.tstart=1411678427864&rt.bstart=1411678428277&rt.end=1411678428494&t_resp=115&t_page=515&t_done=630&r=&t_other=boomerang%7C1%2Cboomr_fb%7C413%2Ct_domloaded%7C518&nt=1&nt_red_cnt=0&nt_nav_type=0&nt_nav_st=1411678427864&nt_red_st=0&nt_red_end=0&nt_fet_st=1411678427864&nt_dns_st=1411678427867&nt_dns_end=1411678427867&nt_con_st=1411678427867&nt_con_end=1411678427881&nt_req_st=1411678427881&nt_res_st=1411678427979&nt_res_end=1411678427986&nt_domloading=1411678428007&nt_domint=1411678428296&nt_domcontloaded_st=1411678428296&nt_domcontloaded_end=1411678428382&nt_domcomp=1411678428489&nt_load_st=1411678428489&nt_load_end=1411678428493&nt_unload_st=1411678427986&nt_unload_end=1411678427987&nt_spdy=0&nt_first_paint=1411678428.194001&v=0.9.1396020860&u=http%3A%2F%2Fwww.forgestrategy.com%2F" > /dev/null
+
+curl -s "http://rum01.revsw.net/service?nt=0&request=nw_info&user_ip=50.240.197.149&rt.start=cookie&rt.tstart=1411679812771&rt.bstart=1411679812915&rt.end=1411679813216&t_resp=98&t_page=347&t_done=445&r=http%3A%2F%2Fwww.forgestrategy.com%2Fservices.html&t_other=boomerang%7C1%2Cboomr_fb%7C144%2Ct_domloaded%7C225&v=0.9.1396020860&u=http%3A%2F%2Fwww.forgestrategy.com%2Fpartners.html" > /dev/null
+
+sleep 1
+
+done

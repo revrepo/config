@@ -1,0 +1,14 @@
+<h1>How to Get a User Profile</h1>
+<p>To get the profile of a user, use the object_id and the same endpoint with a GET request.</p>
+<pre><code class="undefined">https://api.nuubit.net/v1/users/&lt;User ID&gt;
+</code></pre>
+<p>cURL example:</p>
+<pre><code class="undefined">curl -H "Accept: application/json" \<br />      -H "Authorization:X-API-KEY d6e08bfa-92bc-4f3b-aea0-5c3ae2ced841" \<br />      http://api.nuubit.net/v1/users/5811460024216b0f72f23aee
+</code></pre>
+<p>Response body to the get User request</p>
+<pre><code class="language-json">{<br />  "two_factor_auth_enabled" : false,<br />  "access_control_list" : {<br />     "dashBoard" : true,<br />     "configure" : true,<br />     "reports" : true,<br />     "readOnly" : false,<br />     "test" : true<br />   },<br />  "last_login_from" : "41.75.64.1",<br />  "updated_at" : "2016-10-27T00:10:40.756Z",<br />  "role" : "admin",<br />  "lastname" : "Lee",<br />  "companyId" : [<br />     "581145bb24216b0f72f23aeb"<br />  ],<br />  "firstname" : "Stan",<br />  "theme" : "light",<br />  "comment" : "",<br />  "domain" : [],<br />  "created_at" : "2016-10-27T00:10:40.756Z",<br />  "email" : "stan@example.com",<br />  "user_id" : "5811460024216b0f72f23aee",<br />  "last_login_at" : "2016-10-27T00:11:08.024Z"<br />}<br />
+</code></pre>
+<p> </p>
+<script>// <![CDATA[
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-92590791-2', 'auto'); ga('send', 'pageview');
+// ]]></script>

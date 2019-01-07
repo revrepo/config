@@ -1,0 +1,8 @@
+<h1>Execution Order of Caching Rules</h1>
+<h3><span class="wysiwyg-font-size-medium"><span style="font-weight: 400;">It is important to understand the order in which rules are executed. </span><strong>The caching rules are interpreted in the order they are provided. Newer rules that match an object that are also matched by a previous rule will override the previous rule for that object. This means one must ensure that the rules are ordered from “more general” to “more specific”.</strong> </span></h3>
+<h3><span class="wysiwyg-font-size-medium"><span style="font-weight: 400;">For example:</span></span></h3>
+<ul>
+<li>The first rule will match all JPEG images on the site.</li>
+<li>The second rule will match all JPEG images in the /album directory.</li>
+<li>The third rule will match all JPEG images in the /album/special directory.</li>
+</ul>

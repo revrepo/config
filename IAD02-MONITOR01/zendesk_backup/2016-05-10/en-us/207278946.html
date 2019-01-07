@@ -1,0 +1,75 @@
+<h1>iOS SDK Quick Start Guide</h1>
+<p class="p1"><span class="s1">The SDK can be found here: <a href="https://github.com/revrepo/SDK">https://github.com/revrepo/SDK</a></span></p>
+<p class="p1">Self Service Signup: <a href="https://portal.revapm.net/#/signup/plans">https://portal.revapm.net/#/signup/plans</a></p>
+<p> </p>
+<p><span style="font-weight: 400;">The goal of this document is for the user to get the Rev iOS SDK functional quickly. The f</span>igure below is a high level diagram of the work flow:</p>
+<p> </p>
+<p><img src="https://revapm.zendesk.com/hc/en-us/article_attachments/202457436/Screen_Shot_2016-01-12_at_2.30.31_PM.png" alt="" width="407" height="405" /> </p>
+<p class="wysiwyg-text-align-left"> </p>
+<p class="wysiwyg-text-align-left">Before starting we highly recommend to review the <a href="/hc/en-us/articles/207346156-SDK-FAQ">SDK F.A.Q. article</a>.</p>
+<p class="wysiwyg-text-align-left"> </p>
+<p class="wysiwyg-text-align-left"><span style="font-weight: 400;"><strong>Step 1</strong> - Sign in to the Rev portal (</span><a href="https://portal.revapm.net/"><span style="font-weight: 400;">https://portal.revapm.net/</span></a><span style="font-weight: 400;">) using your existing RevAPM portal credentials.</span></p>
+<p class="wysiwyg-text-align-left"><strong><strong><img src="https://revapm.zendesk.com/hc/en-us/article_attachments/202604763/image04.png" alt="" width="205" height="241" /><br /><br /></strong></strong></p>
+<p> </p>
+<p><span style="font-weight: 400;"><strong>Step 2</strong> - Select the "Mobile Apps" tab from the top of the portal page.  Choose the operating system from the left of the column (currently only iOS SDK is provided/supported).</span></p>
+<p><strong><strong><img src="https://revapm.zendesk.com/hc/en-us/article_attachments/202604773/image07.png" alt="" /><br /><br /></strong></strong></p>
+<p> </p>
+<p><span style="font-weight: 400;"><strong>Step 3</strong> - Select Add new app button:</span></p>
+<p><strong><strong><img src="https://revapm.zendesk.com/hc/en-us/article_attachments/202604753/image00.png" alt="" /><br /></strong></strong></p>
+<p> </p>
+<p><strong>Step 4</strong> - Enter the App name - in this example below, the App is called “MyExampleApp”:<strong><strong><br /></strong></strong></p>
+<p><strong><strong><img src="https://revapm.zendesk.com/hc/en-us/article_attachments/202442736/image01.png" alt="" /><br /></strong></strong></p>
+<p> </p>
+<p><strong>Step 5</strong> - Once the App is registered on the Rev Platform, use the “Back to List” button.<strong><strong><br /></strong></strong></p>
+<p><strong><strong><img src="https://revapm.zendesk.com/hc/en-us/article_attachments/202442776/image03.png" alt="" /></strong></strong></p>
+<p> </p>
+<p><span style="font-weight: 400;"><strong>Step 6</strong> - The newly added App should appear in the iOS Apps List.   </span></p>
+<p><img src="https://revapm.zendesk.com/hc/en-us/article_attachments/202442786/image06.png" alt="" /></p>
+<p> </p>
+<p><strong>Step 7</strong> - Access the SDK key by clicking on the eye icon.  This will reveal the SDK key that will be used in the mobile App to initialize the Rev SDK code.</p>
+<p><img src="https://revapm.zendesk.com/hc/en-us/article_attachments/202604823/image02.png" alt="" /></p>
+<table style="height: 33px;" width="302">
+<tbody>
+<tr>
+<td><span class="wysiwyg-color-black70"><em>563c50ed-0e66-4a67-871d-1114b848bbb</em></span></td>
+</tr>
+</tbody>
+</table>
+<p> </p>
+<p><strong>Step 8</strong> - The "RevSDK.framework" package *must* be copied in to the Application folder.</p>
+<p> </p>
+<p><strong>Step 9</strong> - Open project in XCode. If the project is a Swift environment, please go to the following step by step guide <a href="/hc/en-us/articles/208129933-SDK-Integration-Instructions-for-a-Swift-Environment">here</a>.</p>
+<p> </p>
+<p><strong>Step 10</strong> - Open General Tab</p>
+<p> </p>
+<p><strong>Step 11</strong> - Go to "Linked Frameworks and Libraries" - press "+" and "Add other..."</p>
+<p> </p>
+<p><strong>Step 12</strong> - Navigate to RevSDK.framework location -&gt; Press 'Open'</p>
+<p><img src="https://revapm.zendesk.com/hc/en-us/article_attachments/202590666/Screen_Shot_2016-01-25_at_12.57.18_PM.png" alt="" width="512" height="83" /></p>
+<p> </p>
+<p><strong>Step 13</strong> - Go to "Embedded Binaries" - press "+" and "Add other..."</p>
+<p> </p>
+<p><strong>Step 14</strong> - Navigate to RevSDK.framework location -&gt; Press 'Open'</p>
+<p> </p>
+<p> <img src="https://revapm.zendesk.com/hc/en-us/article_attachments/202743333/Screen_Shot_2016-01-25_at_12.57.09_PM.png" alt="" width="494" height="99" /></p>
+<p>(you may get "Reason: image not found" linker error if you skip steps 13 &amp; 14)</p>
+<p> </p>
+<p><span style="font-weight: 400;"><strong>Step 15</strong> -  For Objective C to initialize the SDK, the following two lines will need to be added to the mobile application code.</span></p>
+<pre>#import &lt;RevSDK/RevSDK.h&gt;
+[RevSDK startWithSDKKey:@"<em>563c50ed-0e66-4a67-871d-1114b848bbb</em>"];</pre>
+<p> </p>
+<p><span style="font-weight: 400;"><strong>Step 16</strong> - Compile and deploy the mobile application.</span></p>
+<p> </p>
+<p><span style="font-weight: 400;"><strong>Step 17 (Optional)</strong> - Perform a fine-tuning of the SDK configuration for the app. Please see “<a href="/hc/en-us/articles/207279086-iOS-SDK-Rev-Portal-Configuration-Management">Rev SDK Configuration Guide</a>” for details.</span></p>
+<p> </p>
+<p><span style="font-weight: 400;"><strong>Step 18</strong> - Use the “Mobile Analytics” section in the Rev customer portal to analyze the app data transfers and user base parameters.</span></p>
+<p> </p>
+<script>// <![CDATA[
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-68856309-5', 'auto');
+  ga('send', 'pageview');
+// ]]></script>

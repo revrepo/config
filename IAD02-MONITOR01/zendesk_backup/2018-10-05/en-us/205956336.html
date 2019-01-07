@@ -1,0 +1,93 @@
+<h1>Domain Management</h1>
+<div class="article-body markdown">
+<h3 id="first-mile-locations"><strong><span class="wysiwyg-font-size-large">First Mile Locations</span></strong></h3>
+<p>The first mile location is the nuu:bit PoP that has the lowest latency to the content origin. To create a domain, it is necessary to select the correct first mile location. This is typically the same city as the origin data center. If the city of the origin data center is not listed, select the next nearest city.</p>
+<p>To show all of the first mile locations, nuu:bit provides the following API call:</p>
+<pre><code class="undefined">https://api.nuubit.net/v1/locations/firstmile
+</code></pre>
+<p>cURL example:</p>
+<pre><code class="undefined">curl  -u 'user@example.com:password' https://api.nuubit.net/v1/locations/firstmile
+</code></pre>
+<p>Response body:</p>
+<pre><code class="language-json">[
+  {
+    "<span class="attribute">locationName</span>": <span class="value"><span class="string">"San Jose, CA"</span></span>,
+    "<span class="attribute">id</span>": <span class="value"><span class="string">"5588868cbde7a0d00338ce8e"</span>
+  }</span>,
+  {
+    "<span class="attribute">locationName</span>": <span class="value"><span class="string">"New York, NY"</span></span>,
+    "<span class="attribute">id</span>": <span class="value"><span class="string">"55a56fa6476c10c329a90741"</span>
+  }</span>
+]
+</code></pre>
+<h3 id="create-a-domain"><strong><span class="wysiwyg-font-size-large">Create a Domain</span></strong></h3>
+<p>To create a domain, use the following POST to the api.nuubit.net endpoint.</p>
+<pre><code class="undefined">  https://api.nuubit.net/v1/domains/
+</code></pre>
+<p>cURL example:</p>
+<pre><code class="undefined">curl  -u 'user@example.com:password' -X POST -H 'Content-Type: application/json'  -T Domain.json https://api.nuubit.net/v1/domains
+</code></pre>
+<p>Using the response from the first mile request, select the nearest first mile location to the origin. The example JSON (Domain.json) would be the following:</p>
+<pre><code class="language-json">{
+  "<span class="attribute">name</span>": <span class="value"><span class="string">"www.example.com"</span></span>,
+  "<span class="attribute">origin_server</span>": <span class="value"><span class="string">"origin.example.com"</span></span>,
+  "<span class="attribute">companyId</span>": <span class="value"><span class="string">"5588869fbde7a0d00338ce8f"</span></span>,
+  "<span class="attribute">origin_server_location</span>": <span class="value"><span class="string">"San Jose, CA"</span></span>,
+  "<span class="attribute">origin_host_header</span>": <span class="value"><span class="string">"www.example.com"</span></span>,
+  "<span class="attribute">tolerance</span>": <span class="value"><span class="string">"4000"</span>
+}</span>
+</code></pre>
+<p>Body response:</p>
+<pre><code class="language-json">{
+  "<span class="attribute">statusCode</span>": <span class="value"><span class="number">200</span></span>,
+  "<span class="attribute">message</span>": <span class="value"><span class="string">"Successfully created the domain"</span></span>,
+  "<span class="attribute">object_id</span>": <span class="value"><span class="string">"55c0222fe9032a2d741b9f38"</span>
+}</span></code></pre>
+<div class="article-body markdown">
+<p><strong><span class="wysiwyg-font-size-large">Show the Domain</span></strong></p>
+<p>Take the object_id from body response of the domain create POST and use it to get the current configuration of the domain.</p>
+<pre><code class="undefined">https://api.nuubit.net/v1/domains/55c0222fe9032a2d741b9f38
+</code></pre>
+<p>cURL Example:</p>
+<pre><code class="undefined">curl -u 'user@example.com:password' -H 'Content-Type: application/json' http://api.nuubit.net/v1/domains/55c0222fe9032a2d741b9f38
+</code></pre>
+<p>Body response:</p>
+<pre><code class="language-json">{
+  "<span class="attribute">companyId</span>": <span class="value"><span class="string">"5588869fbde7a0d00338ce8f"</span></span>,
+  "<span class="attribute">id</span>": <span class="value"><span class="string">"55c0222fe9032a2d741b9f38"</span></span>,
+  "<span class="attribute">name</span>": <span class="value"><span class="string">"www.example.com"</span></span>,
+  "<span class="attribute">origin_server</span>": <span class="value"><span class="string">"origin.example.com"</span></span>,
+  "<span class="attribute">sync_status</span>": <span class="value"><span class="string">"Success"</span></span>,
+  "<span class="attribute">tolerance</span>": <span class="value"><span class="string">"4000"</span></span>,
+  "<span class="attribute">updated_at</span>": <span class="value"><span class="string">"2015-08-04T02:24:14.204Z"</span></span>,
+  "<span class="attribute">created_at</span>": <span class="value"><span class="string">"2015-08-04T02:23:43.759Z"</span></span>,
+  "<span class="attribute">origin_server_location</span>": <span class="value"><span class="string">"San Jose, CA"</span></span>,
+  "<span class="attribute">origin_host_header</span>": <span class="value"><span class="string">"www.example.com"</span></span>,
+  "<span class="attribute">cname</span>": <span class="value"><span class="string">"www.example.com.nuubitcn.net"</span>
+}</span></code></pre>
+</div>
+<div class="article-attachments"><strong><span class="wysiwyg-font-size-large">Modify the Domain</span></strong></div>
+<div class="article-attachments"> </div>
+<div class="article-attachments">Use the following PUT to modify the domain. Again, using the object_id from the response header from when the domain was created.</div>
+<div class="article-attachments">
+<pre><code class="undefined">https://api.nuubit.net/v1/domains/55888c861ef09d211562a439
+</code></pre>
+<p>cURL example:</p>
+<pre><code class="undefined">curl  -u 'user@example.com:password' -X PUT -H 'Content-Type: application/json'  " -T Domain.json https://api.nuubit.net/v1/domains/55888c861ef09d211562a439
+</code></pre>
+<p>Domain .json example, changing the origin server to origin-new.example.com</p>
+<pre><code class="language-json">{
+ "<span class="attribute"><span class="attribute">origin_server</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"origin-new.example.com"</span></span></span></span>,
+ "<span class="attribute"><span class="attribute">companyId</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"5588869fbde7a0d00338ce8f"</span></span></span></span>,
+ "<span class="attribute"><span class="attribute">origin_host_header</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"www.example.com"</span></span></span></span>,
+ "<span class="attribute"><span class="attribute">tolerance</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"4000"</span></span></span><span class="value">
+}</span></span></code></pre>
+ </div>
+<footer class="article-footer"></footer>
+<p> </p>
+</div>
+<div class="article-attachments"> </div>
+<footer class="article-footer"></footer>
+<script>// <![CDATA[
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-92590791-2', 'auto'); ga('send', 'pageview');
+// ]]></script>

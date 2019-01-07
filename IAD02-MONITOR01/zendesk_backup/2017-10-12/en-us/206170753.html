@@ -1,0 +1,11 @@
+<h1>Execution Order of Caching Rules</h1>
+<h3><span class="wysiwyg-font-size-medium"><span style="font-weight: 400;">It is important to understand the order in which rules are executed. </span><strong>The caching rules are interpreted in the order they are provided. Newer rules that match an object are also matched by a previous rule will override the previous rule for that object. This means one must ensure that the rules are ordered from “more general” to “more specific”.</strong> </span></h3>
+<h3><span class="wysiwyg-font-size-medium"><span style="font-weight: 400;">For example:</span></span></h3>
+<ul>
+<li>The first rule will match all JPEG images on the site.</li>
+<li>The second rule will match all JPEG images in the /album directory.</li>
+<li>The third rule will match all JPEG images in the /album/special directory.</li>
+</ul>
+<script>// <![CDATA[
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-92590791-2', 'auto'); ga('send', 'pageview');
+// ]]></script>

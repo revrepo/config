@@ -1,0 +1,46 @@
+<h1>iOS SDK Integration Instructions for Swift Environment</h1>
+<p class="p1"><span class="s1">The SDK can be found here: <a href="https://github.com/nuubit/SDK">https://github.com/nuubit/SDK</a></span></p>
+<p class="p1">Self Service Signup: <a href="https://portal.nuubit.net/#/signup/plans">https://portal.nuubit.net/#/signup/plans</a></p>
+<p class="p1"> </p>
+<p>The following is a step by step guild to using the nuu:bit SDK in a Swift environment. </p>
+<p><strong>Step 1</strong> - Place the RevSDK.framework into the project folder.</p>
+<p><img src="https://support.nuubit.net/hc/en-us/article_attachments/202836816/image06.png" alt="" /></p>
+<p> </p>
+<p><strong>Step 2</strong> -  In Xcode, go to "Linked Frameworks and Libraries" in your project settings (tab General). Click the Add (+) button. Click "Add other" button and select RevSDK.framework that you copied to your project folder.</p>
+<p><img src="https://support.nuubit.net/hc/en-us/article_attachments/203000253/image02.png" alt="" /></p>
+<p><strong>Step 3</strong> - Go to "Embedded Binaries" in the same project settings tab. Click the Add (+) button. In the window that appears, select "RevSDK.framework" then click "Add".</p>
+<p> </p>
+<p><span style="font-weight: 400;"><img src="https://support.nuubit.net/hc/en-us/article_attachments/203000233/image01.png" alt="" /></span></p>
+<p> </p>
+<p><span style="font-weight: 400;"><strong>Step 4</strong> - Open the </span><span style="font-weight: 400;">"info.plist" file.  Add the following root element:</span></p>
+<pre><br /><span class="wysiwyg-font-size-medium"><strong>&lt;<span class="wysiwyg-color-blue">key</span>&gt;NSAppTransportSecurity&lt;/<span class="wysiwyg-color-blue">key</span>&gt;</strong></span><br /><span class="wysiwyg-font-size-medium"><strong>&lt;<span class="wysiwyg-color-blue">dict</span>&gt;</strong></span><br /><span class="wysiwyg-font-size-medium"><strong>      &lt;key&gt;<span class="wysiwyg-color-black">NSAllowsArbitraryLoads</span>&lt;/<span class="wysiwyg-color-blue">key</span>&gt;</strong></span><br /><span class="wysiwyg-font-size-medium"><strong>      &lt;<span class="wysiwyg-color-pink">true</span>/&gt;</strong></span><br /><span class="wysiwyg-font-size-medium"><strong>&lt;/<span class="wysiwyg-color-blue">dict</span>&gt;</strong></span></pre>
+<p><strong><img src="https://support.nuubit.net/hc/en-us/article_attachments/202836806/image03.png" alt="" /></strong></p>
+<p><strong><strong><br /></strong></strong><strong><span style="font-weight: 400;"><strong>Step 5</strong> - Adding a Swift Bridging Header</span></strong></p>
+<p> </p>
+<p><span style="font-weight: 400;">In order to use the Object-C library in a swift environment, there needs to be a bridge header.  If the project is already being used Bridging Header simply go to the next step.</span><span style="font-weight: 400;"><br /><br /></span></p>
+<p><span style="font-weight: 400;"><img src="https://support.nuubit.net/hc/en-us/article_attachments/202836796/image00.png" alt="" /></span></p>
+<p><span style="font-weight: 400;">Create a new header file in your project.</span></p>
+<p> </p>
+<p><strong>Step 6</strong> - Click the "Build settings", section Swift Compiler - Code Generation.  In the "Objective-C Bridging Header", specify the header file you created.</p>
+<p><img src="https://support.nuubit.net/hc/en-us/article_attachments/203000263/image04.png" alt="" width="557" height="190" /></p>
+<p><strong>Step 7</strong> - To create the bridging.h or adding #import &lt;RevSDK/RevSDK.h&gt; to the bridge header.</p>
+<p> </p>
+<pre>//<br />//  Example Briding Header File for use with nuu:bit
+//<br />
+<span class="wysiwyg-color-orange120">#ifndef Example_Example_ObjCBridgeing_h</span><br /><span class="wysiwyg-color-orange120">#define Example_Example_ObjCBridgeing_h</span><br /> <span class="wysiwyg-color-orange120">#import <span class="wysiwyg-color-red">&lt;</span></span><span class="wysiwyg-color-red">RevSDK/RevSDK.h&gt;</span><br /><span class="wysiwyg-color-orange120">#endif</span></pre>
+<p> </p>
+<p><strong>Step 8</strong> - To initialize the nuu:bit SDK add the following line to the AppDelegate.swift. Add in the didFinishLaunchingWithOptions function add the following line:</p>
+<p> </p>
+<p><span class="wysiwyg-color-blue"><span class="wysiwyg-color-blue" style="font-weight: 400;">xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx <span class="wysiwyg-color-black">is the nuu:bit SDK key which is generated from the</span> portal.RevSDK.startWithSDKKey</span><span style="font-weight: 400;">(<span class="wysiwyg-color-red">"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"</span>);</span></span></p>
+<p><span style="font-weight: 400;">As an example:</span></p>
+<p> </p>
+<pre>func application(application: <span class="wysiwyg-color-blue">UIApplication</span>, didFinishLaunchingWithOptions launchOptions: [<span class="wysiwyg-color-blue">NSObject</span>: <span class="wysiwyg-color-blue">AnyObject</span>]?) -&gt; <span class="wysiwyg-color-blue">Bool</span> { <br />
+<span class="wysiwyg-color-green110">       // Override point for customization after application launch.</span><br />
+       <span class="wysiwyg-color-blue">RevSDK.startWithSDKKey</span>(<span class="wysiwyg-color-red">"f0a3ffff-e231-9999-bbbb-6b9cf5ff8fff"</span>);<br />
+<span class="wysiwyg-color-purple">       return true</span><br />
+  }<br />
+</pre>
+<p><span style="font-weight: 400;"><strong>Step 9</strong> - Build project and control the nuu:bit from the portal. </span></p>
+<script>// <![CDATA[
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-92590791-2', 'auto'); ga('send', 'pageview');
+// ]]></script>

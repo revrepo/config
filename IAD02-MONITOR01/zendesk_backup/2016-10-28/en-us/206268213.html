@@ -1,0 +1,31 @@
+<h1>How to Create a Domain</h1>
+<h3 id="first-mile-locations"><span class="wysiwyg-font-size-medium">First Mile Location selection</span></h3>
+<p>To create a new domain, you must select the first mile locations. The first-mile location is the RevAPM PoP that has the lowest latency to the content origin. To create a domain, it is necessary to select the correct first-mile location. This is typically the same city as the origin data center. If the city of the origin data center is not listed, select the next nearest city.</p>
+<p>To show all of the first mile locations, RevAPM provides the following API call:</p>
+<pre><code class="undefined">https://api.revapm.net/v1/locations/firstmile
+</code></pre>
+<p>cURL example:</p>
+<pre><code class="undefined">curl -v -H "Accept: application/json" -H "Authorization:X-API-KEY 6905f1bd-cbab-4d82-ad9d-f818d1fbdad2" https://api.revapm.net/v1/locations/firstmile</code></pre>
+<p><code class="language-json">For more details, please go <a href="/hc/en-us/articles/205956336-First-Mile-Locations">here</a>.</code></p>
+<h3 id="create-a-domain"><span class="wysiwyg-font-size-medium">Get Account ID</span></h3>
+<p>The next step is to get the account_id for the domain. The fastest way to figure this out using the API is to use the api_keys API.</p>
+<pre><code class="undefined">curl -v -H "Accept: application/json" -H "Authorization: X-API-KEY 6905f1bd-cbab-4d82-ad9d-f818d1fbdad2" https://api.revapm.net/v1/api_keys/myself</code></pre>
+<p><br />Response Body:</p>
+<pre><code class="language-json">{<br /> "id": "5812369f24216b0f72f23df0",<br /> "key": "6905f1bd-cbab-4d82-ad9d-f818d1fbdad2",<br /> "key_name": "New API Key",<br /> "account_id": "581145bb24216b0f72f23aeb",<br /> "managed_account_ids": [],<br /> "domains": [],<br /> "created_by": "stan@example.com",<br /> "allowed_ops": {<br /> "admin": false,<br /> "reports": false,<br /> "purge": false,<br /> "delete_config": false,<br /> "modify_config": false,<br /> "read_config": false<br /> },<br /> "read_only_status": false,<br /> "active": true,<br /> "created_at": "2016-10-27T17:17:19.860Z",<br /> "updated_at": "2016-10-27T17:17:19.860Z"<br />}<br /></code></pre>
+<h3> </h3>
+<h3 id="create-a-domain"><span class="wysiwyg-font-size-medium">Create a Domain</span></h3>
+<p>To create a domain, use the following POST to the api.revapm.net endpoint.</p>
+<pre><code class="undefined">  https://api.revapm.net/v1/domain_configs
+</code></pre>
+<p>cURL example:</p>
+<pre><code class="undefined">curl -v -H "Accept: application/json" -H "Authorization:X-API-KEY 6905f1bd-cbab-4d82-ad9d-f818d1fbdad2" -X POST -T NewDomain.json https://api.revapm.net/v1/domain_configs</code></pre>
+<p>Using the response from the first mile request, select the nearest first mile location to the origin. The example JSON (NewDomain.json) would be the following:</p>
+<p>{<br />"domain_name": "www.example.com",<br />"origin_server": "origin.example.com",<br />"account_id": "581145bb24216b0f72f23aeb",<br />"origin_server_location_id": "547369215e4ac42646be0026",<br />"origin_host_header": "www.example.com"<br />}</p>
+<p>Body response:</p>
+<pre>{<br /> "message" : "Successfully created new domain configuration",<br /> "statusCode" : 200,<br /> "object_id" : "58127283671e35ce6b80b406"<br />}</pre>
+<p> </p>
+<p>
+<script>// <![CDATA[
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-68856309-5', 'auto'); ga('send', 'pageview');
+// ]]></script>
+</p>

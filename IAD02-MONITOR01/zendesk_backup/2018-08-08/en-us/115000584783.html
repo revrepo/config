@@ -1,0 +1,81 @@
+<h1>Xamarin iOS SDK Quick Start Guide</h1>
+<p>The goal of this document is for the user to get the nuu:bit Xamarin SDK functional quickly. The figure below is a high-level diagram of the workflow:</p>
+<p><img src="https://support.nuubit.net/hc/en-us/article_attachments/115001472143/Slide2.png" alt=""> </p>
+<p class="wysiwyg-text-align-left"><span style="font-weight: 400;"><strong>Step 1</strong> - Sign in to the nuu:bit portal (</span><span style="font-weight: 400;">https://portal.nuubit.net/</span><span style="font-weight: 400;">) using your existing nuu:bit portal credentials.</span></p>
+<p class="wysiwyg-text-align-left"><strong><strong><img src="https://support.nuubit.net/hc/article_attachments/115002741546/Screen_Shot_2017-02-25_at_5.00.40_PM.png" alt="Screen_Shot_2017-02-25_at_5.00.40_PM.png"><br><br></strong></strong></p>
+<p> </p>
+<p><span style="font-weight: 400;"><strong>Step 2</strong> - Select the "Mobile Apps" tab from the top of the portal page.  Choose the operating system from the left of the column (currently only iOS SDK is provided/supported, Android support will be available in April 2017).</span></p>
+<p><strong><strong><img src="https://support.nuubit.net/hc/article_attachments/115002741566/Screen_Shot_2017-02-25_at_5.03.12_PM.png" alt="Screen_Shot_2017-02-25_at_5.03.12_PM.png"><br><br></strong></strong></p>
+<p> </p>
+<p><span style="font-weight: 400;"><strong>Step 3</strong> - Select Add new app button:</span></p>
+<p><strong><strong><img src="https://support.nuubit.net/hc/en-us/article_attachments/209826466/Screen_Shot_2016-10-28_at_10.59.30_AM.png" alt=""></strong></strong></p>
+<p> </p>
+<p><strong>Step 4</strong> - Enter the App name - in this example below, the App is called “MyExampleApp”:<strong><strong><br></strong></strong></p>
+<p><strong><strong><img src="https://support.nuubit.net/hc/en-us/article_attachments/209783643/Screen_Shot_2016-10-28_at_11.07.01_AM.png" alt=""></strong></strong></p>
+<p> </p>
+<p><strong>Step 5</strong> - Once the App is registered on the nuu:bit Platform, use the “<strong>Create App</strong>” button.<strong><strong><br></strong></strong></p>
+<p><img src="https://support.nuubit.net/hc/en-us/article_attachments/209829146/Screen_Shot_2016-10-28_at_11.08.29_AM.png" alt=""></p>
+<p><span style="font-weight: 400;"><strong>Step 6</strong> - The newly added App should appear in the iOS Apps List.   </span></p>
+<p><img src="https://support.nuubit.net/hc/article_attachments/115002741586/Screen_Shot_2017-02-25_at_5.06.16_PM.png" alt="Screen_Shot_2017-02-25_at_5.06.16_PM.png"></p>
+<p> </p>
+<p><strong>Step 7</strong> - Access the SDK key by clicking on the eye icon.  This will reveal the SDK key that will be used in the mobile App to initialize the nuu:bit SDK code.</p>
+<p><img src="https://support.nuubit.net/hc/en-us/article_attachments/202604823/image02.png" alt=""></p>
+<p> </p>
+<pre><code class="java">563c50ed-0e66-4a67-871d-1114b848bbb</code></pre>
+<p> </p>
+<p><span style="font-weight: 400;"><strong>Step 8</strong> - Download "nuubit.SDK" NuGet package from nuget.org or run the following command in the Package Manager Console: </span></p>
+<p> </p>
+<pre><code class="java">Install-Package nuubit.SDK</code></pre>
+<p> </p>
+<p>Additionally the SDK can be downloaded from the Xamarin Component Store and addede to your Xamarin.iOS project.</p>
+<p><span style="font-weight: 400;">References to 3 assemblies will be added: </span><span style="font-weight: 400;">iOSnuu:bit.dll</span><span style="font-weight: 400;">, </span><span style="font-weight: 400;">nuu:bit.dll</span><span style="font-weight: 400;">, </span><span style="font-weight: 400;">RevSDK.dll.</span></p>
+<p> </p>
+<p><strong>Step 9</strong> - Add "NuubitSDK" namespace in AppDelegate.cs in Xamarin iOS application code</p>
+<p> </p>
+<pre><code class="java"><span style="font-weight: 400;">using Nuubit.SDK;</span></code><br> </pre>
+<p><span style="font-weight: 400;"><strong>Step 10</strong> - Insert initialization for nuu:bit SDK to AppDelegate.cs FinishedLaunching method:</span></p>
+<pre><code class="java">[Register("AppDelegate")]
+   public partial class AppDelegate : UIApplicationDelegate
+
+   {
+       public override bool FinishedLaunching(UIApplication app, NSDictionary options)
+
+       {
+           RevSDK.StartWithSDKKey("put here the SDK key from Step 7");  
+       }
+   }
+}</code></pre>
+<p> </p>
+<p><strong>Step 11</strong> - Add "Nuubit.SDK" namespace to shared AppDelegate.cs file:</p>
+<p> </p>
+<p><span style="font-weight: 400;">using</span><span style="font-weight: 400;"> Nuubit.SDK;</span></p>
+<p> </p>
+<p><strong>Step 12</strong> - Create instance of <span style="font-weight: 400;">NuubitMessageHandler</span> and use it for creating HttpClient:</p>
+<p> </p>
+<pre><code class="java">var customMessageHandler = new <span style="font-weight: 400;">NuubitMessageHandler</span>();
+var client = new HttpClient(customMessageHandler);</code></pre>
+<p> </p>
+<p><strong>Step 13</strong> - Now you can send requests via the client.</p>
+<p><span style="font-weight: 400;">Example:</span></p>
+<pre><code class="java">// register a new client using the nuu:bit SDK
+var customMessageHandler = new <span style="font-weight: 400;">NuubitMessageHandler</span>();
+var client = new HttpClient(customMessageHandler);
+
+
+// prepare the details of new request
+HttpRequestMessage message = new HttpRequestMessage();
+message.Method = new HttpMethod("GET");
+message.RequestUri = new Uri("https://www.xamarin.com");
+ 
+
+// Send the request via the nuu:bit SDK
+var response = await client.SendAsync(message);</code></pre>
+<p><br><br></p>
+<p><strong>Step 16</strong> - Compile and deploy the mobile application.</p>
+<p> </p>
+<p><strong>Step 17 (Optional)</strong> - Perform a fine-tuning of the SDK configuration for the app. Please see “<a href="https://support.nuubit.net/hc/en-us/articles/207279086-iOS-SDK-Rev-Portal-Configuration-Management">SDK Configuration Guide</a>” for details.</p>
+<p> </p>
+<p><strong>Step 18</strong> - Use the “Apps Analytics” section in the nuu:bit customer portal to analyze the app data transfers and user base parameters.</p>
+<script>// <![CDATA[
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-92590791-2', 'auto'); ga('send', 'pageview');
+// ]]></script>

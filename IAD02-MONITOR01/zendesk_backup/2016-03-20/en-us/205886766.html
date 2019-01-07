@@ -1,0 +1,19 @@
+<h1>How to Purge Cached Objects</h1>
+<p>The object purging functionality is available for RevAPM Admins only.</p>
+<p>To flush an object or set of objects from the RevAPM edge cache, do the following:</p>
+<ol>
+<li>Identify the web domain and the set of objects to be purged.</li>
+</ol>
+<p class="wysiwyg-indent4">For example, it can be a single object  like “/favicon.ico”, and a set of objects identified by a regular expression like “/images/*.img”.</p>
+<ol start="2">
+<li>On the <strong>Web</strong> menu, click <strong>Purge Cached Objects</strong> in the left panel.</li>
+<li>In the <strong>Domain</strong> dialog box, select the domain from the drop down menu.</li>
+<li>Define purging instructions.</li>
+</ol>
+<p class="wysiwyg-indent4">For example, purge all PNG files under /images, non-recursive. Files under /images/today/ will not be purged.</p>
+<pre class="wysiwyg-indent4">/images/*.png</pre>
+<p class="wysiwyg-indent4">Purge everything, recursively:</p>
+<pre class="wysiwyg-indent4">/**/*</pre>
+<ol start="5">
+<li>Click <strong>Purge</strong>.</li>
+</ol>

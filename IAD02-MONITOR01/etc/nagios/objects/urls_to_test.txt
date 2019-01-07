@@ -1,0 +1,89 @@
+# Test URL					Expected Status Code
+http://rum01.revsw.net/service			200
+http://www.victor-gartvich.com/			200
+# http://www.forgestrategy.com/			200
+https://cdn.mbeans2.com/Plugin/MBeans-USD/Image/Header/Pieces@1x.png	200
+https://mbeans.com/				200
+http://www.revsw.com/				301
+#https://cdn.turbonomic.com/wp-content/uploads/2016/04/traid-3.jpg	200
+#http://cedexis-radar.revdn.net/sm/20487/r16.js		200
+#http://m.jisusaiche.com/js/fz-1.3.6-min.js		200
+http://cdn.footankleinstitute.com/Image/Common/Quote.png		200
+# http://www-rev-footprintcdn.hopto.org/	200
+http://www.revapm.com/	301
+https://www.revapm.com/ 301
+http://www.nuubit.com/	301
+https://www.nuubit.com/ 200
+http://portal.nuubit.net/	301
+https://portal.nuubit.net/	200
+http://api.nuubit.net/	301
+# https://api.nuubit.net/	200
+http://cdn.footankleinstitute.com/images/quotes/Source/AngiesList.png 200
+http://cdn.golflocker.com/images/items/auto/000/01F/0E/inter_i7950.jpg 200
+https://www.golflocker.com/ 200
+# https://www.heykuri.com/	200
+
+# Vilara
+# http://images1.vilara.com/main_menu/11vil_notif1.jpg	200
+# http://images.vilara.com/307228/gathered-neck-raglan-brown-top-product.jpg	200
+# https://images.vilara.com/public/cat_images/men_apparel.png	200
+# MrVoonik
+#https://images1.voonik.com/campaigns/ApparelStore1_Feb9.jpg		200
+# https://images.mrvoonik.com/1603151/459426_1-product.jpg		200
+# Voonik
+# http://images.voonik.com/18099102/8313767_1-product.jpg			200
+#https://images1.voonik.com/campaigns/Disc_Home_Web_Extra.jpg		200
+# Picksilk
+# https://images.picksilk.com/82966312/1574-B-product.jpg			200
+
+# Walmart Labs
+# http://nb-asda.wal.co/i/p/97/81/60/70/60/9781607060765_180X180.jpg-58bcda73102e6b6186e6d273ad992e35a46bbf36-optim-180x180.jpg	200
+
+# Der Standard
+# http://images.derstandard.at/t/104/2017/07/12/geld_1.jpg		200
+
+# NODWIN
+# http://dewarena.com/		200
+# http://yougotgame.in/		200
+# http://nodwingaming.com/	200
+
+# Uvapoint
+# https://www.uvapoint.com/loginnew.aspx	200
+
+# HAIX USA and CA - the origin is very slow :(
+#https://www.haixusa.com/		200
+#https://www.haixca.com/			200
+
+# ScientiaMobile
+# https://www.scientiamobile.com/		200
+
+# https://www.hivestreaming.com/			200
+
+# TradeIndia.com
+# https://a7uo.imgeng.in.revdn.net/https://img.tradeindia.com/dir_fairs/logos/ver2/65130.jpg	200
+
+# Furnspace
+# https://static.furnspace.com/1508937994/imgmgr/cms/homepage/tools-90x90.png		200
+# https://static2.furnspace.com/cache2/v_2212_b4632cd5da8519ab97b7d34dde18182d_print.css	200
+
+# Sporter.com
+https://cache.sporter.com/media/sporteroffers/default/WGS-DEAL.jpg			200
+
+# http://cdn.zipfelrausch.de/img/favicon.png		200
+
+# GlobalDots
+https://wiki.globaldots.org/				302
+
+# AMX
+# http://www.claro.com.pa/personas/			301
+# https://www.claro.com.pa/personas/			200
+
+# MyWisa - SM trial in Korea
+#http://ribbontie.freeimg.mywisa.com/_data/product/201712/08/3452add2c6ed6a90f06b25a753c4e616.jpg	200
+#http://ribbontie.img.mywisa.com/__manage__/product_130625/20180123ES1_01.jpg		200
+#http://atimg.sonyunara.com/attrangs/model/m4/m3.jpg	200
+
+# Duden - Globaldots
+# https://www.duden.de/sites/default/files/styles/menu_teaser/public/978-3-411-05163-2.cov_2d_0.jpg	200
+
+

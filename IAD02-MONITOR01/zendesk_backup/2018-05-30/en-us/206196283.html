@@ -1,0 +1,37 @@
+<h1>Caching Rule Structure</h1>
+<p><span style="font-weight: 400;">Below is the template used for the caching rule structure. The default rule (**) is visible if you want to edit the caching rule configuration. Visit <a href="https://support.nuubit.net/hc/en-us/articles/205821996-nuubit-Caching-Rules">Caching Rules</a> for more information. </span></p>
+<pre>{
+    "version": 2,
+    "url": {
+        "is_wildcard": true,
+        "value": "url_string"
+    },
+    "edge_caching": {
+        "override_origin": true,
+        "override_no_cc": false,
+        "new_ttl": 300,
+        "query_string_keep_or_remove_list": ["list", "of", "querystring", "parameters", "to", "keep", "or", "ignore"],
+        "query_string_list_is_keep": false
+    },
+    "browser_caching": {
+        "override_edge": true,
+        "new_ttl": 400,
+        "force_revalidate": true
+    },
+    "cookies": {
+        "override": true,
+        "remove_ignored_from_request": false,
+        "remove_ignored_from_response": false,
+        "ignore_all": false,
+        "list_is_keep": true,
+        "keep_or_ignore_list": [
+            "str1",
+            "str2"
+        ]
+    }
+}
+</pre>
+<p> </p>
+<script>// <![CDATA[
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-92590791-2', 'auto'); ga('send', 'pageview');
+// ]]></script>

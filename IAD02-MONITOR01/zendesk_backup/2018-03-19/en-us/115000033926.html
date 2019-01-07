@@ -1,0 +1,275 @@
+<h1>Image Optimization</h1>
+<div class="row show-box wysiwyg-text-align-center" style="padding: 10px;">
+<h1 class="wysiwyg-text-align-left"><span style="font-weight: 400;">Introduction</span></h1>
+<p class="wysiwyg-text-align-left"><span class="wysiwyg-font-size-medium wysiwyg-color-black">Image optimization service was implemented through a commercial partnership with <a href="https://www.scientiamobile.com/">ScientiaMobile</a> and nuu:bit. The ScientiaMobile product is <a href="https://www.scientiamobile.com/page/imageengine">ImageEngine</a>. ImageEngine uses <a href="http://wurfl.sourceforge.net/">WURFL</a>, which is the industry standard for device detection. The WURFL Device Description Repository provides incredible accuracy as it was developed over 15 years containing over 45,000 device profiles. The ImageEngine implementation is currently native to the nuu:bit platform.  Each of the nuu:bit edge servers makes use of a custom Varnish module (written in C) and a set of VCLs rules to process the User Agent and deliver the best image for a given device/browser.   Having such a low level integration with the nuu:bit edge means short Time to First Byte when making the delivery decision.  </span></p>
+<span class="wysiwyg-font-size-medium wysiwyg-color-black"><img src="https://support.nuubit.net/hc/en-us/article_attachments/115000080683/ImageEngineLogo.png" alt=""></span>
+</div>
+<div class="row show-box" style="padding: 10px;"><span class="wysiwyg-font-size-medium wysiwyg-color-black">With the current implementation, the actual image processing is centralized.  When a new device/browser makes a request for an image the first time, the edge nuu:bit’s logic sends a 307 redirect to the image processing engine. The first request will take a performance hit, much like a cache miss, but on a per device/browser basis.  Any subsequent requests for that image from that device type will be fetched from cache as the edge ImageEngine logic will know that the image has been processed and available. </span></div>
+<div class="row show-box" style="padding: 10px;">
+<span class="wysiwyg-font-size-medium wysiwyg-color-black">Running at scale, we see on average 20 different image variations (some devices/browsers will share the same optimizations), therefore it does not take long for the optimization to impact a given web property.</span>
+<h3> </h3>
+<h2>How does it work?</h2>
+<p><span class="wysiwyg-color-black">ImageEngine combines explicit settings, Client Hints, and WURFL data to make sure that the image is as optimized as it can be for any device or browser.</span></p>
+<p><span class="wysiwyg-color-black">This makes ImageEngine the ideal choice for automating your implementation of responsive images.</span></p>
+<p><span class="wysiwyg-color-black">In order to begin using ImageEngine, you will need to fetch your "subdomain" token received during the registration process and prefix all your images your ImageEngine URL.  The ImageEngine is setup in the nuu:bit portal.  For purposes of this document, we will be using imgeng.example.com as the example ImageEngine URL. </span></p>
+<p><span class="wysiwyg-color-black">If you have an "<code>img"</code> tag like this:</span></p>
+<pre><span class="wysiwyg-color-black"><code>  &lt;img src="https://example.com/img/car.jpeg"&gt;
+</code></span></pre>
+<p><span class="wysiwyg-color-black">You will then need to prepend the URL with your unique token:</span></p>
+<pre><span class="wysiwyg-color-black"><code>  &lt;img src="https://</code><code>imgeng.</code><code>example.com/http://example.com/img/car.jpeg"&gt; </code></span></pre>
+<p><span class="wysiwyg-color-black">The example above demonstrates the fully automatic optimization, meaning that the size and format is determined by either WURFL or Client Hints.</span></p>
+<h2>Parameters</h2>
+<p><span class="wysiwyg-color-black">Below is a list of parameters that will explicitly instruct ImageEngine on how to treat the image.</span></p>
+<p><span class="wysiwyg-color-black">ImageEngine takes commands from the URL preceding the original image URL so in the example below, <code>w_320</code> will set the width of the image to 320px. See the below diagram:</span></p>
+<pre><code>&lt;img src="<span style="color: green;">https://imgeng.example.com</span>/<span style="color: red;">w_320/h_200</span>/<span style="color: blue;">http://jelly.com/bread.png</span>"&gt;<br></code></pre>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Values</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span style="color: green;">ImageEngine URL</span></td>
+<td>URL</td>
+<td>This is the URL of the ImageEngine service.</td>
+</tr>
+<tr>
+<td><span style="color: red;">Image Manipulation Parameters<sup>1</sup></span></td>
+<td>
+<code>parameter_value</code> pairs<sup>2</sup>
+</td>
+<td>These settings instruct ImageEngine what transformations are expected.</td>
+</tr>
+<tr>
+<td><span style="color: blue;">Image URL</span></td>
+<td>URL</td>
+<td>This is the image that is to be displayed. The image itself does not need to be on the client site.</td>
+</tr>
+</tbody>
+</table>
+<p> </p>
+<div class="note"><em><strong><sup>1</sup></strong> See the respective product sections for a complete parameter list.<br> <strong><sup>2</sup></strong> Some parameters may have multiple values and have the form <code>setting_value_value1_value2</code></em></div>
+<p> </p>
+<h2>Available Parameters</h2>
+<p><span style="font-weight: 400;">The ImageEngine take a specific format.  ImageEngine also can take commands from the URL preceding the original image URL, so in the example below, w_320 will set the width of the image to 320px. See the below diagram:</span></p>
+<p> </p>
+<table style="height: 223px; width: 745px;">
+<thead>
+<tr style="height: 16px;">
+<th style="width: 67px; height: 16px;">Parameter</th>
+<th style="width: 75px; height: 16px;">Name</th>
+<th style="width: 133px; height: 16px;">Value</th>
+<th style="width: 327px; height: 16px;">Description</th>
+<th style="width: 140px; height: 16px;">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr style="height: 17px;">
+<td class="wysiwyg-text-align-center" style="width: 67px; height: 17px;"><span class="wysiwyg-color-red"><code>w</code></span></td>
+<td class="wysiwyg-text-align-center" style="width: 75px; height: 17px;">Width</td>
+<td class="wysiwyg-text-align-center" style="width: 133px; height: 17px;">Integer</td>
+<td style="width: 327px; height: 17px;">Desired width of resized picture. <sup>1</sup> <sup>3</sup>
+</td>
+<td class="wysiwyg-text-align-center" style="width: 140px; height: 17px;"><span class="wysiwyg-color-red"><code>/w_200/</code></span></td>
+</tr>
+<tr style="height: 17px;">
+<td class="wysiwyg-text-align-center" style="width: 67px; height: 17px;"><span class="wysiwyg-color-red"><code>h</code></span></td>
+<td class="wysiwyg-text-align-center" style="width: 75px; height: 17px;">Height</td>
+<td class="wysiwyg-text-align-center" style="width: 133px; height: 17px;">Integer</td>
+<td style="width: 327px; height: 17px;">Desired height of resized picture. <sup>1</sup> <sup>3</sup>
+</td>
+<td class="wysiwyg-text-align-center" style="width: 140px; height: 17px;"><span class="wysiwyg-color-red"><code>/h_200/</code></span></td>
+</tr>
+<tr style="height: 32.0469px;">
+<td class="wysiwyg-text-align-center" style="width: 67px; height: 32.0469px;"><span class="wysiwyg-color-red"><code>pc</code></span></td>
+<td class="wysiwyg-text-align-center" style="width: 75px; height: 32.0469px;">Percentage of screen</td>
+<td class="wysiwyg-text-align-center" style="width: 133px; height: 32.0469px;">1-100 (float)</td>
+<td style="width: 327px; height: 32.0469px;">This field will use WURFL to calculate the screen width and then scale the image accordingly.</td>
+<td class="wysiwyg-text-align-center" style="width: 140px; height: 32.0469px;"><span class="wysiwyg-color-red"><code>/pc_50/</code></span></td>
+</tr>
+<tr style="height: 51px;">
+<td class="wysiwyg-text-align-center" style="width: 67px; height: 51px;"><span class="wysiwyg-color-red"><code>m</code></span></td>
+<td class="wysiwyg-text-align-center" style="width: 75px; height: 51px;">Fit method</td>
+<td class="wysiwyg-text-align-center" style="width: 133px; height: 51px;">
+<code>stretch</code>, <code>box</code>, <code>letterbox</code>, <code>cropbox</code> <sup>2</sup>
+</td>
+<td style="width: 327px; height: 51px;">This setting determines how the engine will resize the images. This can include stretching, cropping, and/or padding out the canvas.</td>
+<td class="wysiwyg-text-align-center" style="width: 140px; height: 51px;"><span class="wysiwyg-color-red"><code>/m_box/</code></span></td>
+</tr>
+<tr style="height: 34px;">
+<td class="wysiwyg-text-align-center" style="width: 67px; height: 34px;"><span class="wysiwyg-color-red"><code>f</code></span></td>
+<td class="wysiwyg-text-align-center" style="width: 75px; height: 34px;">Format</td>
+<td class="wysiwyg-text-align-center" style="width: 133px; height: 34px;">
+<code>jpg</code>, <code>gif</code>, <code>png</code>, <code>bmp</code>, <code>webp</code>
+</td>
+<td style="width: 327px; height: 34px;">Desired format of picture. If no format is provided, the format of the original picture is used.</td>
+<td class="wysiwyg-text-align-center" style="width: 140px; height: 34px;"><span class="wysiwyg-color-red"><code>/f_webp/</code></span></td>
+</tr>
+<tr style="height: 17px;">
+<td class="wysiwyg-text-align-center" style="width: 67px; height: 17px;"><span class="wysiwyg-color-red"><code>cr</code> </span></td>
+<td class="wysiwyg-text-align-center" style="width: 75px; height: 17px;">Crop</td>
+<td class="wysiwyg-text-align-center" style="width: 133px; height: 17px;">Integer</td>
+<td style="width: 327px; height: 17px;">Crop by coordinates</td>
+<td class="wysiwyg-text-align-center" style="width: 140px; height: 17px;"><span class="wysiwyg-color-red"><code>/cr_10,10,100,100/</code></span></td>
+</tr>
+<tr style="height: 32px;">
+<td class="wysiwyg-text-align-center" style="width: 67px; height: 32px;"><span class="wysiwyg-color-red"><code>in</code> </span></td>
+<td class="wysiwyg-text-align-center" style="width: 75px; height: 32px;">Inline</td>
+<td class="wysiwyg-text-align-center" style="width: 133px; height: 32px;">Boolean</td>
+<td style="width: 327px; height: 32px;">Return the image as a base64 encoded string for use in data urls</td>
+<td class="wysiwyg-text-align-center" style="width: 140px; height: 32px;"><span class="wysiwyg-color-red"><code>/in_true/</code></span></td>
+</tr>
+</tbody>
+</table>
+<p> </p>
+<div class="note">
+<em><sup>1</sup> If a fit method is not specified and only width or height is specified it will select "box". If both width and height are specified by fit is not explicitly specified, then it will assume the fit method is "stretch". <br> <sup>2</sup> Fit method has additional optional parameters. <br> <sup>3</sup> If defined, this will take precedence over any automatic setting. <br> </em> </div>
+<div class="note"> </div>
+<h2>Image Formats</h2>
+<p>The formatting parameter allows images to be converted between formats.</p>
+<h2>Supported Formats</h2>
+<p>The following formats are accepted by ImageEngine for both input and output.</p>
+<ul>
+<li class="square-list">PNG <sup>1</sup>
+</li>
+<li class="square-list">GIF <sup>2</sup>
+</li>
+<li class="square-list">JPG <sup>3</sup>
+</li>
+<li class="square-list">BMP</li>
+<li class="square-list">WEBP</li>
+</ul>
+<div class="note"><em><sup>1</sup> Both 8-bit and 24-bit PNG files are supported including both index and alpha transparency. <br> <sup>2</sup> Not all features of ImageEngine are available for animated GIF files. <br> <sup>3</sup> JPEG can also be used as an alias of JPG.</em></div>
+<p> </p>
+<h2>Input ColorSpaces Supported</h2>
+<table style="width: 628px; height: 142px;">
+<thead>
+<tr style="height: 32px;">
+<th class="wysiwyg-text-align-center" style="width: 182px; height: 32px;">Image Format</th>
+<th class="wysiwyg-text-align-center" style="width: 127px; height: 32px;">Greyscale</th>
+<th class="wysiwyg-text-align-center" style="width: 144px; height: 32px;">Indexed Color</th>
+<th class="wysiwyg-text-align-center" style="width: 92px; height: 32px;">RGB</th>
+<th class="wysiwyg-text-align-center" style="width: 79px; height: 32px;">CMYK</th>
+</tr>
+</thead>
+<tbody>
+<tr style="height: 16px;">
+<td class="wysiwyg-text-align-center" style="width: 182px; height: 16px;">JPG</td>
+<td class="wysiwyg-text-align-center" style="width: 127px; height: 16px;">Y</td>
+<td class="wysiwyg-text-align-center" style="width: 144px; height: 16px;">N/A</td>
+<td class="wysiwyg-text-align-center" style="width: 92px; height: 16px;">Y <sup>3</sup>
+</td>
+<td class="wysiwyg-text-align-center" style="width: 79px; height: 16px;">Y <sup>3</sup>
+</td>
+</tr>
+<tr style="height: 16px;">
+<td class="wysiwyg-text-align-center" style="width: 182px; height: 16px;">GIF</td>
+<td class="wysiwyg-text-align-center" style="width: 127px; height: 16px;">Y <sup>2</sup>
+</td>
+<td class="wysiwyg-text-align-center" style="width: 144px; height: 16px;">Y</td>
+<td class="wysiwyg-text-align-center" style="width: 92px; height: 16px;">N/A</td>
+<td class="wysiwyg-text-align-center" style="width: 79px; height: 16px;">N/A</td>
+</tr>
+<tr style="height: 16px;">
+<td class="wysiwyg-text-align-center" style="width: 182px; height: 16px;">8-Bit PNG</td>
+<td class="wysiwyg-text-align-center" style="width: 127px; height: 16px;">Y</td>
+<td class="wysiwyg-text-align-center" style="width: 144px; height: 16px;">Y <sub>1</sub>
+</td>
+<td class="wysiwyg-text-align-center" style="width: 92px; height: 16px;">N/A</td>
+<td class="wysiwyg-text-align-center" style="width: 79px; height: 16px;">N/A</td>
+</tr>
+<tr style="height: 16.7656px;">
+<td class="wysiwyg-text-align-center" style="width: 182px; height: 16.7656px;">24-Bit PNG</td>
+<td class="wysiwyg-text-align-center" style="width: 127px; height: 16.7656px;">Y</td>
+<td class="wysiwyg-text-align-center" style="width: 144px; height: 16.7656px;">N/A</td>
+<td class="wysiwyg-text-align-center" style="width: 92px; height: 16.7656px;">Y <sup>3</sup>
+</td>
+<td class="wysiwyg-text-align-center" style="width: 79px; height: 16.7656px;">N/A</td>
+</tr>
+<tr style="height: 16px;">
+<td class="wysiwyg-text-align-center" style="width: 182px; height: 16px;">BMP</td>
+<td class="wysiwyg-text-align-center" style="width: 127px; height: 16px;">Y</td>
+<td class="wysiwyg-text-align-center" style="width: 144px; height: 16px;">N/A</td>
+<td class="wysiwyg-text-align-center" style="width: 92px; height: 16px;">Y</td>
+<td class="wysiwyg-text-align-center" style="width: 79px; height: 16px;">N/A</td>
+</tr>
+</tbody>
+</table>
+<h2>Output ColorSpaces Supported</h2>
+<table style="height: 128px; width: 626px;">
+<thead>
+<tr>
+<th style="width: 177px;">Image Format</th>
+<th style="width: 124px;">Greyscale</th>
+<th style="width: 156px;">Indexed Color</th>
+<th style="width: 87px;">RGB</th>
+<th style="width: 77px;">CMYK</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="wysiwyg-text-align-center" style="width: 177px;">JPG</td>
+<td class="wysiwyg-text-align-center" style="width: 124px;">Y</td>
+<td class="wysiwyg-text-align-center" style="width: 156px;">N/A</td>
+<td class="wysiwyg-text-align-center" style="width: 87px;">Y <sup>3</sup>
+</td>
+<td class="wysiwyg-text-align-center" style="width: 77px;">Y <sup>3</sup>
+</td>
+</tr>
+<tr>
+<td class="wysiwyg-text-align-center" style="width: 177px;">GIF</td>
+<td class="wysiwyg-text-align-center" style="width: 124px;">Y <sup>2</sup>
+</td>
+<td class="wysiwyg-text-align-center" style="width: 156px;">Y</td>
+<td class="wysiwyg-text-align-center" style="width: 87px;">N/A</td>
+<td class="wysiwyg-text-align-center" style="width: 77px;">N/A</td>
+</tr>
+<tr>
+<td class="wysiwyg-text-align-center" style="width: 177px;">8-Bit PNG</td>
+<td class="wysiwyg-text-align-center" style="width: 124px;">Y <sup>2</sup>
+</td>
+<td class="wysiwyg-text-align-center" style="width: 156px;">N/A</td>
+<td class="wysiwyg-text-align-center" style="width: 87px;">N/A <sup>1</sup>
+</td>
+<td class="wysiwyg-text-align-center" style="width: 77px;">N/A</td>
+</tr>
+<tr>
+<td class="wysiwyg-text-align-center" style="width: 177px;">24-Bit PNG</td>
+<td class="wysiwyg-text-align-center" style="width: 124px;">Y</td>
+<td class="wysiwyg-text-align-center" style="width: 156px;">N/A</td>
+<td class="wysiwyg-text-align-center" style="width: 87px;">Y <sup>3</sup>
+</td>
+<td class="wysiwyg-text-align-center" style="width: 77px;">N/A</td>
+</tr>
+<tr>
+<td class="wysiwyg-text-align-center" style="width: 177px;">BMP</td>
+<td class="wysiwyg-text-align-center" style="width: 124px;">Y</td>
+<td class="wysiwyg-text-align-center" style="width: 156px;">N/A</td>
+<td class="wysiwyg-text-align-center" style="width: 87px;">Y</td>
+<td class="wysiwyg-text-align-center" style="width: 77px;">N/A</td>
+</tr>
+</tbody>
+</table>
+<p> </p>
+<div class="note"><em><sup>1</sup> 8-bit PNG's are converted to 24-bit by most operations. This will not result in quality loss.<br> <sup>2</sup> 8-bit images can be treated like indexed color images for ImageEngine operations. Greyscale images in this case will behave identically to 8-bit indexed color images where the colors available are all greys.<br> <sup>3</sup> Both 8-bit and 16-bit per channel depths are supported</em></div>
+<p> </p>
+<h2>Examples:</h2>
+<h3>Fully Automatic</h3>
+<pre><code>  https://imgeng.example.com/http://upload.wikimedia.org/wikipedia/commons/8/82/2011_Trampeltier_1528.JPG
+</code></pre>
+<img src="https://support.nuubit.net/hc/en-us/article_attachments/115000079683/2011_Trampeltier_1528.JPG" alt=""><br><br><br><strong><span class="wysiwyg-font-size-large">All Images are 300px Wide</span></strong>
+<pre><code>  https://imgeng.example.com/w_300/http://upload.wikimedia.org/wikipedia/commons/8/82/2011_Trampeltier_1528.JPG
+</code></pre>
+<p> <img src="https://support.nuubit.net/hc/en-us/article_attachments/115000081646/2011_Trampeltier_1528__1_.JPG" alt=""></p>
+<h3>Create 200x200px Thumbnails with Black Letterboxes / Pillarboxes</h3>
+<pre><code>  https://imgeng.example.com/w_200/h_200/m_letterbox_000000_100/http://upload.wikimedia.org/wikipedia/commons/8/82/2011_Trampeltier_1528.JPG
+</code></pre>
+<p> <img src="https://support.nuubit.net/hc/en-us/article_attachments/115000081686/2011_Trampeltier_1528__2_.JPG" alt=""></p>
+<h2> </h2>
+</div>
+<script>// <![CDATA[
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-92590791-2', 'auto'); ga('send', 'pageview');
+// ]]></script>

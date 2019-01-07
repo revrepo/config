@@ -1,0 +1,119 @@
+<h1>User Management</h1>
+<p><strong><span class="wysiwyg-font-size-large">Create a User</span></strong></p>
+<p>In the following section is an example on how to create a user.</p>
+<p>Create User Request URL:</p>
+<pre><code class="undefined">https://api.revapm.net/v1/users
+</code></pre>
+<p>Create user JSON (User.json):</p>
+<pre><code class="language-json">{
+  "<span class="attribute"><span class="attribute">email</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"stan.lee@example.com"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">firstname</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"Stan"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">lastname</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"Lee"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">password</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"Spider-Man"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">companyId</span></span>": <span class="value"><span class="value">[
+    <span class="string"><span class="string">"5588869fbde7a0d00338ce8f"</span></span>
+  ]</span></span>,
+  "<span class="attribute"><span class="attribute">theme</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"light"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">role</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"admin"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">domain</span></span>": <span class="value"><span class="value">[
+    <span class="string"><span class="string">"www.example.com"</span></span>,
+    <span class="string"><span class="string">"api.example.com"</span></span>
+  ]</span></span>,
+  "<span class="attribute"><span class="attribute">access_control_list</span></span>": <span class="value"><span class="value">{
+  "<span class="attribute"><span class="attribute">readOnly</span></span>": <span class="value"><span class="literal"><span class="value"><span class="literal">false</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">test</span></span>": <span class="value"><span class="literal"><span class="value"><span class="literal">true</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">configure</span></span>": <span class="value"><span class="literal"><span class="value"><span class="literal">true</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">reports</span></span>": <span class="value"><span class="literal"><span class="value"><span class="literal">true</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">dashBoard</span></span>": <span class="value"><span class="literal"><span class="value"><span class="literal">true</span></span></span><span class="value">
+  }</span></span>
+}</span></span>
+</code></pre>
+<p>cURL example:</p>
+<pre><code class="undefined">curl -u 'user@example.com:password' -X POST -H 'Content-Type: application/json' -T User.json http://api.revapm.net/v1/users
+</code></pre>
+<p>Response body:</p>
+<pre><code class="language-json"> {
+   "<span class="attribute"><span class="attribute">statusCode</span></span>": <span class="value"><span class="number"><span class="value"><span class="number">200</span></span></span></span>,
+   "<span class="attribute"><span class="attribute">message</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"Successfully created new user"</span></span></span></span>,
+   "<span class="attribute"><span class="attribute">object_id</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"55bff4b8c01a42a2348170f7"</span></span></span><span class="value">
+ }</span></span>
+</code></pre>
+<p>This means that the user was successfully created.</p>
+<p><strong><span class="wysiwyg-font-size-large">Get User Profile</span></strong></p>
+<p>To get the profile of a user, use the object_id and the same endpoint with a GET request.</p>
+<pre><code class="undefined">https://api.revapm.net/v1/users/55bff4b8c01a42a2348170f7
+</code></pre>
+<p>cURL example:</p>
+<pre><code class="undefined">curl -u 'user@example.com:password' -H 'Content-Type: application/json' http://api.revapm.net/v1/users/55bff4b8c01a42a2348170f7
+</code></pre>
+<p>Response body to the get User request</p>
+<pre><code class="language-json">{
+    "<span class="attribute"><span class="attribute">email</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"stan.lee@example.com"</span></span></span></span>,
+    "<span class="attribute"><span class="attribute">firstname</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"Stan"</span></span></span></span>,
+    "<span class="attribute"><span class="attribute">lastname</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"Lee"</span></span></span></span>,
+    "<span class="attribute"><span class="attribute">companyId</span></span>": <span class="value"><span class="value">[
+      <span class="string"><span class="string">"5588869fbde7a0d00338ce8f"</span></span>
+    ]</span></span>,
+    "<span class="attribute"><span class="attribute">domain</span></span>": <span class="value"><span class="value">[
+     <span class="string"><span class="string">"www.example.com"</span></span>,
+     <span class="string"><span class="string">"api.example.com"</span></span>
+    ]</span></span>,
+    "<span class="attribute"><span class="attribute">updated_at</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"2015-08-03T23:05:52.000Z"</span></span></span></span>,
+    "<span class="attribute"><span class="attribute">created_at</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"2015-08-03T23:05:52.000Z"</span></span></span></span>,
+    "<span class="attribute"><span class="attribute">theme</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"light"</span></span></span></span>,
+    "<span class="attribute"><span class="attribute">role</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"admin"</span></span></span></span>,
+    "<span class="attribute"><span class="attribute">access_control_list</span></span>": <span class="value"><span class="value">{
+    "<span class="attribute"><span class="attribute">readOnly</span></span>": <span class="value"><span class="literal"><span class="value"><span class="literal">false</span></span></span></span>,
+    "<span class="attribute"><span class="attribute">test</span></span>": <span class="value"><span class="literal"><span class="value"><span class="literal">true</span></span></span></span>,
+    "<span class="attribute"><span class="attribute">configure</span></span>": <span class="value"><span class="literal"><span class="value"><span class="literal">true</span></span></span></span>,
+    "<span class="attribute"><span class="attribute">reports</span></span>": <span class="value"><span class="literal"><span class="value"><span class="literal">true</span></span></span></span>,
+    "<span class="attribute"><span class="attribute">dashBoard</span></span>": <span class="value"><span class="literal"><span class="value"><span class="literal">true</span></span></span><span class="value">
+  }</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">user_id</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"55bff4b8c01a42a2348170f7"</span></span></span><span class="value">
+}</span></span>
+</code></pre>
+<p><strong><span class="wysiwyg-font-size-large">Modify a User</span></strong></p>
+<p>To change a user, use a PUT to the same endpoint. In the following example, we will be removing access to the "api.example.com" domain and changing the portal theme to "dark".</p>
+<pre><code class="undefined">https://api.revapm.net/v1/users/55bff4b8c01a42a2348170f7
+</code></pre>
+<p>cURL example:</p>
+<pre><code class="undefined">￼curl -u 'user@example.com:password' -X PUT -H 'Content-Type: application/json' -T Change.json https://api.revapm.net/v1/users/55bff4b8c01a42a2348170f7
+</code></pre>
+<p>The Change.json file would look like the following example. Note, the email field is removed. The email field cannot be modified.  </p>
+<pre><code class="language-json">{
+  "<span class="attribute"><span class="attribute">firstname</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"Stan"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">lastname</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"Lee"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">password</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"Spider-Man"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">companyId</span></span>": <span class="value"><span class="value">[
+    <span class="string"><span class="string">"5588869fbde7a0d00338ce8f"</span></span>
+  ]</span></span>,
+  "<span class="attribute"><span class="attribute">theme</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"dark"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">role</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"admin"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">domain</span></span>": <span class="value"><span class="value">[
+    <span class="string"><span class="string">"www.example.com"</span></span>
+  ]</span></span>,
+  "<span class="attribute"><span class="attribute">access_control_list</span></span>": <span class="value"><span class="value">{
+    "<span class="attribute"><span class="attribute">readOnly</span></span>": <span class="value"><span class="literal"><span class="value"><span class="literal">false</span></span></span></span>,
+    "<span class="attribute"><span class="attribute">test</span></span>": <span class="value"><span class="literal"><span class="value"><span class="literal">true</span></span></span></span>,
+    "<span class="attribute"><span class="attribute">configure</span></span>": <span class="value"><span class="literal"><span class="value"><span class="literal">true</span></span></span></span>,
+    "<span class="attribute"><span class="attribute">reports</span></span>": <span class="value"><span class="literal"><span class="value"><span class="literal">true</span></span></span></span>,
+    "<span class="attribute"><span class="attribute">dashBoard</span></span>": <span class="value"><span class="literal"><span class="value"><span class="literal">true</span></span></span><span class="value">
+  }</span></span>
+}</span></span>
+</code></pre>
+<p><strong><span class="wysiwyg-font-size-large">Delete a User</span></strong></p>
+<p>To delete a user, send a DELETE request.</p>
+<pre><code class="undefined">https://api.revapm.net/v1/users/55bff4b8c01a42a2348170f7
+</code></pre>
+<p>cURL example:</p>
+<pre><code class="undefined">curl  -u 'user@example.com:password' -X DELETE -H 'Content-Type: application/json' https://api.revapm.net/v1/users/55bff4b8c01a42a2348170f7
+</code></pre>
+<p>Response body:</p>
+<pre><code class="json">{
+  "<span class="attribute"><span class="attribute">statusCode</span></span>": <span class="value"><span class="number"><span class="value"><span class="number">200</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">message</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"Successfully deleted the user"</span></span></span><span class="value">
+}</span></span>
+</code></pre>
+<p> </p>
+<p> </p>
+<p> </p>

@@ -1,0 +1,180 @@
+<h1>Caching Rule Examples</h1>
+<p><span style="font-weight: 400;">Let’s start by defining the URLs that we want our rules to apply to. The easiest way is to use wildcards. Regular expressions are a subject in itself and they will not be covered here. This means that all examples will have the “is_wildcard” flag set to true.</span></p>
+<p><span style="font-weight: 400;">One important consideration is that the URL that is matched against the expression does not contain the domain name. In other words, it is relative. For example, the absolute URL “</span><a href="http://www.mydomain.com/images/flower.jpg"><span style="font-weight: 400;">http://www.mydomain.com/images/flower.jpg</span></a><span style="font-weight: 400;">” will become “/images/flower.jpg”.</span></p>
+<p><span style="font-weight: 400;">The most generic wildcard expression, which matches all objects on the site, is “**”. The globstar pattern (**) matches any character, any number of times, recursively, so it will match “/index.html” as well as “/images/album/today/001.jpg” or any other URL.</span></p>
+<p><span style="font-weight: 400;">Let’s now match all JPEG images in /images, but not in its subdirectories. The expression for this is “/images/*.jpg”.</span></p>
+<p><span style="font-weight: 400;">If we also want to match the JPEG images in the subdirectories, the expression becomes “/images/**.jpg”.</span></p>
+<p><span style="font-weight: 400;">JPEG images can have either the .jpg or the .jpeg extension. We also want to match PNG files. To match all three, the expression becomes “/images/**.{jpg,jpeg,png}”.</span></p>
+<p><span style="font-weight: 400;">It might be that our images have a specific filename format. Let’s assume it is “img” followed by three digits, then the extension (like “img123.png”). The expression becomes “/images/**/img[0-9][0-9][0-9].{jpg,jpeg,png}”.</span></p>
+<p><span style="font-weight: 400;">Knowing how to define the URL(s), we can now create custom caching rules.</span></p>
+<p><a href="#ExampleCachingAllImagesfor1Year">Example–Caching All Images for 1 Year</a></p>
+<p><span style="font-weight: 400;">Assume we know we can cache all images for one year (31560000 seconds). Our first rule will look like this:</span></p>
+<pre>{  
+   "version":1,
+   "url":{  
+      "is_wildcard":true,
+      "value":"/images/**"
+   },
+   "edge_caching":{  
+      "override_origin":true,
+      "override_no_cc":true,
+      "new_ttl":31560000
+   },
+   "browser_caching":{  
+      "override_edge":false,
+      "new_ttl":0,
+      "force_revalidate":false
+   },
+   "cookies":{  
+      "override":false,
+      "remove_ignored_from_request":false,
+      "remove_ignored_from_response":false,
+      "ignore_all":false,
+      "list_is_keep":false,
+      "keep_or_ignore_list":[  
+
+      ],
+      "remove_ignored_from_request":false,
+      "remove_ignored_from_response":false
+   }
+}
+</pre>
+<p><a href="#ExampleCachingImagesfor1Day"><span style="font-weight: 400;">Example–Caching Images for 1 Day</span></a></p>
+<p><span style="font-weight: 400;">However, our site also has a directory containing fresh images that are added each day in “/images/today/”. We want to cache only those images for one day (86400 seconds). We have to add another rule to the one defined above:Notice that, apart from override_origin, all other override flags are false. This means we will only modify the edge cache TTL for images and set it to one year, regardless of what the origin says, and we will pass the origin cache control settings to the browser.</span></p>
+<pre>{
+    "version": 1,
+    "url": {
+        "is_wildcard": true,
+        "value": "/images/**"
+    },
+    "edge_caching": {
+        "override_origin": true,
+        "override_no_cc": true,
+        "new_ttl": 31560000
+    },
+    "browser_caching": {
+        "override_edge": false,
+        "new_ttl": 0,
+        "force_revalidate": false
+    },
+    "cookies": {
+        "override": false,
+        "remove_ignored_from_request": false,
+        "remove_ignored_from_response": false,
+        "ignore_all": false,
+        "list_is_keep": false,
+        "keep_or_ignore_list": [
+        ],
+        "remove_ignored_from_request": false,
+        "remove_ignored_from_response": false
+    }
+},
+{
+    "version": 1,
+    "url": {
+        "is_wildcard": true,
+        "value": "/images/today/**"
+    },
+    "edge_caching": {
+        "override_origin": true,
+        "override_no_cc": true,
+        "new_ttl": 86400
+    },
+    "browser_caching": {
+        "override_edge": false,
+        "new_ttl": 0,
+        "force_revalidate": false
+    },
+    "cookies": {
+        "override": false,
+        "remove_ignored_from_request": false,
+        "remove_ignored_from_response": false,
+        "ignore_all": false,
+        "list_is_keep": false,
+        "keep_or_ignore_list": [
+        ],
+        "remove_ignored_from_request": false,
+        "remove_ignored_from_response": false
+    }
+}
+</pre>
+<p><span style="font-weight: 400;">With these two rules in place, we will cache all images for one year, except the ones in “/images/today”, which we cache for one day.</span></p>
+<p><a href="#ExampleCachingBackgroundImages"><span style="font-weight: 400;">Example–Caching Background Images</span></a></p>
+<p><span style="font-weight: 400;">Let’s now assume there’s a directory containing big background images, which doesn’t change very often. Moreover, these large images are used by the browser very often, so we would like to cache them for a long time. The trouble is we don’t know when they change, but it’s not more than once a day.</span></p>
+<p><span style="font-weight: 400;">The solution is to let the edge cache keep these images for one day, but allow the browser to keep them for one year, with the condition that it must check that they haven’t changed every time they are loaded. It’s much faster to check if a resource has changed than downloading it completely, especially since the browser only has to validate against the copy stored in the edge cache, which is up to date because the images don’t change more than once per day.</span></p>
+<p><span style="font-weight: 400;">The corresponding rule is the following. The sections that are of no interest (with override flags set to false) are omitted for clarity:</span></p>
+<pre>"url": {        
+        "is_wildcard": true,
+        "value": "/images/backgrounds/**"
+    },
+…
+    "edge_caching": {
+        "override_origin": true,
+        "override_no_cc": true,
+        "new_ttl": 86400
+    },
+    "browser_caching": {
+        "override_edge": true,
+        "new_ttl": 31560000,
+        "force_revalidate": true
+    },
+…
+</pre>
+<p><a name="ExampleCachingBrowserCookie"></a>Example–Caching a Browser Cookie</p>
+<p><span style="font-weight: 400;">Finally, let’s assume we have a special URL, “/images/geobackground.php”, that returns a background image based on the geographical location of the user. The location is stored in a browser cookie called “geoloc”. We would like to store the background in the edge cache for each possible value of the “geoloc” cookie, which means we have to add the contents of the cookie to the hash value of “/images/geobackground.php”. The relevant parts of the rule are displayed:</span></p>
+<pre>    "url": {
+        "is_wildcard": true,
+        "value": "/images/geobackground.php"
+    },
+…
+    "cookies": {
+        "override": true,
+        "remove_ignored_from_request": false,
+        "remove_ignored_from_response": false,
+        "ignore_all": false,
+        "list_is_keep": true,
+        "keep_or_ignore_list": [
+        "geoloc"
+        ],
+        "remove_ignored_from_request": false,
+        "remove_ignored_from_response": false
+    }
+</pre>
+<p><span style="font-weight: 400;">If all these rules are present, in the order they have been presented, the cache behavior will be:</span></p>
+<ul>
+<li style="font-weight: 400;"><span style="font-weight: 400;">Store one instance of the “/images/geobackground.php” image for every value of the “geoloc” cookie, for one year (because of the first rule, applying to all images) and also for one year in the browser cache.</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">Store all background images in “/images/backgrounds/” for one day in the edge cache, but for one year in the browser cache, forcing a revalidation at every access.</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">Store all of today’s images in “/images/today/” for one day in the edge cache and also for one day in the browser cache.</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">Store all other images for one year in both caches.</span></li>
+</ul>
+<p><span style="font-weight: 400;">As you can see, a more specific rule overrides the setting of any general rules preceding it:</span></p>
+<pre>{
+    "version": 1,
+    "url": {
+      "value": "\\.(jpg|jpeg|png|gif|webp|js|css|woff)(\\?.*)?$",
+      "is_wildcard": false
+    },
+    "edge_caching": {
+      "new_ttl": 604800,
+      "override_origin": true,
+      "override_no_cc": true
+    },
+    "browser_caching": {
+      "new_ttl": 0,
+      "override_edge": false,
+      "force_revalidate": false
+    },
+    "cookies": {
+      "remove_ignored_from_request": true,
+      "ignore_all": true,
+      "remove_ignored_from_response": true,
+      "override": true,
+      "list_is_keep": false,
+      "keep_or_ignore_list": []
+    }
+  }
+</pre>
+<p><strong><br><br></strong></p>
+<script>// <![CDATA[
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-92590791-2', 'auto'); ga('send', 'pageview');
+// ]]></script>

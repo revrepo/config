@@ -1,0 +1,45 @@
+<h1>How to Create a Domain</h1>
+<h3 id="first-mile-locations">First Mile Locations</h3>
+<p>The first mile location is the RevAPM PoP that has the lowest latency to the content origin. To create a domain, it is necessary to select the correct first mile location. This is typically the same city as the origin data center. If the city of the origin data center is not listed, select the next nearest city.</p>
+<p>To show all of the first mile locations, RevAPM provides the following API call:</p>
+<pre><code class="undefined">https://api.revapm.net/v1/locations/firstmile
+</code></pre>
+<p>cURL example:</p>
+<pre><code class="undefined">curl  -u 'user@example.com:password' https://api.revapm.net/v1/locations/firstmile
+</code></pre>
+<p>Response body:</p>
+<pre><code class="language-json">[
+  {
+    "<span class="attribute"><span class="attribute">locationName</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"San Jose, CA"</span></span></span></span>,
+    "<span class="attribute"><span class="attribute">id</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"5588868cbde7a0d00338ce8e"</span></span></span><span class="value">
+  }</span></span>,
+  {
+    "<span class="attribute"><span class="attribute">locationName</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"New York, NY"</span></span></span></span>,
+    "<span class="attribute"><span class="attribute">id</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"55a56fa6476c10c329a90741"</span></span></span><span class="value">
+  }</span></span>
+]
+</code></pre>
+<h3 id="create-a-domain">Create a Domain</h3>
+<p>To create a domain, use the following POST to the api.revapm.net endpoint.</p>
+<pre><code class="undefined">  https://api.revapm.net/v1/domains/
+</code></pre>
+<p>cURL example:</p>
+<pre><code class="undefined">curl  -u 'user@example.com:password' -X POST -H 'Content-Type: application/json'  -T Domain.json https://api.revapm.net/v1/domains
+</code></pre>
+<p>Using the response from the first mile request, select the nearest first mile location to the origin. The example JSON (Domain.json) would be the following:</p>
+<pre><code class="language-json">{
+  "<span class="attribute"><span class="attribute">name</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"www.example.com"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">origin_server</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"origin.example.com"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">companyId</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"5588869fbde7a0d00338ce8f"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">origin_server_location</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"San Jose, CA"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">origin_host_header</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"www.example.com"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">tolerance</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"4000"</span></span></span><span class="value">
+}</span></span>
+</code></pre>
+<p>Body response:</p>
+<pre><code class="language-json">{
+  "<span class="attribute"><span class="attribute">statusCode</span></span>": <span class="value"><span class="number"><span class="value"><span class="number">200</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">message</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"Successfully created the domain"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">object_id</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"55c0222fe9032a2d741b9f38"</span></span></span><span class="value">
+}</span></span></code></pre>
+<p> </p>

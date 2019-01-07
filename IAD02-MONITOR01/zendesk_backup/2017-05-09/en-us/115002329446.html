@@ -1,0 +1,25 @@
+<h1>Xamarin Android Quick Start Guide</h1>
+<p><span style="font-weight: 400;"><strong>1.  Download the "nuubit.SDK" NuGet package</strong> from <a href="https://www.nuget.org/">nuget.org</a> or run the following command in the Package Manager Console: <em>Install-Package nuubit.SDK</em>.  An additional method is to download "Nuu:bit Mobile SDK" Xamarin component from Xamarin Component Store and add it to your Xamarin.iOS project. </span></p>
+<p><span style="font-weight: 400;">If you are using Xamarin.Forms - add the package to portable and to platform-specific projects.</span></p>
+<p><span style="font-weight: 400;">References to 1 assembly will be added: </span><span style="font-weight: 400;">Nuubit.SDK</span> </p>
+<p><strong>2. Register the App on https://portal.nuubit.net to get the SDK key </strong></p>
+<p>Add the key to AndroidManifest.xml inside application tag:</p>
+<pre><code class="java">
+&lt;application android:icon="@drawable/icon" android:label="Test"&gt;
+&lt;meta-data android:name="com.nuubit.key" android:value="8852c009-96995-4445-5555-d6278996a9829" /&gt;
+&lt;/application&gt;</code></pre>
+<p> <strong>3. Create custom application class in Android App project that inherits from Com.Nuubit.</strong>Sdk<strong>.NuubitApplication:</strong><br /><br /></p>
+<pre><code class="java">
+class MainApplication : Com.Nuubit.Sdk.NuubitApplication
+    {
+        public MainApplication(IntPtr handle, JniHandleOwnership transfer)
+           : base(handle, transfer)
+        {
+        }
+
+        public override void OnCreate()
+        {
+            base.OnCreate();
+        }
+ 
+    }</code></pre>

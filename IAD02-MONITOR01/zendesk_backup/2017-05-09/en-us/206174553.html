@@ -1,0 +1,46 @@
+<h1>Caching Rule Parameters</h1>
+<p><strong><span style="font-weight: 400;">The following defines the meaning of each parameter:</span></strong></p>
+<p>"version" is the version of the rule structure. It must always be set to 2.</p>
+<p>"url" defines the URL or set of URLs that the rule applies to.</p>
+<ul>
+<ul>
+<li style="font-weight: 400;"><span style="font-weight: 400;">“is_wildcard”, if true, it means that value is a wildcard. If false, it means that value is a regular expression.</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">value is either a wildcard expression or a regular expression defining a rule.</span></li>
+</ul>
+</ul>
+<p>"edge_caching" defines the behavior of the edge cache in relation to the origin.</p>
+<ul>
+<ul>
+<li style="font-weight: 400;"><span style="font-weight: 400;">If “override_origin” is false, the rest of the parameters under "edge_caching" are ignored and the cache obeys the TTL set by the origin. The exception is if “override_no_cc” option is used, it is not ignored. If “override_origin” is true, the origin-set TTL of the object is overridden. </span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">“override_no_cc”, if true, allows the cache to store objects for which the origin doesn’t explicitly set a TTL, i.e. there’s no max-age or Expires information.</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">“new_ttl” sets the “shelf life”, in seconds, of the object in the edge cache. A value of 0 means “don’t cache”. At present, the following suffixes are not supported: “m”, “h”, “d”, and “w”.</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">If "query_string_keep_or_remove_list" is empty, the feature is disabled and the URL is passed unchanged.</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">In order to remove the need for any query string, one can enter a unique but non-existent string. In this case, because the string will not be found, no query string parameters are obeyed.  </span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">If "query_string_list_is_keep" is true and "query_string_keep_or_remove_list" is not empty, then the query string parameters in the list will be kept and all others will be removed. For example, if the URL is "/index.html?foo=bar&amp;hello=world&amp;rev=software" and the list is ["hello", "rev"], then the URL will be rewritten to "/index.html?hello=world&amp;rev=software". This works for both caching and origin calls, and there will be no browser redirects to the new URL.</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">If "query_string_list_is_keep" is false and "query_string_keep_or_remove_list" is not empty, then the query string parameters in the list will be removed and all others will be kept. For example, if the URL is "/index.html?foo=bar&amp;hello=world&amp;rev=software" and the list is ["hello", "foo"], then the URL will be rewritten to "/index.html?rev=software".</span></li>
+</ul>
+</ul>
+<p>"browser_caching" defines the behavior of the browser-side cache in relation to the edge cache. This browser caching behavior is controlled by setting cache-control header in the nuu:bit response sent to the browser.</p>
+<ul>
+<ul>
+<li style="font-weight: 400;"><span style="font-weight: 400;">If “override_edge” is false, the rest of the parameters under “browser_caching” section are ignored and the browser uses either the values set by “edge_caching” (if “override_origin” is true) or by the origin itself (if “override_origin” is false). If “override_edge” is true, the rest of the parameters under “browser_caching” section define the caching behavior of the browser.</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">“new_ttl” sets the maximum time in seconds that the browser can store the object in its cache. A value of 0 means “don’t cache”.</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">“force_revalidate”, if true, instructs the browser to check that the object is still fresh in the edge cache every time it is requested, even if a copy already exists in the browser cache.</span></li>
+</ul>
+</ul>
+<p>"cookies" define the behavior of the edge cache with respect to HTTP cookies. It’s therefore possible to ignore some or all of the cookies sent by the browser as part of the request, as well as strip some or all cookies from the response.</p>
+<ul>
+<ul>
+<li style="font-weight: 400;"><span style="font-weight: 400;">If “override” is false, the rest of the parameters under cookies are ignored and the edge cache will only cache objects if there aren’t any cookies either in the request or response. If it is true, the cookies that are deemed relevant for the retrieval of the resource will become a part of the hash value of the cached object, which means there will be one instance of the object in the cache for every possible combination of cookies and cookie values.</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">“remove_ignored_from_request” and “remove_ignored_from_response” instruct the edge cache to remove some, or all, cookies from the request and response. See below for details.</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">If “ignore_all” is true, “list_is_keep” and “keep_or_ignore_list” are ignored and the edge cache will not add any cookies to the hash value.</span><span style="font-weight: 400;"><br /></span><span style="font-weight: 400;">If “remove_ignored_from_request” is true, all cookies are removed from the request before it is sent to the origin.</span><span style="font-weight: 400;"><br /></span><span style="font-weight: 400;">If “remove_ignored_from_response” is true, all cookies are removed from the response before it is returned to the browser.</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">“list_is_keep” and “keep_or_ignore_list” define the list of cookies that are relevant for this object.</span></li>
+<ul>
+<li style="font-weight: 400;"><span style="font-weight: 400;">If “list_is_keep” is true, “keep_or_ignore_list” will define the “keep list”, which is the subset of cookies in the browser request that are used as part of the hash value of the cached object. All other cookies are ignored by the hash.</span><span style="font-weight: 400;"><br /></span><span style="font-weight: 400;">If “remove_ignored_from_request” is true, these are also the only cookies that are sent to the origin as part of the request.</span><span style="font-weight: 400;"><br /></span><span style="font-weight: 400;">If “remove_ignored_from_response” is true, these are also the only cookies that are returned to the browser as part of the response.</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">If “list_is_keep” is false, “keep_or_ignore_list” will define the “ignore list”, which is the subset of cookies in the browser request that are </span><span style="font-weight: 400;">NOT</span><span style="font-weight: 400;"> used as part of the hash value of the cached object. All other cookies are used by the hash.</span><span style="font-weight: 400;"><br /></span><span style="font-weight: 400;">If “remove_ignored_from_request” is true, these are also the only cookies that are removed from the request before it is sent to the origin.</span><span style="font-weight: 400;"><br /></span><span style="font-weight: 400;">If “remove_ignored_from_response” is true, these are also the only cookies that are removed from the response before it is returned to the browser.</span></li>
+</ul>
+</ul>
+</ul>
+<script>// <![CDATA[
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-92590791-2', 'auto'); ga('send', 'pageview');
+// ]]></script>

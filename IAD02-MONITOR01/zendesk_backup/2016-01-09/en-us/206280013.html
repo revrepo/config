@@ -1,0 +1,21 @@
+<h1>How to Get the Domain Configuration</h1>
+<p>Take the object_id from body response of the domain create POST and use it to get the current configuration of the domain.</p>
+<pre><code class="undefined">https://api.revapm.net/v1/domains/55c0222fe9032a2d741b9f38
+</code></pre>
+<p>cURL Example:</p>
+<pre><code class="undefined">curl -u 'user@example.com:password' -H 'Content-Type: application/json' http://api.revapm.net/v1/domains/55c0222fe9032a2d741b9f38
+</code></pre>
+<p>Body response:</p>
+<pre><code class="language-json">{
+  "<span class="attribute"><span class="attribute">companyId</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"5588869fbde7a0d00338ce8f"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">id</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"55c0222fe9032a2d741b9f38"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">name</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"www.example.com"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">origin_server</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"origin.example.com"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">sync_status</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"Success"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">tolerance</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"4000"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">updated_at</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"2015-08-04T02:24:14.204Z"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">created_at</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"2015-08-04T02:23:43.759Z"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">origin_server_location</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"San Jose, CA"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">origin_host_header</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"www.example.com"</span></span></span></span>,
+  "<span class="attribute"><span class="attribute">cname</span></span>": <span class="value"><span class="string"><span class="value"><span class="string">"www.example.com.revdn.net"</span></span></span><span class="value">
+}</span></span></code></pre>

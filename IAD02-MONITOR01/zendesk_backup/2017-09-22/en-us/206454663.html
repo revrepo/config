@@ -1,0 +1,75 @@
+<h1>Quick Start Guide for the nuu:bit platform</h1>
+<p><span style="font-weight: 400;">The nuu:bit platform can be used for servicing individual web domains of a web property (for example, “</span><a href="http://www.company.com"><span style="font-weight: 400;">www.company.com</span></a><span style="font-weight: 400;">”, “static1.company.com”, “static2.company.com”, etc) or, maintaining the whole web property using a single primary domain (like “</span><a href="http://www.company.com"><span style="font-weight: 400;">www.company.com</span></a><span style="font-weight: 400;">”) by utilizing nuu:bit's 3rd-party links aggregation feature.</span></p>
+<p><span style="font-weight: 400;">The on-boarding of a web domain on the nuu:bit platform is typically composed of the following steps, performed either by customer using Rev’s self-provisioning customer portal </span><a href="https://portal.nuubit.net/"><span style="font-weight: 400;">https://portal.nuubit.net/</span></a><span style="font-weight: 400;"> </span><strong><strong> </strong></strong></p>
+<ul>
+<li style="font-weight: 400;"><span style="font-weight: 400;">Provisioning of default nuu:bit configuration for a new domain. The step requires the following information to be specified or provided by the customer:</span></li>
+<ul>
+<li style="font-weight: 400;"><span style="font-weight: 400;">The web domain to be served by nuu:bit (for example, “www.company.com”)</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">The IP address or domain name of customer origin web server to be used to fetch the web content from (for example, “www-origin.company.com” or “7.7.7.7”)</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">The HTTP “Host:” header value to be used to fetch the website content from the origin web server (if the value should be different from the configured domain name)</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">The geographic location of the customer’s origin web server (to be used to select the closest Rev’s first-mile location)</span></li>
+</ul>
+</ul>
+<ul>
+<li style="font-weight: 400;"><span style="font-weight: 400;">Each newly provisioned customer domain is automatically assigned with a corresponding CNAME in domain “NUUBIT.NET”. The CNAME name is composed of the provisioned domain name and domain “NUUBIT.NET”. For example, if the customer domain name is “static.company.com” the generated CNAME name will be  “STATIC.COMPANY.COM.NUUBITCN.NET”. Later the CNAME record should be used by the customer to send the domain’s traffic to Rev’s content acceleration platform.</span></li>
+</ul>
+<ul>
+<li style="font-weight: 400;"><span style="font-weight: 400;">1st optional step - adjusting of Rev edge caching rules. In the default configuration, nuu:bit will respect HTTP caching configuration specified in web origin server responses (set in HTTP response headers). If the origin web server does not set proper caching headers it is possible to adjust nuu:bit edge and browser caching behavior using pretty sophisticated caching configuration mechanism provided by Rev.</span></li>
+</ul>
+<ul>
+<li style="font-weight: 400;"><span style="font-weight: 400;">2nd optional step - configuration of aggregation of third-party web links. If the website uses third-party objects hosted on separate domains (like static objects, JS libraries or independent third-party services like Google Analytics or Optimizely) it is possible to aggregate the domains under the website’s primary domain name.</span></li>
+</ul>
+<ul>
+<li style="font-weight: 400;"><span style="font-weight: 400;">3rd optional step - provisioning of SSL configuration for the domain. If the customer website is utilizing SSL encryption to protect the website content it is required to provision the nuu:bit service with an SSL certificate matching the website’s domain name, either FQDN  (like “</span><a href="http://www.company.com"><span style="font-weight: 400;">www.company.com</span></a><span style="font-weight: 400;">”) or wildcard (like “*.company.com”). Currently, the operation should be performed by Rev’s Customer Support team, and it takes about 20 minutes to complete.</span></li>
+</ul>
+<ul>
+<li style="font-weight: 400;"><span style="font-weight: 400;">Testing the prepared nuu:bit configuration by pointing the web domain locally to a Rev edge proxy server. The step allows customers to confirm that nuu:bit service is properly configured to serve his website, and to verify website performance, caching rules, content optimization settings, etc.</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">Once happy with the testing results - change DNS record for the domain to point to nuu:bit’s CNAME.</span></li>
+</ul>
+<p> </p>
+<p><span class="wysiwyg-font-size-large" style="font-weight: 400;">Boarding via self-provisioning customer portal</span></p>
+<p><span style="font-weight: 400;">Once you’ve registered the account, proceed with the configuration setup over the </span><a href="https://portal.nuubit.net/#/login"><span style="font-weight: 400;">https://portal.nuubit.net/</span></a><span style="font-weight: 400;"> web page. Please refer to the provisioning of default nuu:bit configuration of a new domain.</span></p>
+<p><span style="font-weight: 400;">To view the current domains list, please click the <strong>Web</strong> link on the left-hand side menu of the nuu:bit portal.</span></p>
+<p><img src="https://support.nuubit.net/hc/article_attachments/115002731466/Screen_Shot_2017-02-25_at_11.55.48_AM.png" alt="Screen_Shot_2017-02-25_at_11.55.48_AM.png" /></p>
+<h1><span class="wysiwyg-font-size-large" style="font-weight: 400;">Adding a new domain</span></h1>
+<p><span style="font-weight: 400;">To add a new domain, please click the <strong>Add new Domain</strong> button and specify the required fields as shown in the figure below.</span></p>
+<p> </p>
+<p><img src="https://support.nuubit.net/hc/article_attachments/115002725903/Screen_Shot_2017-02-25_at_11.55.58_AM.png" alt="Screen_Shot_2017-02-25_at_11.55.58_AM.png" /></p>
+<p> </p>
+<p><span style="font-weight: 400;">You need to fill out the following fields when adding a new domain:</span></p>
+<ul>
+<li style="font-weight: 400;"><span style="font-weight: 400;">The particular Web domain served by nuu:bit (www.illustration.com).</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">The IP address or origin server DNS name which is used to fetch the web content from it.</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">Origin host header is used to get the website content from the original website server.</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">The geographic location of the customer’s origin web server which is used to select the nearest first-mile site.</span></li>
+</ul>
+<p><strong><br /><img src="https://support.nuubit.net/hc/article_attachments/115002730726/Screen_Shot_2017-02-25_at_11.44.32_AM.png" alt="Screen_Shot_2017-02-25_at_11.44.32_AM.png" /><br /></strong></p>
+<p><span style="font-weight: 400;">Once you filled in all the necessary details, please confirm the domain addition by clicking the <strong>Create domain</strong> button.</span></p>
+<p><strong><br /><span class="wysiwyg-font-size-large" style="font-weight: 400;">Editing a domain</span><br /></strong></p>
+<p><span style="font-weight: 400;">To edit the existing domain, please click the <strong>Edit</strong> domain button as shown in the figure below.</span></p>
+<p><img src="https://support.nuubit.net/hc/article_attachments/115002730766/Screen_Shot_2017-02-25_at_11.48.56_AM.png" alt="Screen_Shot_2017-02-25_at_11.48.56_AM.png" /></p>
+<p> </p>
+<p><strong><span style="font-weight: 400;">Then, modify the appropriate fields and specify the necessary details.  All fields are self-documenting by moving the cursor over the field in question. </span></strong></p>
+<p><img src="https://support.nuubit.net/hc/en-us/article_attachments/209775403/Screen_Shot_2016-10-28_at_8.52.16_AM.png" alt="" /></p>
+<p> </p>
+<p>When you click on "<strong>Update</strong>" (not "Publish") button in the domain and SSL certificate configuration forms the updated configuration it sent to the staging environment.  "<strong>Publish</strong>" will publish the configuration to production. </p>
+<p>You can also configure the particular domain by clicking the <strong>Advanced edit</strong> domain button.</p>
+<p> </p>
+<p><img src="https://support.nuubit.net/hc/article_attachments/115002725263/Screen_Shot_2017-02-25_at_11.49.59_AM.png" alt="Screen_Shot_2017-02-25_at_11.49.59_AM.png" /></p>
+<p> </p>
+<p><span style="font-weight: 400;">The advanced view format allows you to view the parameters set in JSON format, as displayed on the figure below.</span></p>
+<p><img src="https://support.nuubit.net/hc/en-us/article_attachments/209776263/Screen_Shot_2016-10-28_at_9.01.59_AM.png" alt="" /></p>
+<p> </p>
+<p><span style="font-weight: 400;">You can edit all the necessary details in a more specific way. Once all the changes are done, please click the <strong>Update button</strong>.</span></p>
+<p> </p>
+<h1><span class="wysiwyg-font-size-large" style="font-weight: 400;">Modifying DNS record for your website</span></h1>
+<p><span style="font-weight: 400;">To use nuu:bit with your website, change the DNS record for the domain to point it to the nuu:bit CNAME. For example, the CNAME record for 'www.illustration.com' domain corresponds to 'www.illustration.com.revdn.net'. This will enable directing your website traffic to the nuu:bit platform.</span></p>
+<h1>Traffic analytics reports</h1>
+<p><span style="font-weight: 400;">As a result, you’ll be able to track the appropriate values over the Proxy Traffic reports as shown in the figure below. </span></p>
+<p><img src="https://support.nuubit.net/hc/article_attachments/115002725883/Screen_Shot_2017-02-25_at_11.52.07_AM.png" alt="Screen_Shot_2017-02-25_at_11.52.07_AM.png" /></p>
+<p> </p>
+<p><span style="font-weight: 400;">Please choose the corresponding report category in the left-side panel menu.</span></p>
+<p><strong><span style="font-weight: 400;">Once you’ve completed all the steps, you should be able to manage your newly created domain. Please refer to the Documentation section for further configuration. If you experience any issue, please contact our Customer Support team.</span></strong></p>
+<script>// <![CDATA[
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-92590791-2', 'auto'); ga('send', 'pageview');
+// ]]></script>
