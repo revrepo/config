@@ -1,0 +1,21 @@
+#
+# This file is managed by Rev Puppet service as described on Wiki
+# page https://revwiki.atlassian.net/wiki/display/OP/Puppet+Centralized+Configuration+Management+System
+# Please don't modify the file on the Puppet client server since your changes will be overwritten on the next
+# Puppet agent run on the server.
+#
+
+# defaults file for wallarm-tarantool init script - file /etc/default/wallarm-tarantool 
+
+# memory limit (in GB)
+SLAB_ALLOC_ARENA=2
+
+# max request
+#SLAB_ALLOC_MAXIMAL=10485766
+
+# config file
+#CONFIG=/etc/wallarm/tarantool.lua
+
+# address and port for bind
+HOST='0.0.0.0'
+#PORT=3313

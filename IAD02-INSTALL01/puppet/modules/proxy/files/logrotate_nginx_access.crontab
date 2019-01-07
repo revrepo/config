@@ -1,0 +1,10 @@
+#
+# This file is managed by Rev Puppet service as described on Wiki
+# page https://revwiki.atlassian.net/wiki/display/OP/Puppet+Centralized+Configuration+Management+System
+# Please don't modify the file on the Puppet client server since your changes will be overwritten on the next
+# Puppet agent run on the server.
+#
+
+PATH=/usr/sbin:/usr/sbin:/usr/bin:/sbin:/bin
+
+3 8 * * * root /usr/local/bin/lockrun --quiet --lockfile=/var/tmp/nginx_logrotate.lockrun  -- /usr/sbin/logrotate -f /etc/nginx/logrotate_nginx_access.conf 

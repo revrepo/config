@@ -1,0 +1,32 @@
+#
+# This file is managed by Rev Puppet service as described on Wiki
+# page https://revwiki.atlassian.net/wiki/display/OP/Puppet+Centralized+Configuration+Management+System
+# Please don't modify the file on the Puppet client server since your changes will be overwritten on the next
+# Puppet agent run on the server.
+#
+
+SJC02-BACKUP01.REVSW.NET / comp-ssh
+SJC02-MONITOR02.REVSW.NET / comp-ssh
+IAD02-INSTALL01.REVSW.NET / comp-ssh
+IAD02-MONITOR01.REVSW.NET / comp-ssh
+IAD02-MANAGER01.REVSW.NET / comp-ssh
+IAD02-PORTAL01.REVSW.NET / comp-ssh
+IAD02-PORTAL02.REVSW.NET / comp-ssh
+IAD02-CMDB01.REVSW.NET / comp-ssh
+IAD02-CMDB01.REVSW.NET /var/mongodb_backups comp-ssh
+IAD02-GRAPHITE01.REVSW.NET / comp-ssh
+IAD02-API01.REVSW.NET / comp-ssh
+IAD02-API02.REVSW.NET / comp-ssh
+IAD02-API03.REVSW.NET / comp-ssh
+#IAD02-RMDB02.REVSW.NET / comp-ssh
+#IAD02-RMDB02.REVSW.NET /var/mongodb_backups comp-ssh
+IAD02-RUM01.REVSW.NET / comp-ssh
+#IAD02-RUM02.REVSW.NET / comp-ssh
+#IAD02-RUM03.REVSW.NET / comp-ssh
+#IAD02-CUBE01.REVSW.NET / comp-ssh
+#IAD02-CUBE02.REVSW.NET / comp-ssh
+#IAD02-CUBE03.REVSW.NET / comp-ssh
+TESTSJC20-JENKINS01.REVSW.NET / comp-ssh
+TESTSJC20-CMDB01.REVSW.NET / comp-ssh
+#TESTSJC20-RMDB01.REVSW.NET / comp-ssh
+DEV-GATEWAY.REVSW.NET / comp-ssh

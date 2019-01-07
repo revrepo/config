@@ -1,0 +1,14 @@
+logstash-forwarder.* Registrar received .* events
+logstash-forwarder.* Read error looking for ack: read tcp
+logstash-forwarder.* Setting trusted CA from file: /etc/logstash-forwarder/logstash-forwarder.crt
+logstash-forwarder.* Connecting to
+logstash-forwarder.* Connected to
+logstash-forwarder.* Failure connecting to
+logstash-forwarder.* Read error looking for ack: EOF
+logstash-forwarder.* File truncated, seeking to beginning
+logstash-forwarder.* Launching harvester on rotated file:
+logstash-forwarder.* Starting harvester:
+logstash-forwarder.* Current file offset:
+logstash-forwarder.* Stopping harvest of .* last change was
+daemon.info: .* logstash-forwarder.* Failed to tls handshake with .* connection reset by peer
+logstash-forwarder.* Registrar: processing .* events

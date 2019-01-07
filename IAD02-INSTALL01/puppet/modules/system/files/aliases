@@ -1,0 +1,106 @@
+#
+# This file is managed by Rev Puppet service as described on Wiki
+# page https://revwiki.atlassian.net/wiki/display/OP/Puppet+Centralized+Configuration+Management+System
+# Please don't modify the file on the Puppet client server since your changes will be overwritten on the next
+# Puppet agent run on the server.
+#
+
+#
+# Mail aliases for sendmail
+#
+# You must run newaliases(1) after making changes to this file.
+#
+
+root:		sysadmin@revsw.com
+
+# Required aliases
+postmaster:     root
+MAILER-DAEMON:  postmaster
+
+# Common aliases
+abuse:          postmaster
+spam:           postmaster
+logcheck:	postmaster
+
+# General redirections for pseudo accounts.
+bin:            root
+daemon:         root
+adm:            root
+lp:             root
+sync:           root
+shutdown:       root
+halt:           root
+mail:           root
+news:           root
+uucp:           root
+operator:       root
+games:          root
+gopher:         root
+ftp:            root
+nobody:         root
+radiusd:        root
+nut:            root
+dbus:           root
+vcsa:           root
+canna:          root
+wnn:            root
+rpm:            root
+nscd:           root
+pcap:           root
+apache:         root
+webalizer:      root
+dovecot:        root
+fax:            root
+quagga:         root
+radvd:          root
+pvm:            root
+amanda:         root
+privoxy:        root
+ident:          root
+named:          root
+xfs:            root
+gdm:            root
+mailnull:       root
+postgres:       root
+sshd:           root
+smmsp:          root
+postfix:        root
+netdump:        root
+ldap:           root
+squid:          root
+ntp:            root
+mysql:          root
+desktop:        root
+rpcuser:        root
+rpc:            root
+nfsnobody:      root
+
+ingres:         root
+system:         root
+toor:           root
+manager:        root
+dumper:         root
+abuse:          root
+
+newsadm:        news
+newsadmin:      news
+usenet:         news
+ftpadm:         ftp
+ftpadmin:       ftp
+ftp-adm:        ftp
+ftp-admin:      ftp
+www:            webmaster
+webmaster:      root
+noc:            root
+security:       root
+hostmaster:     root
+nagios:		root
+backup:		root
+info:           postmaster
+marketing:      postmaster
+sales:          postmaster
+support:        postmaster
+
+
+# trap decode to catch security attacks
+decode:         root

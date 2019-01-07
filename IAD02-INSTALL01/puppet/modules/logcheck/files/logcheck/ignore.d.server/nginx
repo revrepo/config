@@ -1,0 +1,16 @@
+BP03 local0.notice: nginx-error: .* upstream timed out \(110: Connection timed out\) while reading.*upstream, client: .* server: vl.mccont.com, request: "GET /ItemFiles/.* HTTP/1.1", upstream: "http://127.0.0.1:8080/ItemFiles
+local0.notice: nginx-error: .* server: s4.mcstatic.com, request: "GET /2648/JS12/GlobalV175/script.js
+local0.notice: nginx-error: .* server: s4.mcstatic.com, request: "GET /2648/JS12/GlobalM/script.js
+local0.notice: nginx-error: .* server: .*.mcstatic.com
+local0.notice: nginx-error: .* server: .*.mccont.com
+local0.notice: nginx-error: .* server: cdn.vmturbo.com
+local0.notice: nginx-error: .* upstream prematurely closed connection while reading response header from upstream, client: .* server: rum01.revsw.net
+local0.notice: nginx-error: .* OCSP responder timed out .* while requesting certificate status, responder: ocsp2.globalsign.com
+local0.notice: nginx-error: .* access forbidden by rule, client: .* server: davidjamesagency.com
+IAD02-CO02 local0.notice: nginx-error: .* failed \(104: Connection reset by peer\) while reading response header from upstream, client: .* server: rum01.revsw.net, request: "GET
+local0.notice: nginx-error: .* No threading detected. Own threads: 1 Rewrite, 1 Expensive Rewrite.
+local0.notice: nginx-error: .* upstream timed out .* while reading upstream, client: .* server: www.metacafe.com
+local0.notice: nginx-error: .* upstream prematurely closed connection while reading upstream, client: .* server: www.metacafe.com
+local0.notice: nginx-error: .* server: mbeans.com
+local0.notice: nginx-error: .* server: cdn.mbeans2.com
+local0.notice: nginx-error: .* while reading response header from upstream, client: .* server: www.metacafe.com

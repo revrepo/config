@@ -1,0 +1,16 @@
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ sudo: pam_[[:alnum:]]+\(sudo:session\): session closed for user [[:alnum:]-]+$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ sudo: pam_[[:alnum:]]+\(sudo:session\): session opened for user [[:alnum:]-]+ by ([[:alnum:]-]+)?\(uid=[0-9]+\)$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ sudo:[[:space:]]+[_[:alnum:].-]+ : TTY=(unknown|(pts/|tty|vc/)[[:digit:]]+) ; PWD=[^;]+ ; USER=[._[:alnum:]-]+ ; COMMAND=(/(usr|etc|bin|sbin)/|sudoedit ).*$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ sudo:[[:space:]]+[_[:alnum:].-]+ : \(command continued\).*$
+message repeated .* times
+authpriv.info: sudo: pam_unix\(sudo:session\): session closed for user root
+authpriv.notice: sudo:   nagios : TTY=unknown ; PWD=/ ; USER=root ; COMMAND=/usr/lib/nagios/plugins
+authpriv.info: sudo: pam_unix\(sudo:session\): session opened for user root by \(uid=0\)
+authpriv.notice: sudo:   victor .* USER=root ; COMMAND=/bin/bash
+authpriv.info: sudo: pam_unix\(sudo:session\): session opened for user root by (victor|ajit|prashant)
+authpriv.info: CRON.* pam_unix\(cron:session\): session opened for user backup by
+SJC02-BACKUP01 cron.info: CRON.* \(backup\) CMD \(/usr/local/bin/lockrun
+auth.info: sshd.* Accepted publickey for backup from 54.183.60.157 port
+authpriv.info: sshd.* pam_unix\(sshd:session\): session opened for user backup by
+authpriv.info: sshd.* pam_unix\(sshd:session\): session closed for user backup
+auth.info: sshd.* Received disconnect from 54.183.60.157: .* disconnected by user

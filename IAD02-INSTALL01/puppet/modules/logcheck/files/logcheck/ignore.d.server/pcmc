@@ -1,0 +1,11 @@
+user.debug: pcmc.* pcm_config_process_data_cb: connection established
+user.debug: pcmc.* pcm_config_process_data: processing config req for domain
+user.info: pcmc.* pcm_config_process_data: Time to process config is .* secs
+user.info: pcmc.* pcm_config_process_data_cb: processed config request and replied
+user.debug: pcmc.* pcm_config_process_data_cb: connection closed
+user.info: revsw-pcm-config.* pcm_config_process_data: json rcvd time: .* processing time:
+user.debug: revsw-pcm-config.* pcm_config_process_data_cb: connection closed
+user.debug: revsw-pcm-config.* pcm_config_process_data_cb: connection established
+user.info: revsw-pcm-config.* pcm_config_process_data: received
+user.info: revsw-pcm-config.* pcm_config_process_data: got all data, processing json of size
+user.debug: revsw-pcm-config.* pcm_config_process_data: processing config req for domain

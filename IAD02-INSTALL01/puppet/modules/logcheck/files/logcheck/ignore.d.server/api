@@ -1,0 +1,4 @@
+API.* user.info: RevAPI.* PurgeAPI NagiosTestUser :: monitor.revsw.net ::
+user.info: RevAPI.*54.88.56.156 .* Invalid Request
+user.info: RevAPI.* Invalid Request
+user.info: RevAPI.* \[INFO\] :Processing "checkStatus" request for job

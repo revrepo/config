@@ -1,0 +1,7 @@
+user.debug: pcms.* pcm_stats_process_data_cb: connection established
+user.debug: pcms.* pcm_stats_process_data: processing stats req for domain
+user.debug: pcms.* pcm_stats_process_data_cb: connection established
+user.debug: pcms.* pcm_stats_process_data: processing stats req for
+user.debug: pcms.* pcm_stats_get_attack_count: attack count returned
+user.info: pcms.* pcm_stats_process_data_cb: processed stats request and replied
+user.debug: pcms.* pcm_stats_process_data_cb: connection closed

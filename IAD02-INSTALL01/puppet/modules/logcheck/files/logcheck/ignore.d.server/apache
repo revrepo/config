@@ -1,0 +1,21 @@
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ apache: nss_ldap: reconnect(ing|ed) to LDAP server(\.\.\.| after [0-9]+ attempt\(s\))$
+local0.notice: apache2-error: .* NPN didn't happen during SSL handshake.  You're probably using a version of mod_ssl that doesn't support NPN. Without NPN support, the server cannot use SPDY.
+local0.notice: apache2-error: .* RSA certificate configured for .* does NOT include an ID which matches the server name
+local0.notice: apache2-error: .* configured -- resuming normal operations
+local0.notice: apache2-error: .* Command line: '/usr/sbin/apache2'
+local0.notice: apache2-error: .* Init: Name-based SSL virtual hosts only work for clients with TLS server name indication support
+local0.notice: apache2-error: .* Hostname .* provided via SNI and hostname .* provided via HTTP are different
+local0.notice: apache2-error: .* received.  Doing graceful restart
+local0.notice: apache2-error: .* Could not reliably determine the server's fully qualified domain name, using
+local0.notice: apache2-error: .* AH00126: Invalid URI in request
+local0.notice: apache2-error: .* ap_get_brigade failed with status 104: Connection reset by peer
+local0.notice: apache2-error: .* Session error: INVALID_CONTROL_FRAME
+local0.notice: apache2-error: .*mod_pagespeed .* CSS parsing error in
+IAD02-GRAPHITE01 local0.notice: apache2-error: .* AH01630: client denied by server configuration: /var/www/grafana
+local0.notice: apache2-error: .* domain:cdn.vmturbo.com
+local0.notice: apache2-error: .* domain:.*vmturbowatercooler.com
+local0.notice: apache2-error: .* Client sent SYN_STREAM for non-increasing stream ID
+local0.notice: apache2-error: .* Client sent SYN_STREAM with host header .* which doesn't match .* Sending GOAWAY.
+local0.notice: apache2-error: .* Client sent RST_STREAM with PROTOCOL_ERROR for stream
+local0.notice: apache2-error: .* domain:.*.mcstatic.com
+local0.notice: apache2-error: .* domain:rum01.revsw.net .* AH01102: error reading status line from remote server

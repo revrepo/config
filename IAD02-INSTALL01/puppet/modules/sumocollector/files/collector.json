@@ -1,0 +1,17 @@
+{
+        "api.version": "v1",
+        "sources": [
+                {
+                "sourceType" : "LocalFile",
+                "name" : "Apache Access Log",
+                "pathExpression" : "/var/log/apache2/other_vhosts_access.log",
+                "category": "access_log",
+                "useAutolineMatching": false,
+                "multilineProcessingEnabled": false,
+                "timeZone": "UTC",
+                "automaticDateParsing": true,
+                "forceTimeZone": false,
+                "defaultDateFormat": "dd/MMM/yyyy:HH:mm:ss"
+        }
+        ]
+}

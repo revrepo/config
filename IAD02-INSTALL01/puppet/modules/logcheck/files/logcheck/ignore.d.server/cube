@@ -1,0 +1,14 @@
+RevCube.*Request came to get the Metrics details
+RevCube.*Calling Metrics getter method
+RevCube.*Request came to insert the event/metric details
+RevCube.*Inserting Event/Metrics details into event collection
+RevCube.*Inserting Metrics details into metric collection
+RevCube.*Read Preference has set to undefined
+RevCube.*Request came to insert the event details
+RevCube.*Inserting Event details into event collection
+RevCube.*Database mode connected
+RevCube.*Event Saved with the OBJECT ID: 
+RevCube.*Request came to insert the metrics details
+RevCube.*Inserting Metric details into metrics collection
+RevCube.*cube_request_events Saved with the OBJECT ID
+RevCube.*Request came to insert the metrics details

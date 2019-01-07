@@ -1,0 +1,11 @@
+user.debug: pcmp.* pcm_purge_process_data_cb: connection established
+user.debug: pcmp.* pcm_purge_process_data: processing purge request
+user.info: pcmp.* pcm_purge_process_data.* json rcvd time: .* sent time: .* processing time:
+user.info: pcmp.* pcm_purge_process_data_cb: processed purge request and replied
+user.debug: pcmp.* pcm_purge_process_data_cb: connection closed
+user.debug: revsw-pcm-purge.* pcm_purge_process_data_cb: connection established
+user.info: revsw-pcm-purge.* pcm_purge_process_data_cb: received .* bytes json
+user.debug: revsw-pcm-purge.* pcm_purge_process_data: processing purge request
+user.info: revsw-pcm-purge.* pcm_purge_process_data.* processing time:
+user.info: revsw-pcm-purge.* pcm_purge_process_data_cb: processed purge request and replied
+user.debug: revsw-pcm-purge.* pcm_purge_process_data_cb: connection closed

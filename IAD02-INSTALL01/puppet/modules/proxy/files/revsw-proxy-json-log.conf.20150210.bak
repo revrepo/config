@@ -1,0 +1,36 @@
+#
+# This file is managed by Rev Puppet service as described on Wiki
+# page https://revwiki.atlassian.net/wiki/display/OP/Puppet+Centralized+Configuration+Management+System
+# Please don't modify the file on the Puppet client server since your changes will be overwritten on the next
+# Puppet agent run on the server.
+#
+
+LogFormat "{ \
+\"@timestamp\": \"%{%Y-%m-%dT%H:%M:%S%z}t\", \
+\"@version\": \"1\", \
+\"domain\": \"%v\", \
+\"ipport\": \"%p\", \
+\"protocol\": \"%H\", \
+\"clientip\": \"%h\", \
+\"duration\": %D, \
+\"response\": \"%>s\", \
+\"request\": \"%U%q\", \
+\"s_bytes\": %O, \
+\"r_bytes\": %I, \
+\"method\": \"%m\", \
+\"conn_status\": \"%X\", \
+\"KA\": %k, \
+\"FBT_mu\": \"%{X-Rev-BE-1st-Byte-Time}o\", \
+\"cache\": \"%{X-Rev-Cache}o\", \
+\"referer\": \"%{Referer}i\", \
+\"agent\": \"%{User-agent}i\", \
+\"cont_type\": \"%{Content-Type}o\", \
+\"cont_enc\": \"%{Content-Encoding}o\", \
+\"error_log_id\": \"%L\" \
+}" revsw_apache_json
+
+
+# Define an access log for VirtualHosts that don't define their own logfile
+CustomLog ${APACHE_LOG_DIR}/revsw_apache_access_json.log revsw_apache_json
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet

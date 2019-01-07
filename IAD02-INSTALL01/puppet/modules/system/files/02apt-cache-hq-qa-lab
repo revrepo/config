@@ -1,0 +1,10 @@
+//
+// This file is managed by Rev Puppet service as described on Wiki
+// page https://revwiki.atlassian.net/wiki/display/OP/Puppet+Centralized+Configuration+Management+System
+// Please don't modify the file on the Puppet client server since your changes will be overwritten on the next
+// Puppet agent run on the server.
+//
+
+
+// Use a local apt cache server running on TESTSJC20-BUILD02
+Acquire::http { Proxy "http://192.168.4.32:3142"; };

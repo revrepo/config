@@ -1,0 +1,44 @@
+#!/bin/bash
+
+#
+# This file is managed by Rev Puppet service as described on Wiki
+# page https://revwiki.atlassian.net/wiki/display/OP/Puppet+Centralized+Configuration+Management+System
+# Please don't modify the file on the Puppet client server since your changes will be overwritten on the next
+# Puppet agent run on the server.
+#
+
+#
+# Created by Sebastian Grewe, Jammicron Technology
+#
+
+# Get count of raid arrays
+RAID_DEVICES=`grep ^md -c /proc/mdstat`
+
+# Get count of degraded arrays
+RAID_STATUS=`grep "\[.*_.*\]" /proc/mdstat -c`
+
+# Is an array currently recovering, get percentage of recovery
+RAID_RECOVER=`grep recovery /proc/mdstat | awk '{print $4}'`
+RAID_RESYNC=`grep resync /proc/mdstat | awk '{print $4}'`
+
+# Check raid status
+# RAID recovers --> Warning
+if [[ $RAID_RECOVER ]]; then
+STATUS="WARNING - Checked $RAID_DEVICES arrays, recovering : $RAID_RECOVER"
+EXIT=1
+elif [[ $RAID_RESYNC ]]; then
+STATUS="WARNING - Checked $RAID_DEVICES arrays, resync : $RAID_RESYNC"
+EXIT=1
+# RAID ok
+elif [[ $RAID_STATUS == "0" ]]; then
+STATUS="OK - Checked $RAID_DEVICES arrays."
+EXIT=0
+# All else critical, better save than sorry
+else
+STATUS="CRITICAL - Checked $RAID_DEVICES arrays, $RAID_STATUS have FAILED"
+EXIT=2
+fi
+
+# Status and quit
+echo $STATUS
+exit $EXIT

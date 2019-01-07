@@ -1,0 +1,10 @@
+#
+# This file is managed by Rev Puppet service as described on Wiki
+# page https://revwiki.atlassian.net/wiki/display/OP/Puppet+Centralized+Configuration+Management+System
+# Please don't modify the file on the Puppet client server since your changes will be overwritten on the next
+# Puppet agent run on the server.
+#
+
+PATH=/usr/sbin:/usr/sbin:/usr/bin:/sbin:/bin
+
+# * * * * * root /usr/local/bin/lockrun --quiet --lockfile=/var/tmp/pagespeed_graphite_stats.lockrun  -- /opt/scripts/pagespeed_graphite_stats.sh > /dev/null 2>&1

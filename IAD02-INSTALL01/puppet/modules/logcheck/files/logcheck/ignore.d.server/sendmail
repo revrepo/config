@@ -1,0 +1,52 @@
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: starting daemon
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: restarting 
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: rejecting connections on daemon
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: accepting connections again for daemon
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: .* User unknown
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: alias database .* rebuilt
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: .* aliases, longest
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: .*: from=
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: .*: split:
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: .* lost input channel
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: .* message-id=
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: .* return to sender
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: .* stat=
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: .* timeout waiting
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: .*: Milter: data, discard
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: .*: discarded
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: AUTH=
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: (PLAIN|CRAM-MD5|DIGEST-MD5) set secret
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: DIGEST-MD5: failed .* later in exchange
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: STARTTLS=(server|client), .* verify=(OK|NO)
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: no secret in database$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: [[:alnum:]]+: [[:alnum:]]+: DSN: Return receipt$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: [[:alnum:]]+: collect: premature EOM: unexpected close$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: [[:alnum:]]+: collect: unexpected close on connection from (\[[0-9.]+\]|[._[:alnum:]-]+), sender=<[^>]+>$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: DIGEST-MD5 (server|client) step [[:alnum:]]+$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: [[:alnum:]]+: Milter (add|change|delete|message).*: .*$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ (sendmail|sm-(mta|msp|que))\[[0-9]+\]: [[:alnum:]]+\[[0-9]+\]:.*$
+IAD02-MONITOR01 sm-msp-queue.* to=logcheck\@revsw.com, ctladdr=logcheck.* delay=.* xdelay=.* mailer=relay.* stat=Sent
+sendmail.* gethostbyaddr\(172.31..* failed:
+IAD02-MONITOR01 sm-mta.* STARTTLS=client, relay=.*.google.com., version=TLSv1/SSLv3, verify=FAIL, cipher=ECDHE-RSA-AES128-GCM-SHA256, bits=128/128
+IAD02-MONITOR01 sm-msp-queue.* to=<sysadmin@revsw.com>, ctladdr=nagios.* delay=.* mailer=relay, .* stat=Sent
+mail.info: sendmail.* from=logcheck, .* relay=logcheck@localhost
+mail.info: sm-mta.* from=<logcheck@IAD02-MONITOR01.REVSW.NET>, .* relay=localhost
+mail.info: sendmail.* to=logcheck@revsw.com, .* stat=Sent
+mail.info: sm-mta.* to=<sysadmin@revsw.com>, .* stat=Sent
+mail.info: sm-mta.* STARTTLS=client, relay=
+mail.info: sm-mta.* to=<logcheck@revsw.com>, .* stat=Sent
+mail.info: sendmail.* from=nagios@IAD02-MONITOR01.REVSW.NET
+mail.info: sendmail.* from=<nagios@IAD02-MONITOR01.REVSW.NET
+mail.info: sm-mta.* to=.* stat=Deferred: Connection timed out with
+mail.info: sm-mta.* from=<nagios@IAD02-MONITOR01.REVSW.NET
+mail.info: sendmail.* to=<sysadmin@revsw.com>, .* stat=Sent 
+SJC02-BACKUP01 mail.info: sendmail.* from=backup@SJC02-BACKUP01.REVSW.NET, .* relay=backup@localhost
+SJC02-BACKUP01 mail.info: sm-mta.* from=<backup@SJC02-BACKUP01.REVSW.NET>, .* relay=localhost
+SJC02-BACKUP01 mail.info: sendmail.* relay=backup@localhost
+SJC02-BACKUP01 mail.info: sendmail.* to=backup, .* stat=Sent
+mail.info: sm-mta.* to=sysadmin@revsw.com, .* stat=Sent 
+mail.warning: sendmail.* gethostbyaddr.* failed:
+MONITOR01 mail.info: sendmail.* from=root@IAD02-MONITOR01.REVSW.NET, size=.* relay=root@localhost
+MONITOR01 mail.info: sm-mta.* proto=ESMTP, daemon=MTA-v4, relay=localhost
+IAD02-MONITOR01 mail.info: sendmail.* to=logcheck@revsw.com, delay=.* stat=queued
+IAD02-MONITOR01 mail.info: sm-msp-queue.* to=.*@revsw.com, .* stat=Sent

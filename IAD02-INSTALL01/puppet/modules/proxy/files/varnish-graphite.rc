@@ -1,0 +1,56 @@
+#! /bin/sh
+#
+# This file is managed by Rev Puppet service as described on Wiki
+# page https://revwiki.atlassian.net/wiki/display/OP/Puppet+Centralized+Configuration+Management+System
+# Please don't modify the file on the Puppet client server since your changes will be overwritten on the next
+# Puppet agent run on the server.
+#
+
+### BEGIN INIT INFO
+# Provides:          varnish-graphite
+# Required-Start:    $local_fs $remote_fs $network $varnish
+# Required-Stop:     $local_fs $remote_fs $network $varnish
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start Graphite data reporting daemon for local Varnish process
+### END INIT INFO
+
+# Source function library
+. /lib/lsb/init-functions
+
+NAME=varnish-graphite
+
+
+case "$1" in
+    start)
+        if [ ! -z "`ps -ef|grep /opt/scripts/varnish-graphite.py |grep -v grep`" ]; then
+                log_daemon_msg "Process $NAME is already running"
+        else
+                log_daemon_msg "Starting process $NAME"
+                /opt/scripts/varnish-graphite.py -H graphite.revsw.net -P `hostname -s`.varnish > /dev/null 2>&1 &
+        fi
+        ;;
+    stop)
+        log_daemon_msg "Stopping process $NAME" "$NAME"
+        ps -ef|grep /opt/scripts/varnish-graphite.py |grep -v grep | awk '{print $2}' |  while read p; do kill -9 $p; done
+        ;;
+    restart|force-reload)
+        $0 stop
+        $0 start
+        ;;
+    status)
+        if [ ! -z "`ps -ef|grep /opt/scripts/varnish-graphite.py |grep -v grep`" ]; then
+                log_daemon_msg "Process $NAME is already running"
+		exit 0
+        else	
+                log_daemon_msg "Process $NAME is not running"
+		exit 4
+	fi
+	;;
+    *)
+        log_success_msg "Usage: $0 {start|stop|restart|force-reload|status}"
+        exit 1
+        ;;
+esac
+
+exit 0

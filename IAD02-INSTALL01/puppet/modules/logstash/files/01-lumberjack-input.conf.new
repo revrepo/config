@@ -1,0 +1,83 @@
+#
+# This file is managed by Rev Puppet service as described on Wiki
+# page https://revwiki.atlassian.net/wiki/display/OP/Puppet+Centralized+Configuration+Management+System
+# Please don't modify the file on the Puppet client server since your changes will be overwritten on the next
+# Puppet agent run on the server.
+#
+
+input {
+  lumberjack {
+    port => 5001
+    type => "apache_json"
+    codec => "json"
+    ssl_certificate => "/etc/logstash/logstash-forwarder.crt"
+    ssl_key => "/etc/logstash/logstash-forwarder.key"
+  }
+}
+
+filter {
+
+  if [clientip]  {
+    geoip {
+      source => "clientip"
+      target => "geoip"
+      fields => [ "country_code2", "region_name" ]
+    }
+  }
+
+  if [agent] != "-" and [agent] != "" {
+      useragent {
+         add_tag => [ "UA" ]
+         source => "agent"
+      }
+  }
+
+  if "UA" in [tags] {
+      if [device] == "Other" { mutate { remove_field => "device" } }
+      if [name]   == "Other" { mutate { remove_field => "name" } }
+      if [os]     == "Other" { mutate { remove_field => "os" } }
+      if [os_name]     == "Other" { mutate { remove_field => "os_name" } }
+  }
+
+  if [referer] == "-" { mutate { remove_field => "referer" } }
+  if [agent] == "-" { mutate { remove_field => "agent" } }
+  if [cont_type] == "-" { mutate { remove_field => "cont_type" } }
+  if [cont_enc] == "-" { mutate { remove_field => "cont_enc" } }
+  if [error_log_id] == "-" { mutate { remove_field => "error_log_id" } }
+  if [range] == "-" { mutate { remove_field => "range" } }
+  if [c_range] == "-" { mutate { remove_field => "c_range" } }
+  if [upstream_time] == "-" { mutate { remove_field => "upstream_time" } }
+
+  if [FBT_mu] == "-" { mutate { remove_field => "FBT_mu" } }
+  if [FBT_mu] { mutate { convert => [ "FBT_mu", "integer" ] } }
+  mutate { remove_field => "file" }
+  mutate { remove_field => "offset" }
+  mutate { remove_field => "cookie" }
+
+  mutate { remove_field => "pid" }
+  mutate { remove_field => "clientport" }
+
+  clone {
+    add_tag => ["short"]
+    clones => ["apache_json_short"]
+    remove_field => [ "agent", "cont_type", "request", "clientip", "type", "referer", "protocol", "range", "c_range", "cache_age", "cache_ttl", "cont_enc" ]
+  }
+
+}
+
+output {
+        if "short" in [tags] {
+          elasticsearch {
+            host => ["IAD02-ES01.REVSW.NET"]
+            cluster => "elasticsearch"
+            protocol => "node"
+	    bind_port => 9400
+          }
+        } else {
+          elasticsearch {
+            host => ["LGA02-ESURL01.REVSW.NET"]
+            cluster => "esurl"
+            protocol => "http"
+          }
+        }
+}

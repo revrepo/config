@@ -1,0 +1,62 @@
+^\w{3} [ :[:digit:]]{11} [._[:alnum:]-]+ nagios(2|3)?: Auto-save of retention data completed successfully\.$
+^\w{3} [ :[:digit:]]{11} [._[:alnum:]-]+ nagios(2|3)?: Caught SIGHUP, restarting\.\.\.$
+^\w{3} [ :[:digit:]]{11} [._[:alnum:]-]+ nagios(2|3)?: EXTERNAL COMMAND: (ADD_SVC_COMMENT|ACKNOWLEDGE_SVC_PROBLEM);[._[:alnum:]-]+;[[:alnum:]]+;[[:digit:]]+;([[:alnum:]]+;)?.*$
+^\w{3} [ :[:digit:]]{11} [._[:alnum:]-]+ nagios(2|3)?: EXTERNAL COMMAND: (ENABLE|DISABLE)_(HOST_|HOST_SVC_|SVC_)?NOTIFICATIONS;[._[:alnum:]-]+(;[^;]+)?$
+^\w{3} [ :[:digit:]]{11} [._[:alnum:]-]+ nagios(2|3)?: EXTERNAL COMMAND: PROCESS_SERVICE_CHECK_RESULT;[._[:alnum:]-]+;[^;]+;[[:digit:]]+;.*$
+^\w{3} [ :[:digit:]]{11} [._[:alnum:]-]+ nagios(2|3)?: EXTERNAL COMMAND: SCHEDULE_HOST_DOWNTIME;[._[:alnum:]-]+;[[:digit:];]+;[[:alnum:]]+;.*$
+^\w{3} [ :[:digit:]]{11} [._[:alnum:]-]+ nagios(2|3)?: CURRENT HOST STATE: [._[:alnum:]-]+;UP;(SOFT|HARD);[[:digit:]];.*$
+^\w{3} [ :[:digit:]]{11} [._[:alnum:]-]+ nagios(2|3)?: CURRENT SERVICE STATE: [._[:alnum:]-]+;[^;]+;(WARNING|OK);(SOFT|HARD);[[:digit:]];.*$
+^\w{3} [ :[:digit:]]{11} [._[:alnum:]-]+ nagios(2|3)?: HOST ALERT: [._[:alnum:]-]+;(DOWN|UP|UNREACHABLE);(SOFT|HARD);.*$
+^\w{3} [ :[:digit:]]{11} [._[:alnum:]-]+ nagios(2|3)?: HOST DOWNTIME ALERT: [._[:alnum:]-]+;(STARTED|STOPPED);.*$
+^\w{3} [ :[:digit:]]{11} [._[:alnum:]-]+ nagios(2|3)?: HOST EVENT HANDLER: [._[:alnum:]-]+;(UP|DOWN);(SOFT|HARD);[[:digit:]]+;.*$
+^\w{3} [ :[:digit:]]{11} [._[:alnum:]-]+ nagios(2|3)?: HOST NOTIFICATION: [._[:alnum:]-]+;[._[:alnum:]-]+;(DOWN|UP|UNREACHABLE);.*$
+^\w{3} [ :[:digit:]]{11} [._[:alnum:]-]+ nagios(2|3)?: HOST FLAPPING ALERT: [._[:alnum:]-]+;(STARTED|STOPPED); Host appears to have (started|stopped) flapping \([[:digit:].]+% change (<|>=?) [.[:digit:]]+% threshold\)$
+^\w{3} [ :[:digit:]]{11} [._[:alnum:]-]+ nagios(2|3)?: LOG ROTATION: (DAILY|WEEKLY|MONTHLY)$
+^\w{3} [ :[:digit:]]{11} [._[:alnum:]-]+ nagios(2|3)?: LOG VERSION: 2\.[[:digit:]]$
+^\w{3} [ :[:digit:]]{11} [._[:alnum:]-]+ nagios(2|3)?: Nagios (1|2)\.[[:digit:]] starting\.\.\. \(PID=[[:digit:]]+\)$
+^\w{3} [ :[:digit:]]{11} [._[:alnum:]-]+ nagios(2|3)?: SERVICE ALERT: [._[:alnum:]-]+;[^;]+;(CRITICAL|WARNING|OK|UNKNOWN);(SOFT|HARD);.*$
+^\w{3} [ :[:digit:]]{11} [._[:alnum:]-]+ nagios(2|3)?: SERVICE ALERT: [[:alnum:]]+;PING;(WARNING|OK).*$
+^\w{3} [ :[:digit:]]{11} [._[:alnum:]-]+ nagios(2|3)?: SERVICE FLAPPING ALERT: [._[:alnum:]-]+;[._[:alnum:]-]+;(STARTED|STOPPED); Service appears to have (started|stopped) flapping \([[:digit:].]+% change (<|>=?) [.[:digit:]]+% threshold\)$
+^\w{3} [ :[:digit:]]{11} [._[:alnum:]-]+ nagios(2|3)?: SERVICE NOTIFICATION: [._[:alnum:]-]+;[._[:alnum:]-]+;[^;]+;(ACKNOWLEDGEMENT \()?(CRITICAL|WARNING|OK|UNKNOWN)(\))?;.*$
+^\w{3} [ :[:digit:]]{11} [._[:alnum:]-]+ nagios(2|3)?: SERVICE NOTIFICATION: [._[:alnum:]-]+;[._[:alnum:]-]+;[^;]+;CRITICAL;.*$
+^\w{3} [ :[:digit:]]{11} [._[:alnum:]-]+ nagios(2|3)?: Warning: Host '[[:alnum:]]+' has no services associated with it\!$
+^\w{3} [ :[:digit:]]{11} [._[:alnum:]-]+ nagios(2|3)?: Warning: The results of service '[ [:alnum:][:punct:]]+' on host '[._[:alnum:]-]+' are stale by [[:digit:]]+ seconds \(threshold=[[:digit:]]+ seconds\).  I'm forcing an immediate check of the service\.$
+IAD02-MONITOR01 nagios: Warning: Return code of 255 for check of service .* on host .* was out of bounds.
+IAD02-MONITOR01 nagios: SERVICE FLAPPING ALERT: .* Service appears to have started flapping
+MONITOR.* nagios: message repeated .* times: \[ Auto-save of retention data completed successfully.\]
+.*-MONITOR.* nagios: CURRENT SERVICE STATE
+nagios: SERVICE FLAPPING ALERT:
+IAD02-MONITOR01 nagios: Event broker module 'NERD' deinitialized successfully.
+IAD02-MONITOR01 nagios: Nagios .* starting
+IAD02-MONITOR01 nagios: Local time is
+IAD02-MONITOR01 nagios: qh: Socket '/usr/local/nagios/var/rw/nagios.qh' successfully initialized
+IAD02-MONITOR01 nagios: qh: core query handler registered
+IAD02-MONITOR01 nagios: nerd: Channel hostchecks registered successfully
+IAD02-MONITOR01 nagios: nerd: Channel servicechecks registered successfully
+IAD02-MONITOR01 nagios: nerd: Channel opathchecks registered successfully
+IAD02-MONITOR01 nagios: nerd: Fully initialized and ready to rock!
+IAD02-MONITOR01 nagios: wproc:
+IAD02-MONITOR01 nagios: EXTERNAL COMMAND: SCHEDULE_FORCED_SVC_CHECK
+IAD02-MONITOR01 nagios: Warning: Check of service .* on host .* timed out after
+IAD02-MONITOR01 nagios: Warning: Check of host .* timed out after .* seconds
+IAD02-MONITOR01 nagios: Warning: Service performance data file processing command '/usr/local/nagiosgraph/bin/insert.pl' timed out after 5 seconds
+nrpe.* Connection has taken too long to establish. Exiting
+user.info: nagios: SERVICE ALERT:
+user.info: nagios: Auto-save of retention data completed successfully.
+user.info: nagios: LOG ROTATION: DAILY
+user.info: nagios: LOG VERSION: 2.0
+user.info: nagios: CURRENT HOST STATE:
+MONITOR01 user.info: nagios: SERVICE NOTIFICATION:
+user.info: nagios: HOST NOTIFICATION:
+MONITOR01 user.info: nagios: wproc:
+MONITOR01 user.info: nagios: HOST ALERT:
+user.notice: /usr/local/nagios/libexec/check_revsw_purge_api_workflow.sh
+user.notice: /usr/local/nagios/libexec/check_revsw_rum_workflow.sh
+user.info: nagios: Warning: Check of host .* timed out after .* seconds
+MONITOR01 user.info: nagios: Warning: Check of service .* on host .* timed out after
+MONITOR01 user.info: nagios: EXTERNAL COMMAND: SCHEDULE_FORCED_.*_CHECK
+MONITOR01 daemon.debug: sec.* Writing event
+user.info: nagios: Warning: Return code of .* for check of service .* was out of bounds.
+MONITOR01 user.info: nagios: Warning: Service .* on host .* has a notification interval less than its check interval!  Notifications are only re-sent after checks are made, so the effective notification interval will be that of the check interval.
+IAD02-MONITOR01 user.info: nagios: EXTERNAL COMMAND: ACKNOWLEDGE_SVC_PROBLEM.*Acknowledged by sysadmin@revsw.com via OpsGenie
+DEBUG: .*"method":"GET","clientIp":"127.0.0.1","parameters.*User-Agent":"check_http/v2.0.2 \(nagios-plugins

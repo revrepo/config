@@ -1,0 +1,2 @@
+systemd-logind.* Removed session
+systemd-login.* New session .* of user

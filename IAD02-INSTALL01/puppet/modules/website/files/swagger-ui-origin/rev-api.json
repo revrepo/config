@@ -1,0 +1,187 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This page provides a detailed description of the Rev API mechanism, including all methods, end points, parameters and responses. Using registered Rev API credentials, you can easily try the described API functions directly from the page.\n\nAPI requests and responses are in JSON (JavaScript Object Notation) format by default.\n\nThe Rev API supports authentication with the same users email and password used to access the\n  Rev customer portal. Your API calls must include an HTTP Basic Authentication header (RFC 2617) generated\n  from your user email and password. All modern browsers, as well as command line tools such as \"curl\"\n  and \"wget\" support basic authentication. This is secure, since all communication with the Rev\n  API service happens over SSL/HTTPS.\n  \n  Please use support_at_revsw.com to ask questions about the Rev API and this documentation.\n",
+        "version": "1.0.0",
+        "title": "Rev API Documentation",
+        "termsOfService": "http://www.revsw.com/"
+    },
+    "host": "api.revsw.net",
+    "basePath": "/",
+    "schemes": [
+        "https"
+    ],
+    "paths": {
+        "/purge": {
+            "post": {
+                "tags": [
+                    "purge"
+                ],
+                "summary": "Purge specified objects from Rev edge servers",
+                "description": "This function can be used to remove cached objects from Rev edge servers. The operation is asynchrnous - first you need to submit a purge request using the /purge method, then receive and remember the request ID, and after that use the /checkStatus method to control the status and completion of the purge process.\nThere are times when you may need to purge specific types of files (e.g *.png) under a directory or URL path (e.g /images). It is inefficient to do this one file at a time. The effort substantially increases when files are nested in sub-directories (e.g /images/today/). Rev has built-in support for wildcards and regular expressions with recursion.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "A description of object(s) to be purged",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Purge"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Status"
+                        }
+                    },
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                },
+                "security": [
+                    {
+                        "basic": []
+                    }
+                ]
+            }
+        },
+        "/checkStatus": {
+            "post": {
+                "tags": [
+                    "purge"
+                ],
+                "summary": "Check the status of a previously submitted purge request.",
+                "description": "No authentication is required for the API call, but you need to specify a unique purge request ID received after the /purge call (field \"request_id\").",
+                "operationId": "checkStatus",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Details of the purge request",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/checkStatus"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/checkStatusResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                },
+                "security": [
+                    {
+                        "basic": []
+                    }
+                ]
+            }
+        }
+    },
+    "securityDefinitions": {
+        "basic": {
+            "type": "basic"
+        }
+    },
+    "definitions": {
+        "Purge": {
+            "properties": {
+                "version": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Should be always \"1\""
+                },
+                "domainName": {
+                    "type": "string",
+                    "description": "Domain name to purge the resources for (as registered with Rev)"
+                },
+                "purges": {
+                    "type": "array",
+                    "description": "An array of resources that needs to be purged",
+                    "items": {
+                        "$ref": "#/definitions/Urls"
+                    }
+                }
+            }
+        },
+        "Url": {
+            "properties": {
+                "is_wildcard": {
+                    "type": "boolean",
+                    "description": "If the value is true, the expression is treated as a wildcard. If the value is false we treats the expression as regular expression"
+                },
+                "expression": {
+                    "type": "string",
+                    "description": "A wildcard expression or regex pointing to the content. The path must be relative to the domain root e.g., (1) \"/example/themes/theme.js\" (2) \"*.png\" (3) \"**\""
+                }
+            }
+        },
+        "Urls": {
+            "properties": {
+                "url": {
+                    "$ref": "#/definitions/Url"
+                }
+            }
+        },
+        "Status": {
+            "properties": {
+                "status": {
+                    "type": "integer",
+                    "description": "Operation status code"
+                },
+                "request_id": {
+                    "type": "string",
+                    "description": "Rev purge request ID to be used in /checkStatus function to check the status of the submitted purge request"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Free text description of the operation status code"
+                }
+            }
+        },
+        "checkStatus": {
+            "properties": {
+                "req_id": {
+                    "type": "string",
+                    "description": "The \"req_id\" field from the response of previous /purge call"
+                }
+            }
+        },
+        "checkStatusResponse": {
+            "properties": {
+                "req_id": {
+                    "type": "string",
+                    "description": "The purge request ID the response is reporting about"
+                },
+                "status": {
+                    "type": "integer",
+                    "description": "Purge request operation status code"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Free text description of the purge status"
+                }
+            }
+        }
+    }
+}

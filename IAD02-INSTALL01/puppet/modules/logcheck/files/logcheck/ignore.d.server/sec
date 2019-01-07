@@ -1,0 +1,4 @@
+MONITOR01 daemon.info: sec.* Spawning shell command
+MONITOR01 daemon.debug: sec.* Child .* created for command
+MONITOR01 daemon.notice: sec.* Input file /var/log/messages has been recreated
+MONITOR01 daemon.notice: sec.* Shuffled /var/log/messages, reopening and processing from the start

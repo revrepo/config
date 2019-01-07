@@ -1,0 +1,3 @@
+nrpe.* Error: Could not complete SSL handshake.
+daemon.err: nrpe.* Could not read request from client, bailing out...
+daemon.info: nrpe.* INFO: SSL Socket Shutdown.

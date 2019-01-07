@@ -1,0 +1,577 @@
+#
+# This file is managed by Rev Puppet service as described on Wiki
+# page https://revwiki.atlassian.net/wiki/display/OP/Puppet+Centralized+Configuration+Management+System
+# Please don't modify the file on the Puppet client server since your changes will be overwritten on the next
+# Puppet agent run on the server.
+#
+
+{% macro _for_each_rule(site) -%}
+{%  for rule in site.CACHING_RULES %}
+{%    set url_re = rule.url.value if not rule.url.is_wildcard else rule.url.value|wildcard_to_regex %}
+{{    caller(rule, url_re) }}
+{%  endfor %}
+{%- endmacro %}{# _for_each_rule(site) #}
+
+
+{% macro _for_each_site(cond_var) -%}
+{% set first=True %}
+{% for site in sites %}
+{%   if site[cond_var] %}
+  {{ "if" if first else "elsif" }} (req.http.host == "{{site.SERVER_NAME}}") {
+{{     caller(site) }}
+  }
+{%     set first=False %}
+{%   endif %}{# site[cond_var] #}
+{% endfor %}
+{%- endmacro %}{# _for_each_site(cond_var) #}
+
+
+{% set enabled_sites_count = sites|selectattr("ENABLE_CACHE")|list|length %}
+# Number of cached sites: {{ enabled_sites_count }}
+
+{% macro _site_cookies_recv(site) %}
+    ################################### Cookies handling #########################################
+{%  call (rule, url_re) _for_each_rule(site) %}
+{%    if rule.cookies.override %}
+    if (req.url ~ "{{url_re}}") {
+      # Should we remove ignored cookies from request/response ?
+      var.set_bool("delreq_cook", {{ "true" if rule.cookies.remove_ignored_from_request else "false" }});
+      var.set_bool("delrsp_cook", {{ "true" if rule.cookies.remove_ignored_from_response else "false" }});
+{%      if rule.cookies.ignore_all %}
+      # Ignore ALL cookies.
+      var.set_bool("ignall_cook", true);
+      var.unset("ignoreq_cook");
+      var.unset("keepreq_cook");
+      var.unset("rgxdelrsp_cook");
+{%      elif rule.cookies.keep_or_ignore_list %}
+{%        if rule.cookies.list_is_keep %}
+      # Ignore all cookies EXCEPT these.
+      var.set_bool("ignall_cook", false);
+      var.unset("ignoreq_cook");
+      var.set_string_literal("keepreq_cook", "{{rule.cookies.keep_or_ignore_list|join(",")}}");
+      # This will be matched in vcl_fetch when removing Set-Cookie headers.
+      # We want to remove all Set-Cookie instances that match a name EXCEPT these.
+      var.set_string_literal("rgxdelrsp_cook", "^(?!({{rule.cookies.keep_or_ignore_list|join("|")}})=)");
+{%        else %}{# not rule.cookies.list_is_keep #}
+      # Ignore these cookies in the list and hash all others.
+      var.set_bool("ignall_cook", false);
+      var.unset("keepreq_cook");
+      var.set_string_literal("ignoreq_cook", "{{rule.cookies.keep_or_ignore_list|join(",")}}");
+      # This will be matched in vcl_fetch when removing Set-Cookie headers.
+      # We want to remove all Set-Cookie instances that match a name among these.
+      var.set_string_literal("rgxdelrsp_cook", "^({{rule.cookies.keep_or_ignore_list|join("|")}})=");
+{%        endif %}{# rule.cookies.list_is_keep #}
+{%      endif %}{# rule.cookies.ignore_all #}
+    }
+{%    endif %}{# rule.cookies.override #}
+{%- endcall %}{# _for_each_rule #}
+{%  if site.DEBUG_MODE %}
+    chromelogger.log("recv " + req.xid + ": delreq_cook=" + var.get_bool("delreq_cook"));
+    chromelogger.log("recv " + req.xid + ": delrsp_cook=" + var.get_bool("delrsp_cook"));
+    chromelogger.log("recv " + req.xid + ": ignall_cook=" + var.get_bool("ignall_cook"));
+    chromelogger.log("recv " + req.xid + ": ignoreq_cook=" + var.get_bool("ignoreq_cook"));
+    chromelogger.log("recv " + req.xid + ": keepreq_cook=" + var.get_bool("keepreq_cook"));
+    chromelogger.log("recv " + req.xid + ": rgxdelrsp_cook=" + var.get_string("delreq_cook"));
+{%  endif %}
+    ################################# End cookies handling #######################################
+{%- endmacro %}{# _site_cookies_recv(site) #}
+
+
+{% macro _site_fetch(site) %}
+    ################################ Caching override ###################################
+    var.set_duration("new_ttl", 0s);
+{%  call (rule, url_re) _for_each_rule(site) %}
+{%    if rule.edge_caching.override_origin or rule.browser_caching.override_edge %}
+    if (req.url ~ "{{url_re}}") {
+{%      if rule.edge_caching.override_origin %}
+      # Override caching time (0 means "don't cache").
+{%        if rule.edge_caching.override_no_cc|default(False) %}
+      var.set_duration("new_ttl", {{rule.edge_caching.new_ttl}}s);
+{%        else %}{# don't override if no Cache-Control present (!rule.edge_caching.override_no_cc) #}
+      # Only override if object is cacheable, as specified by the origin.
+      if (var.get_bool("has_cc")) {
+        var.set_duration("new_ttl", {{rule.edge_caching.new_ttl}}s);
+      }
+{%        endif %}{# rule.edge_caching.override_no_cc #}
+{%      endif %}
+
+{%      if rule.browser_caching.override_edge %}
+      # Override browser caching; don't use either edge or origin value.
+{%        if rule.browser_caching.new_ttl == 0 %}
+      set beresp.http.Cache-Control = "no-cache, max-age=0";
+{%        else %}
+      set beresp.http.Cache-Control = "public, max-age={{rule.browser_caching.new_ttl}}{% if rule.browser_caching.force_revalidate %}, must-revalidate{% endif %}";
+{%        endif %}
+{%      else %}{# rule.edge_caching.override_origin #}
+      # Override browser caching; use edge value.
+{%        if rule.edge_caching.new_ttl == 0 %}
+      set beresp.http.Cache-Control = "no-cache, max-age=0";
+{%        else %}
+      set beresp.http.Cache-Control = "public, max-age={{rule.edge_caching.new_ttl}}";
+{%        endif %}
+{%      endif %}{# rule.browser_caching.override_edge #}
+    }
+{%    endif %}{# rule.edge_caching.override_origin or rule.browser_caching.override_edge #}
+{%- endcall %}{# _for_each_rule #}
+    if (var.get_duration("new_ttl") > 0s) {
+      set beresp.ttl = var.get_duration("new_ttl");
+      var.set_bool("del_age", true);
+    }
+{%  if site.DEBUG_MODE %}
+    chromelogger.log("fetch " + req.xid + ": new_ttl=" + var.get_duration("new_ttl"));
+    chromelogger.log("fetch " + req.xid + ": del_age=" + var.get_bool("del_age"));
+{%  endif %}
+    ############################## End caching override #################################
+{%- endmacro %}{# _site_fetch(site) #}
+
+import cookie;
+import timers;
+import var;
+import header;
+import chromelogger;
+
+# Location of BP.
+backend behttp {
+  .host = "127.0.0.1";
+  .port = "9080";
+}
+backend behttps {
+  .host = "127.0.0.1";
+  .port = "9443";
+}
+
+# Block 2: Define a key based on the User-Agent which can be used for hashing.
+# Also set the PS-CapabilityList header for PageSpeed server to respect.
+sub generate_user_agent_based_key {
+  # Define placeholder PS-CapabilityList header values for large and small
+  # screens with no UA dependent optimizations. Note that these placeholder
+  # values should not contain any of ll, ii, dj, jw or ws, since these
+  # codes will end up representing optimizations to be supported for the
+  # request.
+  set req.http.default_ps_capability_list_for_large_screens = "LargeScreen.SkipUADependentOptimizations:";
+  set req.http.default_ps_capability_list_for_small_screens = "TinyScreen.SkipUADependentOptimizations:";
+
+  # As a fallback, the PS-CapabilityList header that is sent to the upstream
+  # PageSpeed server should be for a large screen device with no browser
+  # specific optimizations.
+  set req.http.PS-CapabilityList = req.http.default_ps_capability_list_for_large_screens;
+
+  # Cache-fragment 1: Desktop User-Agents that support lazyload_images (ll),
+  # inline_images (ii) and defer_javascript (dj).
+  # Note: Wget is added for testing purposes only.
+  if (req.http.User-Agent ~ "(?i)Chrome/|Firefox/|MSIE |Safari|Wget") {
+    set req.http.PS-CapabilityList = "ll,ii,dj:";
+  }
+  # Cache-fragment 2: Desktop User-Agents that support lazyload_images (ll),
+  # inline_images (ii), defer_javascript (dj), webp (jw) and lossless_webp
+  # (ws).
+  if (req.http.User-Agent ~
+      "(?i)Chrome/[2][3-9]+\.|Chrome/[[3-9][0-9]+\.|Chrome/[0-9]{3,}\.") {
+    set req.http.PS-CapabilityList = "ll,ii,dj,jw,ws:";
+  }
+  # Cache-fragment 3: This fragment contains (a) Desktop User-Agents that
+  # match fragments 1 or 2 but should not because they represent older
+  # versions of certain browsers or bots and (b) Tablet User-Agents that
+  # on all browsers and use image compression qualities applicable to large
+  # screens. Note that even Tablets that are capable of supporting inline or
+  # webp images, e.g. Android 4.1.2, will not get these advanced
+  # optimizations.
+  if (req.http.User-Agent ~ "(?i)Firefox/[1-2]\.|MSIE [5-8]\.|bot|Yahoo!|Ruby|RPT-HTTPClient|(Google \(\+https\:\/\/developers\.google\.com\/\+\/web\/snippet\/\))|Android|iPad|TouchPad|Silk-Accelerated|Kindle Fire") {
+    set req.http.PS-CapabilityList = req.http.default_ps_capability_list_for_large_screens;
+  }
+  # Cache-fragment 4: Mobiles and small screen Tablets will use image compression
+  # qualities applicable to small screens, but all other optimizations will be
+  # those that work on all browsers.
+  if (req.http.User-Agent ~ "(?i)Mozilla.*Android.*Mobile*|iPhone|BlackBerry|Opera Mobi|Opera Mini|SymbianOS|UP.Browser|J-PHONE|Profile/MIDP|portalmmm|DoCoMo|Obigo|Galaxy Nexus|GT-I9300|GT-N7100|HTC One|Nexus [4|7|S]|Xoom|XT907") {
+    set req.http.PS-CapabilityList = req.http.default_ps_capability_list_for_small_screens;
+  }
+  # Remove placeholder header values.
+  remove req.http.default_ps_capability_list_for_large_screens;
+  remove req.http.default_ps_capability_list_for_large_screens;
+}
+
+{% if enabled_sites_count -%}
+sub start_cookies_recv {
+  # Start with empty per-request cookie rules.
+  # We'll change these vars in each rule that matches the URL.
+  var.unset("ignall_cook");
+  var.unset("ignoreq_cook");
+  var.unset("keepreq_cook");
+  var.unset("delreq_cook");
+  var.unset("rgxdelrsp_cook");
+  var.unset("delrsp_cook");
+}
+
+sub end_cookies_recv {
+  # We will hash the cookies in X-Rev-Cookie-Hash in vcl_hash.
+  # By default, ignore all cookies.
+  unset req.http.X-Rev-Cookie-Hash;
+  if (!var.get_bool("ignall_cook")) {
+    if (var.get_string("keepreq_cook")) {
+      # Ignore all cookies EXCEPT these.
+      cookie.filter_except(var.get_string("keepreq_cook"));
+      set req.http.X-Rev-Cookie-Hash = cookie.get_string();
+    }
+    elsif (var.get_string("ignoreq_cook")) {
+      # Ignore all these cookies and keep all the rest.
+      cookie.filter_only(var.get_string("ignoreq_cook"));
+      set req.http.X-Rev-Cookie-Hash = cookie.get_string();
+    }
+
+    # Restore the recv ROUTEID cookie
+    if (var.get_string("RROUTEID") && !cookie.isset("ROUTEID")) {
+      cookie.set("ROUTEID", var.get_string("RROUTEID"));
+    }
+  }
+
+  # If we need to remove ignored cookies from the request, overwrite the Cookie header.
+  # Otherwise, pass it unchanged.
+  if (var.get_bool("delreq_cook")) {
+    set req.http.Cookie = cookie.get_string();
+  }
+}
+
+sub start_cookies_fetch {
+  # Start with a clean state.
+  var.unset("del_age");
+
+  # Remove some or all Set-Cookie headers, if so decided in vcl_recv.
+  if (var.get_bool("delrsp_cook")) {
+    # Save returned ROUTEID cookie; will restore it in vcl_deliver()
+    var.set_string_allow_null("FROUTEID", header.get(beresp.http.Set-Cookie, "^ROUTEID="));
+
+    if (var.get_bool("ignall_cook")) {
+      # Remove all cookies.
+      unset beresp.http.Set-Cookie;
+    }
+    else if (var.get_string("rgxdelrsp_cook")) {
+      # Remove only cookies that match the regex set in vcl_recv.
+      header.remove(beresp.http.Set-Cookie, var.get_string("rgxdelrsp_cook"));
+      header.remove(beresp.http.Set-Cookie, "^ROUTEID=");
+    }
+  }
+}
+{%- endif %}{# enabled_sites_count #}
+
+sub vcl_init {
+  timers.unit("microseconds");
+}
+
+sub vcl_hash {
+  # Restore original X-Forwarded-For
+  set req.http.X-Forwarded-For = req.http.X-Forwarded-For-orig;
+  unset req.http.X-Forwarded-For-orig;
+
+  # Include User-Agent in hash if set
+{% call (site) _for_each_site("INCLUDE_USER_AGENT") %}
+    hash_data(req.http.PS-CapabilityList);
+{%- endcall %}{# _for_each_site("INCLUDE_USER_AGENT") #}
+
+  # Hash cookies if allowed.
+  if (req.http.X-Rev-Cookie-Hash) {
+    hash_data(req.http.X-Rev-Cookie-Hash);
+  }
+
+{% call (site) _for_each_site("DEBUG_MODE") %}
+    chromelogger.log("hash " + req.xid + ": PS-CapabilityList: " + req.http.PS-CapabilityList);
+
+    # Log hash cookies (see above)
+    if (req.http.X-Rev-Cookie-Hash) {
+      chromelogger.log("hash " + req.xid + ": X-Rev-Cookie-Hash: " + req.http.X-Rev-Cookie-Hash);
+    }
+
+    # Log default VCL hash strings
+    chromelogger.log("hash " + req.xid + ": req.url: " + req.url);
+    if (req.http.host) {
+      chromelogger.log("hash " + req.xid + ": req.http.host: " + req.http.host);
+    } else {
+      chromelogger.log("hash " + req.xid + ": server.ip: " + server.ip);
+    }
+{%- endcall %}{# _for_each_site("DEBUG_MODE") #}
+}
+
+# Block 3a: Define ACL for purge requests
+{% for site in sites %}
+{% if site.ENABLE_CACHE %}
+acl purgehttp_{{site.SERVER_NAME|replace(".","_")|replace("-","_")}} {
+  # Purge requests are only allowed from localhost.
+  "localhost";
+  "127.0.0.1";
+{% for co in site.CONTENT_OPTIMIZERS_HTTP %}
+  "{{co}}";
+{% endfor %}
+}
+acl purgehttps_{{site.SERVER_NAME|replace(".","_")|replace("-","_")}} {
+  # Purge requests are only allowed from localhost.
+  "localhost";
+  "127.0.0.1";
+{% for co in site.CONTENT_OPTIMIZERS_HTTPS %}
+  "{{co}}";
+{% endfor %}
+}
+{% endif %}
+{% endfor %}
+
+# Block 3b: Issue purge when there is a cache hit for the purge request.
+sub vcl_hit {
+  if (req.request == "PURGE") {
+    purge;
+    error 200 "Purged.";
+  }
+  set req.http.X-Rev-obj-ttl = obj.ttl;
+  #set req.http.X-Rev-obj-grace = obj.grace;
+
+{% call (site) _for_each_site("DEBUG_MODE") %}
+    chromelogger.log("hit " + req.xid);
+{%- endcall %}{# _for_each_site("DEBUG_MODE") #}
+}
+
+# Block 3c: Issue a no-op purge when there is a cache miss for the purge
+# request.
+sub vcl_miss {
+  if (req.request == "PURGE") {
+     purge;
+     error 200 "Purged.";
+  }
+{% call (site) _for_each_site("DEBUG_MODE") %}
+    chromelogger.log("miss " + req.xid);
+{%- endcall %}{# _for_each_site("DEBUG_MODE") #}
+}
+
+# Block 4: In vcl_recv, on receiving a request, call the method responsible for
+# generating the User-Agent based key for hashing into the cache.
+sub vcl_recv {
+  if (server.port == 8080) {
+    set req.backend = behttp;
+  }
+  else {
+    set req.backend = behttps;
+  }
+
+  # Save original X-Forwarded-For, we don't want to let Varnish modify it.
+  # We'll restore it in vcl_hash.
+  set req.http.X-Forwarded-For-orig = req.http.X-Forwarded-For;
+  unset req.http.X-Forwarded-For;
+
+  # Remove shards from hostname
+  set req.http.Host = regsub(req.http.Host, "^s\d+-", "");
+
+  call generate_user_agent_based_key;
+
+  # Parse Cookie header into individual cookies.
+  cookie.parse(req.http.Cookie);
+
+  # Save the ROUTEID cookie; we need it for CO load balancing
+  var.set_string_allow_null("RROUTEID", cookie.get("ROUTEID"));
+
+  # Domain-specific configuration
+{% call (site) _for_each_site("ENABLE_CACHE") %}
+{%  if site.DEBUG_MODE %}
+    chromelogger.log("recv " + req.xid + ": " + req.request + " " + req.url);
+    chromelogger.log("recv " + req.xid + ": saved ROUTEID=" + var.get_string("RROUTEID"));
+{%  endif %}
+
+    # Adapt the default VCL logic: allow caching with cookies, don't add X-Forwarded-For.
+    if (req.request != "GET" &&
+      req.request != "HEAD" &&
+      req.request != "PUT" &&
+      req.request != "POST" &&
+      req.request != "TRACE" &&
+      req.request != "OPTIONS" &&
+      req.request != "DELETE") {
+        # Non-RFC2616 or CONNECT which is weird.
+{%  if site.DEBUG_MODE %}
+        chromelogger.log("recv " + req.xid + ": Non-standard request of type '" + req.request + "'; return PIPE");
+{%  endif %}
+        return (pipe);
+    }
+    if (req.request != "GET" && req.request != "HEAD") {
+        # We only deal with GET and HEAD by default
+{%  if site.DEBUG_MODE %}
+        chromelogger.log("recv " + req.xid + ": Unsupported request of type '" + req.request + "'; return PASS");
+{%  endif %}
+        return (pass);
+    }
+    if (req.http.Authorization /*|| req.http.Cookie*/) {
+        # Not cacheable by default
+{%  if site.DEBUG_MODE %}
+        chromelogger.log("recv " + req.xid + ": Request contains 'Authorization', we can't cache; return PASS");
+{%  endif %}
+        return (pass);
+    }
+
+    # Block 3d: Verify the ACL for an incoming purge request and handle it.
+    if (req.request == "PURGE") {
+      if ((server.port == 8080 && client.ip !~ purgehttp_{{site.SERVER_NAME|replace(".","_")|replace("-","_")}}) ||
+          (server.port == 8443 && client.ip !~ purgehttps_{{site.SERVER_NAME|replace(".","_")|replace("-","_")}})) {
+        error 405 "Not allowed.";
+      }
+      return (lookup);
+    }
+
+    call start_cookies_recv;
+
+{{  _site_cookies_recv(site) }}
+
+    call end_cookies_recv;
+{%- endcall %}{# _for_each_site("ENABLE_CACHE") #}
+
+  return (lookup);
+}
+
+# Block 6: Mark HTML uncacheable by caches beyond our control.
+sub vcl_fetch {
+  # Don't cache error pages.
+  if (beresp.status != 200) {
+    set beresp.ttl = 0s;
+{% call (site) _for_each_site("DEBUG_MODE") %}
+      chromelogger.log("fetch " + req.xid + ": Status " + beresp.status + " is not 200; don't cache; return DELIVER");
+{%- endcall %}
+    return (deliver);
+  }
+
+  # This can happen if a backend responds with a redirect and Content Encoding (which Varnish returns a 503 for)
+  if (beresp.http.Content-Encoding ~ "gzip" ) {
+    if (beresp.http.Content-Length == "0") {
+      unset beresp.http.Content-Encoding;
+    }
+  }
+
+  # Remove headers set by upstream Varnish instances.
+  unset beresp.http.X-Cache;
+  unset beresp.http.X-Cache-Hits;
+
+  if (beresp.http.Cache-Control || beresp.http.Expires) {
+    # We need this var later on
+    var.set_bool("has_cc", true);
+
+    # The Expires header is confusing and causes wrong misses.
+    # Max-Age takes precedence, so eliminate the confusion.
+    if (beresp.http.Cache-Control ~ "max-age") {
+      unset beresp.http.Expires;
+    }
+  }
+
+  # Domain-specific configuration
+{% call (site) _for_each_site("ENABLE_CACHE") %}
+{%  if site.DEBUG_MODE %}
+    if (var.get_string("FROUTEID")) {
+      chromelogger.log("fetch " + req.xid + ": saved " + var.get_string("FROUTEID"));
+    }
+    chromelogger.log("fetch " + req.xid + ": initial beresp.ttl=" + beresp.ttl);
+{%  endif %}
+
+    # Don't allow browser to cache PageSpeed-optimized HTML.
+    if (beresp.http.X-Mod-Pagespeed) {
+      if (beresp.http.Content-Type ~ "text/html") {
+        unset beresp.http.X-Mod-Pagespeed;
+
+        # Mark as "Hit-For-Pass" for the next 2 minutes
+        set beresp.ttl = 120 s;
+        set beresp.http.X-Rev-Hit-For-Pass = "YES";
+{%  if site.DEBUG_MODE %}
+        chromelogger.log("fetch " + req.xid + ": HTML response was optimized by PageSpeed; return HIT_FOR_PASS");
+{%  endif %}
+        return (hit_for_pass);
+      }
+
+      # Don't pass this header to the users; they don't have to know we use PS
+      unset beresp.http.X-Mod-Pagespeed;
+    }
+
+    # Domain-specific configuration
+    call start_cookies_fetch;
+
+{{  _site_fetch(site)}}
+
+{%  if site.DEBUG_MODE %}
+    chromelogger.log("fetch " + req.xid + ": delreq_cook=" + var.get_bool("delreq_cook"));
+    chromelogger.log("fetch " + req.xid + ": delrsp_cook=" + var.get_bool("delrsp_cook"));
+    chromelogger.log("fetch " + req.xid + ": ignall_cook=" + var.get_bool("ignall_cook"));
+    chromelogger.log("fetch " + req.xid + ": ignoreq_cook=" + var.get_bool("ignoreq_cook"));
+    chromelogger.log("fetch " + req.xid + ": keepreq_cook=" + var.get_bool("keepreq_cook"));
+    chromelogger.log("fetch " + req.xid + ": rgxdelrsp_cook=" + var.get_string("delreq_cook"));
+
+    chromelogger.log("fetch " + req.xid + ": final beresp.ttl=" + beresp.ttl);
+{%  endif %}
+
+  # Taken from default VCL, but without the Set-Cookie part.
+  if (beresp.ttl <= 0s ||
+    beresp.http.Vary == "*") {
+      # Mark as "Hit-For-Pass" for the next 2 minutes
+      set beresp.ttl = 120 s;
+      set beresp.http.X-Rev-Hit-For-Pass = "YES";
+{%  if site.DEBUG_MODE %}
+      if (beresp.ttl <= 0s) {
+        chromelogger.log("fetch " + req.xid + ": Uncacheable (beresp.ttl<=0); return HIT_FOR_PASS");
+      } else {
+        chromelogger.log("fetch " + req.xid + ": Has 'Vary: *'; return HIT_FOR_PASS");
+      }
+{%  endif %}
+      return (hit_for_pass);
+  }
+{%- endcall %}{# _for_each_site("ENABLE_CACHE") #}
+
+  set beresp.http.X-Rev-beresp-ttl = beresp.ttl;
+  #set beresp.http.X-Rev-beresp-grace = beresp.grace;
+
+  # Save original host and URL for smart ban.
+  set beresp.http.X-Rev-Host = req.http.Host;
+  set beresp.http.X-Rev-Url = req.url;
+
+  # Compress objects stored in the cache, if not already compressed by backend
+  if (beresp.http.Content-Type ~ "(image|audio|video|pdf|flash)") {
+    set beresp.do_gzip = false;
+  } else {
+    set beresp.do_gzip = true;
+  }
+
+  return (deliver);
+}
+
+# Block 7: Add a header for identifying cache hits/misses.
+sub vcl_deliver {
+  if (var.get_bool("del_age")) {
+    # We have played with Cache-Control in fetch; this means the object is new.
+    set resp.http.Age = "0";
+{% call (site) _for_each_site("DEBUG_MODE") %}
+      chromelogger.log("deliver " + req.xid + ": New object, reset age");
+{%- endcall %}{# _for_each_site("DEBUG_MODE") #}
+  }
+
+  # Restore the fetched ROUTEID cookie
+  if (var.get_string("FROUTEID")) {
+    header.append(resp.http.Set-Cookie, var.get_string("FROUTEID"));
+{% call (site) _for_each_site("DEBUG_MODE") %}
+      chromelogger.log("deliver " + req.xid + ": restored " + var.get_string("FROUTEID"));
+{%- endcall %}{# _for_each_site("DEBUG_MODE") #}
+  }
+
+  if (obj.hits > 0) {
+    set resp.http.X-Rev-Cache = "HIT";
+    set resp.http.X-Rev-Cache-Hits = obj.hits;
+    set resp.http.X-Rev-obj-ttl = req.http.X-Rev-obj-ttl;
+    #set resp.http.X-Rev-obj-grace = req.http.X-Rev-obj-grace;
+  } else {
+    set resp.http.X-Rev-Cache = "MISS";
+  }
+
+  # All times in microseconds.
+  # Time from "user connection accepted" to "request received and sent to a backend".
+  # Don't send this; it's meaningless for keepalive connections.
+  #set resp.http.X-Rev-UE-Req-Handle-Time = timers.req_handle_time();
+  # Time from "request received and sent to a backend" to "first byte of response received from backend".
+  set resp.http.X-Rev-BE-1st-Byte-Time = timers.req_response_time();
+  # Total processing time.
+  # THIS CAN'T BE CALCULATED - Varnish won't compute req_end() until after vcl_deliver,
+  # which is the last called VCL function.
+  #set resp.http.X-Rev-Total-Time = (timers.req_end() - timers.req_start()) * 1000;
+
+{% call (site) _for_each_site("DEBUG_MODE") %}
+    # Collect and encode all log entries
+    var.global_set_int("objcnt", var.global_get_int("objcnt") + 1);
+    chromelogger.log("deliver " + req.xid + ": Done, obj_count=" + var.global_get_int("objcnt"));
+    set resp.http.X-ChromeLogger-Data = chromelogger.collect();
+    set resp.http.X-Rev-Count = var.global_get_int("objcnt");
+{%- endcall %}{# _for_each_site("DEBUG_MODE") #}
+}

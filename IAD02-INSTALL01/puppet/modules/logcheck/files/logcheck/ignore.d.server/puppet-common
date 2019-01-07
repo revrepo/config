@@ -1,0 +1,37 @@
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ puppet-master\[[0-9]+\]: (Handled resources in|Resource comparison took|Searched for (host|resources|resource params and tags) in) [0-9.]+ seconds
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ puppet-master\[[0-9]+\]: Starting Puppet server version [.0-9]+$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ puppet-master\[[0-9]+\]: Compiled catalog for [._[:alnum:]-]+ in [.0-9]+ seconds$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ puppet-master\[[0-9]+\]: Caught TERM; shutting down$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ puppet-master\[[0-9]+\]: Shutting down$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ puppet-agent\[[0-9]+\]: Starting Puppet client version [.0-9]+$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ puppet-agent\[[0-9]+\]: getting config$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ puppet-agent\[[0-9]+\]: Caching configuration at [\/._[:alnum:]-]+$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ puppet-agent\[[0-9]+\]: Loaded state in [.0-9]+ seconds$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ puppet-agent\[[0-9]+\]: Calling puppetmaster.getconfig$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ puppet-agent\[[0-9]+\]: Retrieved configuration in [.0-9]+ seconds$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ puppet-agent\[[0-9]+\]: Starting configuration run$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ puppet-agent\[[0-9]+\]: Finished configuration run in [.0-9]+ seconds$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ puppet-agent\[[0-9]+\]: Caught (TERM|INT); shutting down$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ puppet-agent\[[0-9]+\]: Shutting down$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ puppet-agent\[[0-9]+\]: Restarting with .*$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ puppet-agent\[[0-9]+\]: Starting catalog run$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ puppet-agent\[[0-9]+\]: Finished catalog run in [.0-9]+ seconds$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ puppet-agent\[[0-9]+\]: Loading fact .*$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ puppet-agent\[[0-9]+\]: Ignoring cache$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ puppet-agent\[[0-9]+\]: Ignoring --listen on onetime run$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ puppet-agent\[[0-9]+\]: Retrieving plugins$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ puppet-agent\[[0-9]+\]:
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ puppet-master\[[0-9]+\]: Reopening log files$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ puppet-master\[[0-9]+\]: Compiled catalog for .*.revsw.net in environment production in .* seconds
+IAD02-INSTALL01 puppet-master.* Starting Puppet master version
+IAD02-INSTALL01 puppet-master.* YAML in network requests is deprecated and will be removed in a future version.
+IAD02-INSTALL01 puppet-master.* \(at /usr/lib/ruby/vendor_ruby/puppet/network/http/
+daemon.notice: puppet-master.* Compiled catalog for .*.revsw.net in environment production in .* seconds
+daemon.info: puppet-agent.*
+daemon.notice: puppet-agent.*
+daemon.warning: puppet-master.* YAML in network requests is deprecated and will be removed in a future version.
+daemon.warning: puppet-master.* \(at /usr/lib/ruby/vendor_ruby/puppet/network/http
+daemon.warning: puppet-agent.* Unable to fetch my node definition, but the agent run will continue:
+daemon.warning: puppet-agent.* execution expired
+INSTALL01 daemon.notice: puppet-master.* Starting Puppet master version
+KNA02-BP01 daemon.err: puppet-agent

@@ -1,0 +1,372 @@
+#!/usr/bin/perl -w
+
+#
+# This file is managed by Rev Puppet service as described on Wiki
+# page https://revwiki.atlassian.net/wiki/display/OP/Puppet+Centralized+Configuration+Management+System
+# Please don't modify the file on the Puppet client server since your changes will be overwritten on the next
+# Puppet agent run on the server.
+#
+
+# Copyright (c) 2009 
+# Written by Nathan Butcher
+#
+# Released under the GNU Public License
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# Version: 1.2
+#
+# This plugin does the following : 
+# Checks sysctl oid statistics in a Linux/BSD kernel!
+# The script is incredibly flexible, to the point of featuritis.
+#
+# Usage:   check_sysctl <sysctl oid> <comparison oid/self> [lt/gt/eq/ne <warn value/string><crit value/string>]
+#
+# Select a specific sysctl to monitor. The oid and it's value will be shown in
+# Nagios' report window.
+#
+# Example (simply show an oid value - will never produce an alert)
+# # check_sysctl kern.maxvnodes
+# OK kern.maxvnodes: 69131
+#
+# Optionally, you can specify if you wish to do a check of the value of your
+# selected oid. To do this, first you must add another oid to compare against
+# (or you may give the argument "self" to check against your initial oid's
+# value), and follow this with a modifier. The modifier will be used to make
+# a value comaprison.
+#
+# These modifiers can be one of the following:-
+#
+#   *** lt - less than, gt - greater than ***
+#
+# If checking against your primary oid's value, an a warning value is required
+# and an error is produced should the primary oid's value exceed the limit
+# of this value.
+#
+# Example (produce a warning when vfs.numvnodes exceeds 60000)
+# # check_sysctl vfs.numvnodes self gt 60000
+# WARNING vfs.numvnodes: 61039 (greater than 60000)
+#
+# When checking against another oid's value, the warning values will increase
+# or decrease the oid's values with alert values you provide, and an alert will
+# be produced if the range is exceeded.
+#
+# Example (produce an warning if the primary oid is less than 5000 from the
+#          value of the second oid, and go critical if it is 10000 less.
+# # check_sysctl vfs.numvnodes kern.maxvnodes lt 5000 10000
+# WARNING vfs.numvnodes: 61502 (less than 64131 [ kern.maxvnodes: 69131 ])
+#
+#   *** eq - equal to, ne - not equal to ***
+#
+# If checking against your primary oid's value, a warning value is required
+# and an error will be produced should the values match/not match as the case
+# may be. A critical value can be additionally provided. Having both warning
+# and ciritical values identical will ensure that only critical alerts are
+# produced
+#
+# Example (produce a warning should vfs.numvnodes equal 61052 and go critical
+#          should it equal 61050)
+# # check_sysctl vfs.numvnodes self eq 61052 61050
+# OK vfs.numvnodes: 61091 (not equal to 61052 / 61050)
+# 
+# If checking against a secondary oid, warning values and critical values are
+# not necessary at all. However, should you wish the alert to be a critical
+# alert and not a warning (which is the default with no alert values), provide
+# both random warning and critical values.
+#
+# Example (go critical should vfs.numvnodes not equal kern.maxvnodes)
+# # check_sysctl vfs.numvnodes kern.maxvnodes ne 0 0
+# CRITICAL vfs.numvnodes: 61091 (not equal to 69131 [ kern.maxvnodes: 69131 ])
+#
+#   *** pc - percentage of ***
+#
+# A percentage check can ONLY be done with a secondary oid. If you do not
+# provide one, you will be advised of a syntax error.
+# The warning values will be calculated as a percentage of the secondary value,
+# and set the value alert limits correspondingly.
+#
+# Example (produce a warning should vfs.numnodes reach 80% of kern.maxvnodes)
+# # check_sysctl vfs.numvnodes kern.maxvnodes pc 80
+# WARNING vfs.numvnodes: 61091 ( greater than 55304.8 [ kern.maxvnodes: 69131 ])
+
+use strict;
+
+my %ERRORS=('DEPENDENT'=>4,'UNKNOWN'=>3,'OK'=>0,'WARNING'=>1,'CRITICAL'=>2);
+my $state="UNKNOWN";
+my $msg="FAILURE";
+
+if ($#ARGV < 0) {
+	print "No arguments!\nUsage: $0 <oid> <secondry oid/self> [[lt/gt/eq/eq-s/ne/ne-s/pc] [<warn value>] [<critical value>]]\n";
+	exit $ERRORS{$state};
+}
+
+if ($^O ne 'linux' && $^O !~ /bsd$/) {
+	print "This plugin may not work on this operating system:- $^O.\n";
+	exit $ERRORS{$state};
+}
+
+my ($oid1, $oid2, $mod, $warn_val, $crit_val) = @ARGV;
+
+my $result1;
+my $result2;
+my $val1;
+my $val2;
+my $comment;
+my $compval;
+my $validmod=0;
+
+($result1, $val1)=&readsysctl($oid1);
+
+if ($oid2) {
+
+	if ($oid2 ne "self") {
+
+		($result2, $val2)=&readsysctl($oid2);
+	
+	}
+
+	if ($mod eq "lt") {
+		$validmod=1;
+		if (defined($warn_val)) {
+			if (defined($result2)) {
+				$warn_val=$val2-$warn_val;
+			}
+		} else {
+			if (defined($result2)) {
+				$warn_val=$val2;
+			} else {
+				&value_error;
+			}
+		}
+		if (defined($crit_val)) {
+			$crit_val=$val2-$crit_val;
+		}
+		if ($val1 >= $warn_val) {
+			$comment = "greater than";
+			$state = "OK";
+		} else {
+			$comment = "less than";
+			$state = "WARNING";
+			if (defined($crit_val) && ($val1 <= $crit_val)) {
+				$state = "CRITICAL";
+			}
+		}
+	}
+
+	if ($mod eq "gt") {
+		$validmod=1;
+		if (defined($warn_val)) {
+			if (defined($result2)) {
+				$warn_val=$val2+$warn_val;
+			}
+		} else {
+			if (defined($result2)) {
+				$warn_val=$val2;
+			} else {
+				&value_error;
+			}
+		}
+		if (defined($crit_val)) {
+			$crit_val=$val2+$crit_val;
+		}
+		if ($val1 <= $warn_val) {
+			$comment = "less than";
+			$state = "OK";
+		} else {
+			$comment = "greater than";
+			$state = "WARNING";
+			if (defined($crit_val) && ($val1 >= $crit_val)) {
+				$state = "CRITICAL";
+			}
+		}
+	}
+
+	if ($mod eq "eq") {
+		$validmod=1;
+		if (!defined($result2) && !defined($warn_val)) {
+			&value_error;
+		}
+		if (defined($result2)) {
+			$warn_val=$val2;
+			if (defined($crit_val)) {
+				$crit_val=$val2;
+			}
+		}
+		if ($val1 != $warn_val) {
+			$comment = "equal to";
+			$state = "OK";
+		} else {
+			$comment = "not equal to";
+			$state = "WARNING";
+			if (defined($crit_val) && ($val1 == $crit_val)) {
+				$state = "CRITICAL";
+			}
+		}
+	}
+
+        if ($mod eq "eq-s") {
+                $validmod=1;
+                if (!defined($result2) && !defined($warn_val)) {
+                        &value_error;
+                }
+                if (defined($result2)) {
+                        $warn_val=$val2;
+                        if (defined($crit_val)) {
+                                $crit_val=$val2;
+                        }
+                }
+                if ($val1 eq $warn_val) {
+                        $comment = "equal to";
+                        $state = "OK";
+                } else {
+                        $comment = "not equal to";
+                        $state = "WARNING";
+                        if (defined($crit_val) && ($val1 == $crit_val)) {
+                                $state = "CRITICAL";
+                        }
+                }
+        }
+
+	if ($mod eq "ne") {
+		$validmod=1;
+		if (!defined($result2) && !defined($warn_val)) {
+			&value_error;
+		}
+		if (defined($result2)) {
+			$warn_val=$val2;
+			if (defined($crit_val)) {
+				$crit_val=$val2;
+			}
+		}
+		if ($val1 == $warn_val) {
+			$comment = "equal to";
+			$state = "OK";
+		} else {
+			$comment = "not equal to";
+			$state = "WARNING";
+			if (defined($crit_val) && ($val1 != $crit_val)) {
+				$state = "CRITICAL";
+			}
+		}
+	}
+
+        if ($mod eq "ne-s") {
+                $validmod=1;
+                if (!defined($result2) && !defined($warn_val)) {
+                        &value_error;
+                }
+                if (defined($result2)) {
+                        $warn_val=$val2;
+                        if (defined($crit_val)) {
+                                $crit_val=$val2;
+                        }
+                }
+                if ($val1 ne $warn_val) {
+                        $comment = "equal to";
+                        $state = "OK";
+                } else {
+                        $comment = "not equal to";
+                        $state = "WARNING";
+                        if (defined($crit_val) && ($val1 != $crit_val)) {
+                                $state = "CRITICAL";
+                        }
+                }
+        }
+
+	if ($mod eq "pc") {
+		$validmod=1;
+		if (!defined($result2)) {
+			&value_error
+		}
+		if (defined($warn_val)) {
+			$warn_val = (($val2*$warn_val)/100);
+		} else {
+			&value_error;
+		}
+		if (defined($crit_val)) {
+			$crit_val = (($val2*$crit_val)/100);
+		}
+		if ($val1 <= $warn_val) {
+			$comment = "less than";
+			$state = "OK";
+		} else {
+			$comment = "greater than";
+			$state = "WARNING";
+			if (defined($crit_val) && ($val1 >= $crit_val)) {
+				$state = "CRITICAL";
+			}
+		}
+	}
+	if ($validmod == 0) {
+		print "Invalid value comparison modifier! (lt,gt,eq,ne,pc are valid)\n";
+		exit ($ERRORS{$state});
+	}
+
+	$compval=$warn_val;
+	if ($state eq "OK" && defined($crit_val) && ($warn_val != $crit_val)) {
+		$compval=$compval . " / $crit_val";
+	}
+	if ($state eq "CRITICAL") {
+		$compval=$crit_val;
+	} 
+	if (defined($result2)) {
+		$compval = $compval . " [ $result2 ]";
+	}
+	$msg = sprintf "%s (%s %s)\n", $result1 , $comment, $compval;
+
+} else {
+	$state = "OK";
+	$msg = sprintf "%s\n", $result1;
+}
+
+## goats away!
+print $state, " ", $msg;
+exit ($ERRORS{$state});
+
+## read sysctl sub
+sub readsysctl {
+
+	my $search_oid=$_[0];
+
+	my $statcommand="sysctl $search_oid";
+	my $output;
+	my $value;
+
+	if (! open STAT, "$statcommand|") {
+		print ("$state $statcommand returns no result!\n");
+		exit ($ERRORS{$state});
+	}
+
+	while (<STAT>) {
+		$output= $_;
+	}
+
+	if ( ! defined($output) ) {
+		print ("$state The sysctl oid $search_oid does not exist!\n");
+		exit ($ERRORS{$state});
+	}
+
+	chomp $output;
+	$_ = $output;
+
+	($value) = /[\:\s|\s=\s|\=](\S+)$/;
+	chomp $value;
+	return $output, $value;
+}
+
+sub value_error {
+	print "Syntax error! Missing or illogical arguments for this operation!\n";
+	exit ($ERRORS{$state});
+}	

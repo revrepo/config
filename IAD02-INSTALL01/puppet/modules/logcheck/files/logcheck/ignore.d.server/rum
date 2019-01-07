@@ -1,0 +1,11 @@
+RUM.* user.info: RevCube.*INFO
+user.warning: RevCube.* \[WARNING\] :Roundtrip : Missing Params
+RevRum.*Received request with id
+user.info: RevRum.*Sending Object to Cube
+user.warning: RevCube.*Navigation Timing : Invalid 'NaN'Value
+user.warning: RevCube.*Navigation Timing : Missing mandatory Params
+RUM.* user.info: RevRum.*BEACON URL LISTENING ON
+user.info: RevRum.*Fetching User IP from request using X-Forwarded
+user.alert: RevRum.*:Navigation Timing : Invalid .*Value
+user.info: RevRum.* :fetched. ip address is
+RUM02 user.info: RevRum.* \[INFO\]
