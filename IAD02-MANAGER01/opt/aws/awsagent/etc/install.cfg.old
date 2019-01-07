@@ -1,0 +1,2 @@
+AGENT_CFG_KEY=agent.cfg
+CRON_UPDATE_AGENT=true

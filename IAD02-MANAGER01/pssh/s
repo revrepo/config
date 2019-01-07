@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sudo sed s/'"BLOCK_CRAWLERS": true,'/'"BLOCK_CRAWLERS": false,'/g -i  /etc/revsw-apache/www_victor-gartvich_com/main.json

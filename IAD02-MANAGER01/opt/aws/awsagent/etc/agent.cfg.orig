@@ -1,0 +1,6 @@
+{
+    "VerifySSL" : true,
+    "KernelModulePath" : "/opt/aws/awsagent/kmods/amznmon64.ko",  
+    "LogLevels" : "LogWarning,LogError,LogNotice",
+    "SubSystems" : "AGENT,CONFIGURATION,PUBLISHER"
+}

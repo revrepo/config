@@ -1,0 +1,679 @@
+LGA02-BP07: <html>
+<head><title>503 Service Temporarily Unavailable</title></head>
+<body bgcolor="white">
+<center><h1>503 Service Temporarily Unavailable</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[1] 15:46:26 [SUCCESS] LGA02-BP07
+LGA02-BP06: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[2] 15:46:27 [SUCCESS] LGA02-BP06
+LGA02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[3] 15:46:27 [SUCCESS] LGA02-BP01
+LGA02-BP02: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[4] 15:46:27 [SUCCESS] LGA02-BP02
+MIA02-BP02: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[5] 15:46:27 [SUCCESS] MIA02-BP02
+ORD02-BP02: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[6] 15:46:27 [SUCCESS] ORD02-BP02
+IAD02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[7] 15:46:27 [SUCCESS] IAD02-BP01
+IAD02-BP02: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[8] 15:46:27 [SUCCESS] IAD02-BP02
+DFW02-BP02: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[9] 15:46:27 [SUCCESS] DFW02-BP02
+MIA02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[10] 15:46:27 [SUCCESS] MIA02-BP01
+LON02-BP02: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[11] 15:46:27 [SUCCESS] LON02-BP02
+PAR02-BP02: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[12] 15:46:27 [SUCCESS] PAR02-BP02
+SEA02-BP02: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[13] 15:46:27 [SUCCESS] SEA02-BP02
+SJC02-BP02: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[14] 15:46:27 [SUCCESS] SJC02-BP02
+AMS02-BP02: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[15] 15:46:27 [SUCCESS] AMS02-BP02
+SJC02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[16] 15:46:27 [SUCCESS] SJC02-BP01
+GRZ02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[17] 15:46:28 [SUCCESS] GRZ02-BP01
+AMS02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[18] 15:46:28 [SUCCESS] AMS02-BP01
+MOW02-BP02: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[19] 15:46:28 [SUCCESS] MOW02-BP02
+LGA02-BP03: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[20] 15:46:28 [SUCCESS] LGA02-BP03
+ATL02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[21] 15:46:28 [SUCCESS] ATL02-BP01
+FRA02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[22] 15:46:28 [SUCCESS] FRA02-BP01
+KNA02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[23] 15:46:28 [SUCCESS] KNA02-BP01
+[24] 15:46:28 [FAILURE] LAS02-BP01 Exited with error code 255
+YYZ02-BP03: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[25] 15:46:28 [SUCCESS] YYZ02-BP03
+FRA02-BP03: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[26] 15:46:28 [SUCCESS] FRA02-BP03
+DEN02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[27] 15:46:28 [SUCCESS] DEN02-BP01
+FRA02-BP02: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[28] 15:46:28 [SUCCESS] FRA02-BP02
+LAX02-BP02: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[29] 15:46:28 [SUCCESS] LAX02-BP02
+ATL02-BP04: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+TYO02-BP02: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[30] 15:46:28 [SUCCESS] TYO02-BP02
+[31] 15:46:28 [SUCCESS] ATL02-BP04
+SAO02-BP02: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[32] 15:46:28 [SUCCESS] SAO02-BP02
+[33] 15:46:29 [FAILURE] BLR02-BP08 Exited with error code 255
+ATL02-BP03: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[34] 15:46:29 [SUCCESS] ATL02-BP03
+[35] 15:46:29 [FAILURE] BLR02-BP09 Exited with error code 255
+ATL02-BP02: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[36] 15:46:29 [SUCCESS] ATL02-BP02
+[37] 15:46:29 [FAILURE] BLR02-BP10 Exited with error code 255
+LAX02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[38] 15:46:29 [SUCCESS] LAX02-BP01
+HKG02-BP02: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[39] 15:46:29 [SUCCESS] HKG02-BP02
+HKG02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[40] 15:46:29 [SUCCESS] HKG02-BP01
+SIN02-BP02: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[41] 15:46:29 [SUCCESS] SIN02-BP02
+MAA02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[42] 15:46:29 [SUCCESS] MAA02-BP01
+[43] 15:46:29 [FAILURE] QRO02-BP01 Exited with error code 255
+SIN02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[44] 15:46:29 [SUCCESS] SIN02-BP01
+PDX02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+SYD02-BP02: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[45] 15:46:29 [SUCCESS] SYD02-BP02
+[46] 15:46:29 [SUCCESS] PDX02-BP01
+[47] 15:46:29 [FAILURE] QRO02-BP02 Exited with error code 255
+MOW02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[48] 15:46:29 [SUCCESS] MOW02-BP01
+[49] 15:46:29 [FAILURE] PTY02-BP03 Exited with error code 255
+[50] 15:46:29 [FAILURE] DFW02-BP03 Exited with error code 255
+[51] 15:46:29 [FAILURE] DFW02-BP04 Exited with error code 255
+[52] 15:46:29 [FAILURE] PTY02-BP02 Exited with error code 255
+[53] 15:46:29 [FAILURE] DFW02-BP05 Exited with error code 255
+[54] 15:46:29 [FAILURE] QRO02-BP03 Exited with error code 255
+[55] 15:46:29 [FAILURE] DFW02-BP06 Exited with error code 255
+MAD02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[56] 15:46:29 [SUCCESS] MAD02-BP01
+[57] 15:46:30 [FAILURE] MIA02-BP03 Exited with error code 255
+TLV02-BP02: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[58] 15:46:30 [SUCCESS] TLV02-BP02
+MIL02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[59] 15:46:30 [SUCCESS] MIL02-BP01
+TLV02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+ATL02-BP05: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[60] 15:46:30 [SUCCESS] TLV02-BP01
+[61] 15:46:30 [SUCCESS] ATL02-BP05
+STO02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[62] 15:46:30 [SUCCESS] STO02-BP01
+SIN02-BP03: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[63] 15:46:30 [SUCCESS] SIN02-BP03
+SIN02-BP05: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[64] 15:46:30 [SUCCESS] SIN02-BP05
+LGA02-BP05: <html>
+<head><title>503 Service Temporarily Unavailable</title></head>
+<body bgcolor="white">
+<center><h1>503 Service Temporarily Unavailable</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[65] 15:46:30 [SUCCESS] LGA02-BP05
+SIN02-BP04: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[66] 15:46:30 [SUCCESS] SIN02-BP04
+SIN02-BP06: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[67] 15:46:30 [SUCCESS] SIN02-BP06
+LGA02-BP08: <html>
+<head><title>403 Forbidden</title></head>
+<body bgcolor="white">
+<center><h1>403 Forbidden</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[68] 15:46:30 [SUCCESS] LGA02-BP08
+VIE02-BP02: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[69] 15:46:30 [SUCCESS] VIE02-BP02
+LGA02-BP09: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[70] 15:46:30 [SUCCESS] LGA02-BP09
+IAD02-BP03: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[71] 15:46:31 [SUCCESS] IAD02-BP03
+VIE02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[72] 15:46:31 [SUCCESS] VIE02-BP01
+LON02-BP03: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[73] 15:46:31 [SUCCESS] LON02-BP03
+SVX02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[74] 15:46:31 [SUCCESS] SVX02-BP01
+ORD02-BP03: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[75] 15:46:31 [SUCCESS] ORD02-BP03
+YYZ02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[76] 15:46:31 [SUCCESS] YYZ02-BP01
+AMS02-BP03: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[77] 15:46:31 [SUCCESS] AMS02-BP03
+SJC02-BP03: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[78] 15:46:31 [SUCCESS] SJC02-BP03
+FRA02-BP04: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[79] 15:46:31 [SUCCESS] FRA02-BP04
+FRA02-BP05: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[80] 15:46:31 [SUCCESS] FRA02-BP05
+BOM02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[81] 15:46:31 [SUCCESS] BOM02-BP01
+FRA02-BP06: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[82] 15:46:32 [SUCCESS] FRA02-BP06
+BLR02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[83] 15:46:32 [SUCCESS] BLR02-BP01
+TYO02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[84] 15:46:32 [SUCCESS] TYO02-BP01
+BLR02-BP02: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[85] 15:46:32 [SUCCESS] BLR02-BP02
+FRA02-BP08: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[86] 15:46:32 [SUCCESS] FRA02-BP08
+FRA02-BP07: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[87] 15:46:32 [SUCCESS] FRA02-BP07
+JNB02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[88] 15:46:32 [SUCCESS] JNB02-BP01
+BLR02-BP03: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[89] 15:46:32 [SUCCESS] BLR02-BP03
+BLR02-BP05: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[90] 15:46:32 [SUCCESS] BLR02-BP05
+BLR02-BP07: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[91] 15:46:32 [SUCCESS] BLR02-BP07
+PHX02-BP02: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[92] 15:46:32 [SUCCESS] PHX02-BP02
+SEA02-BP01: <html>
+<head><title>403 Forbidden</title></head>
+<body bgcolor="white">
+<center><h1>403 Forbidden</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[93] 15:46:32 [SUCCESS] SEA02-BP01
+BLR02-BP06: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[94] 15:46:32 [SUCCESS] BLR02-BP06
+BLR02-BP04: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[95] 15:46:33 [SUCCESS] BLR02-BP04
+SYD02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[96] 15:46:33 [SUCCESS] SYD02-BP01
+SEL02-BP01: <html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+[97] 15:46:33 [SUCCESS] SEL02-BP01
+[98] 15:48:26 [FAILURE] DFW02-BP01 Exited with error code 255
